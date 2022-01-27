@@ -25,10 +25,10 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/dashevo/dashd-go/chaincfg"
 	"github.com/btcsuite/go-socks/socks"
 	"github.com/btcsuite/websocket"
 	"github.com/dashevo/dashd-go/btcjson"
+	"github.com/dashevo/dashd-go/chaincfg"
 )
 
 var (
@@ -1377,8 +1377,6 @@ func New(config *ConnConfig, ntfnHandlers *NotificationHandlers) (*Client, error
 		client.chainParams = &chaincfg.TestNet3Params
 	case chaincfg.RegressionNetParams.Name:
 		client.chainParams = &chaincfg.RegressionNetParams
-	case chaincfg.SimNetParams.Name:
-		client.chainParams = &chaincfg.SimNetParams
 	default:
 		return nil, fmt.Errorf("rpcclient.New: Unknown chain %s", config.Params)
 	}

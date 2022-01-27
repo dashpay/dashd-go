@@ -28,6 +28,8 @@ import (
 	"github.com/dashevo/dashd-go/chaincfg"
 	"github.com/dashevo/dashd-go/chaincfg/chainhash"
 	"github.com/dashevo/dashd-go/connmgr"
+	"github.com/dashevo/dashd-go/dashutil"
+	"github.com/dashevo/dashd-go/dashutil/bloom"
 	"github.com/dashevo/dashd-go/database"
 	"github.com/dashevo/dashd-go/mempool"
 	"github.com/dashevo/dashd-go/mining"
@@ -36,8 +38,6 @@ import (
 	"github.com/dashevo/dashd-go/peer"
 	"github.com/dashevo/dashd-go/txscript"
 	"github.com/dashevo/dashd-go/wire"
-	"github.com/dashevo/dashd-go/dashutil"
-	"github.com/dashevo/dashd-go/dashutil/bloom"
 )
 
 const (
@@ -423,7 +423,7 @@ func (sp *serverPeer) OnVersion(_ *peer.Peer, msg *wire.MsgVersion) *wire.MsgRej
 	isInbound := sp.Inbound()
 	remoteAddr := sp.NA()
 	addrManager := sp.server.addrManager
-	if !cfg.SimNet && !isInbound {
+	if !isInbound {
 		addrManager.SetServices(remoteAddr, msg.Services)
 	}
 
@@ -445,7 +445,7 @@ func (sp *serverPeer) OnVersion(_ *peer.Peer, msg *wire.MsgVersion) *wire.MsgRej
 		return wire.NewMsgReject(msg.Command(), wire.RejectNonstandard, reason)
 	}
 
-	if !cfg.SimNet && !isInbound {
+	if !isInbound {
 		// After soft-fork activation, only make outbound
 		// connection to peers if they flag that they're segwit
 		// enabled.
@@ -1216,14 +1216,6 @@ func (sp *serverPeer) OnFilterLoad(_ *peer.Peer, msg *wire.MsgFilterLoad) {
 // and is used to provide the peer with known addresses from the address
 // manager.
 func (sp *serverPeer) OnGetAddr(_ *peer.Peer, msg *wire.MsgGetAddr) {
-	// Don't return any addresses when running on the simulation test
-	// network.  This helps prevent the network from becoming another
-	// public test network since it will not be able to learn about other
-	// peers that have not specifically been provided.
-	if cfg.SimNet {
-		return
-	}
-
 	// Do not accept getaddr requests from outbound peers.  This reduces
 	// fingerprinting attacks.
 	if !sp.Inbound() {
@@ -1251,13 +1243,6 @@ func (sp *serverPeer) OnGetAddr(_ *peer.Peer, msg *wire.MsgGetAddr) {
 // OnAddr is invoked when a peer receives an addr bitcoin message and is
 // used to notify the server about advertised addresses.
 func (sp *serverPeer) OnAddr(_ *peer.Peer, msg *wire.MsgAddr) {
-	// Ignore addresses when running on the simulation test network.  This
-	// helps prevent the network from becoming another public test network
-	// since it will not be able to learn about other peers that have not
-	// specifically been provided.
-	if cfg.SimNet {
-		return
-	}
 
 	// Ignore old style addresses which don't include a timestamp.
 	if sp.ProtocolVersion() < wire.NetAddressTimeVersion {
@@ -1691,7 +1676,7 @@ func (s *server) handleAddPeerMsg(state *peerState, sp *serverPeer) bool {
 	// the simulation test network since it is only intended to connect to
 	// specified peers and actively avoids advertising and connecting to
 	// discovered peers.
-	if !cfg.SimNet && !sp.Inbound() {
+	if !sp.Inbound() {
 		// Advertise the local address when the server accepts incoming
 		// connections and it believes itself to be close to the best
 		// known tip.
@@ -2839,7 +2824,7 @@ func newServer(listenAddrs, agentBlacklist, agentWhitelist []string,
 	// discovered peers in order to prevent it from becoming a public test
 	// network.
 	var newAddressFunc func() (net.Addr, error)
-	if !cfg.SimNet && len(cfg.ConnectPeers) == 0 {
+	if len(cfg.ConnectPeers) == 0 {
 		newAddressFunc = func() (net.Addr, error) {
 			for tries := 0; tries < 100; tries++ {
 				addr := s.addrManager.GetAddress()

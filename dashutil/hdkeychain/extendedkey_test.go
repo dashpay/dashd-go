@@ -161,7 +161,7 @@ func TestBIP0032Vectors(t *testing.T) {
 			path:     []uint32{},
 			wantPub:  "tpubD6NzVbkrYhZ4XgiXtGrdW5XDAPFCL9h7we1vwNCpn8tGbBcgfVYjXyhWo4E1xkh56hjod1RhGjxbaTLV3X4FyWuejifB9jusQ46QzG87VKp",
 			wantPriv: "tprv8ZgxMBicQKsPeDgjzdC36fs6bMjGApWDNLR9erAXMs5skhMv36j9MV5ecvfavji5khqjWaWSFhN3YcCUUdiKH6isR4Pwy3U5y5egddBr16m",
-			net:      &chaincfg.TestNetParams,
+			net:      &chaincfg.TestNet3Params,
 		},
 		{
 			name:     "test vector 1 chain m/0H - testnet",
@@ -169,7 +169,7 @@ func TestBIP0032Vectors(t *testing.T) {
 			path:     []uint32{hkStart},
 			wantPub:  "tpubD8eQVK4Kdxg3gHrF62jGP7dKVCoYiEB8dFSpuTawkL5YxTus5j5pf83vaKnii4bc6v2NVEy81P2gYrJczYne3QNNwMTS53p5uzDyHvnw2jm",
 			wantPriv: "tprv8bxNLu25VazNnppTCP4fyhyCvBHcYtzE3wr3cwYeL4HA7yf6TLGEUdS4QC1vLT63TkjRssqJe4CvGNEC8DzW5AoPUw56D1Ayg6HY4oy8QZ9",
-			net:      &chaincfg.TestNetParams,
+			net:      &chaincfg.TestNet3Params,
 		},
 		{
 			name:     "test vector 1 chain m/0H/1 - testnet",
@@ -177,7 +177,7 @@ func TestBIP0032Vectors(t *testing.T) {
 			path:     []uint32{hkStart, 1},
 			wantPub:  "tpubDApXh6cD2fZ7WjtgpHd8yrWyYaneiFuRZa7fVjMkgxsmC1QzoXW8cgx9zQFJ81Jx4deRGfRE7yXA9A3STsxXj4CKEZJHYgpMYikkas9DBTP",
 			wantPriv: "tprv8e8VYgZxtHsSdGrtvdxYaSrryZGiYviWzGWtDDKTGh5NMXAEB8gYSCLHpFCywNs5uqV7ghRjimALQJkRFZnUrLHpzi2pGkwqLtbubgWuQ8q",
-			net:      &chaincfg.TestNetParams,
+			net:      &chaincfg.TestNet3Params,
 		},
 		{
 			name:     "test vector 1 chain m/0H/1/2H - testnet",
@@ -185,7 +185,7 @@ func TestBIP0032Vectors(t *testing.T) {
 			path:     []uint32{hkStart, 1, hkStart + 2},
 			wantPub:  "tpubDDRojdS4jYQXNugn4t2WLrZ7mjfAyoVQu7MLk4eurqFCbrc7cHLZX8W5YRS8ZskGR9k9t3PqVv68bVBjAyW4nWM9pTGRddt3GQftg6MVQsm",
 			wantPriv: "tprv8gjmbDPpbAirVSezBEMuwSu1Ci9EpUJWKokZTYccSZSomNMLytWyLdtDNHRbucNaRJWWHANf9AzEdWVAqahfyRjVMKbNRhBmxAM8EJr7R15",
-			net:      &chaincfg.TestNetParams,
+			net:      &chaincfg.TestNet3Params,
 		},
 		{
 			name:     "test vector 1 chain m/0H/1/2H/2 - testnet",
@@ -193,7 +193,7 @@ func TestBIP0032Vectors(t *testing.T) {
 			path:     []uint32{hkStart, 1, hkStart + 2, 2},
 			wantPub:  "tpubDFfCa4Z1v25WTPAVm9EbEMiRrYwucPocLbEe12BPBGooxxEUg42vihy1DkRWyftztTsL23snYezF9uXjGGwGW6pQjEpcTpmsH6ajpf4CVPn",
 			wantPriv: "tprv8iyAReWmmePqZv8hsVZzpx4KHXRyT4chmHdriW95m11R8Tyi3fDLYDM93bq4NGn1V6eCu5cE3zSQ6hPd31F2ApKXkZgTyn1V78pHjkq1V2v",
-			net:      &chaincfg.TestNetParams,
+			net:      &chaincfg.TestNet3Params,
 		},
 		{
 			name:     "test vector 1 chain m/0H/1/2H/2/1000000000 - testnet",
@@ -201,7 +201,7 @@ func TestBIP0032Vectors(t *testing.T) {
 			path:     []uint32{hkStart, 1, hkStart + 2, 2, 1000000000},
 			wantPub:  "tpubDHNy3kAG39ThyiwwsgoKY4iRenXDRtce8qdCFJZXPMCJg5dsCUHayp84raLTpvyiNA9sXPob5rgqkKvkN8S7MMyXbnEhGJMW64Cf4vFAoaF",
 			wantPriv: "tprv8kgvuL81tmn36Fv9z38j8f4K5m1HGZRjZY2QxnXDy5PuqbP6a5TzoKWCgTcGHBu66W3TgSbAu2yX6sPza5FkHmy564Sh6gmCPUNeUt4yj2x",
-			net:      &chaincfg.TestNetParams,
+			net:      &chaincfg.TestNet3Params,
 		},
 	}
 
@@ -679,7 +679,7 @@ func TestNet(t *testing.T) {
 			name:      "main -> test",
 			key:       "xprv9s21ZrQH143K3QTDL4LXw2F7HEK3wJUD2nW2nRk4stbPy6cq3jPPqjiChkVvvNKmPGJxWUtg6LnF5kejMRNNU3TGtRBeJgk33yuGBxrMPHi",
 			origNet:   &chaincfg.MainNetParams,
-			newNet:    &chaincfg.TestNetParams,
+			newNet:    &chaincfg.TestNet3Params,
 			newPriv:   "tprv8ZgxMBicQKsPeDgjzdC36fs6bMjGApWDNLR9erAXMs5skhMv36j9MV5ecvfavji5khqjWaWSFhN3YcCUUdiKH6isR4Pwy3U5y5egddBr16m",
 			newPub:    "tpubD6NzVbkrYhZ4XgiXtGrdW5XDAPFCL9h7we1vwNCpn8tGbBcgfVYjXyhWo4E1xkh56hjod1RhGjxbaTLV3X4FyWuejifB9jusQ46QzG87VKp",
 			isPrivate: true,
@@ -687,7 +687,7 @@ func TestNet(t *testing.T) {
 		{
 			name:      "test -> main",
 			key:       "tprv8ZgxMBicQKsPdsqEXyVhWdVjxTT16w7qpHAygxLBQatSUXAJjbcNuty8rRQfqUHZZqVJzHTHn3jS49TmySEvk4DTop5bP6zWnht2YaoFP2P",
-			origNet:   &chaincfg.TestNetParams,
+			origNet:   &chaincfg.TestNet3Params,
 			newNet:    &chaincfg.MainNetParams,
 			newPriv:   "xprv9s21ZrQH143K34bhsQeCLyskeL2nsR5qUjFrpXuivcPxgvRDkEGdQ9bgwFF1q6uFCPxXzBqXch9dbHv2rDtyvzwsHAsHikGTsc8c6vCh3Rc",
 			newPub:    "xpub661MyMwAqRbcFYgAySBCi7pVCMsHGsogqxBTcvKLUwvwZikNHmaswwvAnXFLqgpQEpBmq3dRJKSepQX3vJYzFpDtZiwCCqF7U329juXQrqK",
@@ -717,14 +717,14 @@ func TestNet(t *testing.T) {
 			name:      "main -> test",
 			key:       "xpub661MyMwAqRbcFtXgS5sYJABqqG9YLmC4Q1Rdap9gSE8NqtwybGhePY2gZ29ESFjqJoCu1Rupje8YtGqsefD265TMg7usUDFdp6W1EGMcet8",
 			origNet:   &chaincfg.MainNetParams,
-			newNet:    &chaincfg.TestNetParams,
+			newNet:    &chaincfg.TestNet3Params,
 			newPub:    "tpubD6NzVbkrYhZ4XgiXtGrdW5XDAPFCL9h7we1vwNCpn8tGbBcgfVYjXyhWo4E1xkh56hjod1RhGjxbaTLV3X4FyWuejifB9jusQ46QzG87VKp",
 			isPrivate: false,
 		},
 		{
 			name:      "test -> main",
 			key:       "tpubD6NzVbkrYhZ4Ykzwii7hC7HA3ndAD5RhYLQwxQD419zoAjbw1CMZRW7xuFuXJ6TXuhBCeXFkcZDr8KpZLuEd78D53uJBhG9YAQDDKoxdCXS",
-			origNet:   &chaincfg.TestNetParams,
+			origNet:   &chaincfg.TestNet3Params,
 			newNet:    &chaincfg.MainNetParams,
 			newPub:    "xpub661MyMwAqRbcGxp6GX8bzBwnifXWDgvdzhpebr9ufFEuRSwDvyWUH4T8fDpjmbWJ7neJ2wjt5TPoS9Kwx3PPDgkmzJYt1jVJaScoZrPrYxd",
 			isPrivate: false,

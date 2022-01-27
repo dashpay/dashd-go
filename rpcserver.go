@@ -27,11 +27,14 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/btcsuite/websocket"
 	"github.com/dashevo/dashd-go/blockchain"
 	"github.com/dashevo/dashd-go/blockchain/indexers"
 	"github.com/dashevo/dashd-go/btcec"
+	"github.com/dashevo/dashd-go/btcjson"
 	"github.com/dashevo/dashd-go/chaincfg"
 	"github.com/dashevo/dashd-go/chaincfg/chainhash"
+	"github.com/dashevo/dashd-go/dashutil"
 	"github.com/dashevo/dashd-go/database"
 	"github.com/dashevo/dashd-go/mempool"
 	"github.com/dashevo/dashd-go/mining"
@@ -39,9 +42,6 @@ import (
 	"github.com/dashevo/dashd-go/peer"
 	"github.com/dashevo/dashd-go/txscript"
 	"github.com/dashevo/dashd-go/wire"
-	"github.com/dashevo/dashd-go/dashutil"
-	"github.com/btcsuite/websocket"
-	"github.com/dashevo/dashd-go/btcjson"
 )
 
 // API version constants
@@ -1942,7 +1942,7 @@ func handleGetBlockTemplateRequest(s *rpcServer, request *btcjson.TemplateReques
 	// way to relay a found block or receive transactions to work on.
 	// However, allow this state when running in the regression test or
 	// simulation test mode.
-	if !(cfg.RegressionTest || cfg.SimNet) &&
+	if !(cfg.RegressionTest) &&
 		s.cfg.ConnMgr.ConnectedCount() == 0 {
 
 		return nil, &btcjson.RPCError{

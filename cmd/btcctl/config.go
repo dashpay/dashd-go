@@ -13,10 +13,10 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/dashevo/dashd-go/btcjson"
 	"github.com/dashevo/dashd-go/chaincfg"
 	"github.com/dashevo/dashd-go/dashutil"
-	"github.com/dashevo/dashd-go/btcjson"
-	flags "github.com/jessevdk/go-flags"
+	"github.com/jessevdk/go-flags"
 )
 
 const (
@@ -104,7 +104,6 @@ type config struct {
 	RPCPassword    string `short:"P" long:"rpcpass" default-mask:"-" description:"RPC password"`
 	RPCServer      string `short:"s" long:"rpcserver" description:"RPC server to connect to"`
 	RPCUser        string `short:"u" long:"rpcuser" description:"RPC username"`
-	SimNet         bool   `long:"simnet" description:"Connect to the simulation test network"`
 	TLSSkipVerify  bool   `long:"skipverify" description:"Do not verify tls certificates (not recommended!)"`
 	TestNet3       bool   `long:"testnet" description:"Connect to testnet"`
 	ShowVersion    bool   `short:"V" long:"version" description:"Display version information and exit"`
@@ -119,31 +118,11 @@ func normalizeAddress(addr string, chain *chaincfg.Params, useWallet bool) (stri
 		var defaultPort string
 		switch chain {
 		case &chaincfg.TestNet3Params:
-			if useWallet {
-				defaultPort = "18332"
-			} else {
-				defaultPort = "18334"
-			}
-		case &chaincfg.SimNetParams:
-			if useWallet {
-				defaultPort = "18554"
-			} else {
-				defaultPort = "18556"
-			}
+			defaultPort = "19999"
 		case &chaincfg.RegressionNetParams:
-			if useWallet {
-				// TODO: add port once regtest is supported in btcwallet
-				paramErr := fmt.Errorf("cannot use -wallet with -regtest, btcwallet not yet compatible with regtest")
-				return "", paramErr
-			} else {
-				defaultPort = "18334"
-			}
+			defaultPort = "19899"
 		default:
-			if useWallet {
-				defaultPort = "8332"
-			} else {
-				defaultPort = "8334"
-			}
+			defaultPort = "9999"
 		}
 
 		return net.JoinHostPort(addr, defaultPort), nil
@@ -264,10 +243,6 @@ func loadConfig() (*config, []string, error) {
 	if cfg.TestNet3 {
 		numNets++
 		network = &chaincfg.TestNet3Params
-	}
-	if cfg.SimNet {
-		numNets++
-		network = &chaincfg.SimNetParams
 	}
 	if cfg.RegressionTest {
 		numNets++

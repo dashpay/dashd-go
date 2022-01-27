@@ -938,11 +938,6 @@ func (mp *TxPool) maybeAcceptTransaction(tx *dashutil.Tx, isNew, rateLimit, reje
 
 		if !segwitActive {
 			simnetHint := ""
-			if mp.cfg.ChainParams.Net == wire.SimNet {
-				bestHeight := mp.cfg.BestHeight()
-				simnetHint = fmt.Sprintf(" (The threshold for segwit activation is 300 blocks on simnet, "+
-					"current best height is %d)", bestHeight)
-			}
 			str := fmt.Sprintf("transaction %v has witness data, "+
 				"but segwit isn't active yet%s", txHash, simnetHint)
 			return nil, nil, txRuleError(wire.RejectNonstandard, str)

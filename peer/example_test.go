@@ -15,20 +15,20 @@ import (
 	"github.com/dashevo/dashd-go/wire"
 )
 
-// mockRemotePeer creates a basic inbound peer listening on the simnet port for
+// mockRemotePeer creates a basic inbound peer listening on the testnet port for
 // use with Example_peerConnection.  It does not return until the listner is
 // active.
 func mockRemotePeer() error {
-	// Configure peer to act as a simnet node that offers no services.
+	// Configure peer to act as a testnet node that offers no services.
 	peerCfg := &peer.Config{
 		UserAgentName:    "peer",  // User agent name to advertise.
 		UserAgentVersion: "1.0.0", // User agent version to advertise.
-		ChainParams:      &chaincfg.SimNetParams,
+		ChainParams:      &chaincfg.TestNet3Params,
 		TrickleInterval:  time.Second * 10,
 	}
 
-	// Accept connections on the simnet port.
-	listener, err := net.Listen("tcp", "127.0.0.1:18555")
+	// Accept connections on the testnet port.
+	listener, err := net.Listen("tcp", "127.0.0.1:" + fmt.Sprint(chaincfg.TestNet3Params.DefaultPort))
 	if err != nil {
 		return err
 	}
@@ -69,7 +69,7 @@ func Example_newOutboundPeer() {
 	peerCfg := &peer.Config{
 		UserAgentName:    "peer",  // User agent name to advertise.
 		UserAgentVersion: "1.0.0", // User agent version to advertise.
-		ChainParams:      &chaincfg.SimNetParams,
+		ChainParams:      &chaincfg.TestNet3Params,
 		Services:         0,
 		TrickleInterval:  time.Second * 10,
 		Listeners: peer.MessageListeners{
@@ -82,7 +82,7 @@ func Example_newOutboundPeer() {
 			},
 		},
 	}
-	p, err := peer.NewOutboundPeer(peerCfg, "127.0.0.1:18555")
+	p, err := peer.NewOutboundPeer(peerCfg, "127.0.0.1:" + fmt.Sprint(chaincfg.TestNet3Params.DefaultPort))
 	if err != nil {
 		fmt.Printf("NewOutboundPeer: error %v\n", err)
 		return

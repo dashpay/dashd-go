@@ -71,8 +71,7 @@ A few things to note regarding the RPC server:
   localhost interfaces.
 * The `--rpclisten` flag can be specified multiple times to listen on multiple
   interfaces as a couple of the examples below illustrate.
-* The RPC server is disabled by default when using the `--regtest` and
-  `--simnet` networks.  You can override this by specifying listen interfaces.
+* The RPC server is disabled by default when using the `--regtest` network.  You can override this by specifying listen interfaces.
 
 Command Line Examples:
 

@@ -11,10 +11,10 @@ import (
 	"path/filepath"
 
 	"github.com/dashevo/dashd-go/chaincfg"
+	"github.com/dashevo/dashd-go/dashutil"
 	"github.com/dashevo/dashd-go/database"
 	_ "github.com/dashevo/dashd-go/database/ffldb"
 	"github.com/dashevo/dashd-go/wire"
-	"github.com/dashevo/dashd-go/dashutil"
 )
 
 var (
@@ -34,7 +34,6 @@ type config struct {
 	DataDir        string `short:"b" long:"datadir" description:"Location of the btcd data directory"`
 	DbType         string `long:"dbtype" description:"Database backend to use for the Block Chain"`
 	RegressionTest bool   `long:"regtest" description:"Use the regression test network"`
-	SimNet         bool   `long:"simnet" description:"Use the simulation test network"`
 	TestNet3       bool   `long:"testnet" description:"Use the test network"`
 }
 
@@ -93,12 +92,8 @@ func setupGlobalConfig() error {
 		numNets++
 		activeNetParams = &chaincfg.RegressionNetParams
 	}
-	if cfg.SimNet {
-		numNets++
-		activeNetParams = &chaincfg.SimNetParams
-	}
 	if numNets > 1 {
-		return errors.New("The testnet, regtest, and simnet params " +
+		return errors.New("The testnet and regtest params " +
 			"can't be used together -- choose one of the three")
 	}
 

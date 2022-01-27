@@ -137,7 +137,6 @@ Application Options:
   -u, --rpcuser=              Username for RPC connections
       --sigcachemaxsize=      The maximum number of entries in the signature
                               verification cache (default: 100000)
-      --simnet                Use the simulation test network
       --testnet               Use the test network
       --torisolation          Enable Tor stream isolation by randomizing user
                               credentials for each connection.

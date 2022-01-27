@@ -10,11 +10,11 @@ import (
 	"path/filepath"
 
 	"github.com/dashevo/dashd-go/chaincfg"
+	"github.com/dashevo/dashd-go/dashutil"
 	"github.com/dashevo/dashd-go/database"
 	_ "github.com/dashevo/dashd-go/database/ffldb"
 	"github.com/dashevo/dashd-go/wire"
-	"github.com/dashevo/dashd-go/dashutil"
-	flags "github.com/jessevdk/go-flags"
+	"github.com/jessevdk/go-flags"
 )
 
 const (
@@ -40,7 +40,6 @@ type config struct {
 	InFile         string `short:"i" long:"infile" description:"File containing the block(s)"`
 	Progress       int    `short:"p" long:"progress" description:"Show a progress message each time this number of seconds have passed -- Use 0 to disable progress announcements"`
 	RegressionTest bool   `long:"regtest" description:"Use the regression test network"`
-	SimNet         bool   `long:"simnet" description:"Use the simulation test network"`
 	TestNet3       bool   `long:"testnet" description:"Use the test network"`
 	TxIndex        bool   `long:"txindex" description:"Build a full hash-based transaction index which makes all transactions available via the getrawtransaction RPC"`
 }
@@ -116,10 +115,6 @@ func loadConfig() (*config, []string, error) {
 	if cfg.RegressionTest {
 		numNets++
 		activeNetParams = &chaincfg.RegressionNetParams
-	}
-	if cfg.SimNet {
-		numNets++
-		activeNetParams = &chaincfg.SimNetParams
 	}
 	if numNets > 1 {
 		str := "%s: The testnet, regtest, and simnet params can't be " +

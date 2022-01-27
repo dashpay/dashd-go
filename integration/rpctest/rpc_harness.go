@@ -18,9 +18,9 @@ import (
 
 	"github.com/dashevo/dashd-go/chaincfg"
 	"github.com/dashevo/dashd-go/chaincfg/chainhash"
+	"github.com/dashevo/dashd-go/dashutil"
 	"github.com/dashevo/dashd-go/rpcclient"
 	"github.com/dashevo/dashd-go/wire"
-	"github.com/dashevo/dashd-go/dashutil"
 )
 
 const (
@@ -126,8 +126,6 @@ func New(activeNet *chaincfg.Params, handlers *rpcclient.NotificationHandlers,
 		extraArgs = append(extraArgs, "--testnet")
 	case wire.TestNet:
 		extraArgs = append(extraArgs, "--regtest")
-	case wire.SimNet:
-		extraArgs = append(extraArgs, "--simnet")
 	default:
 		return nil, fmt.Errorf("rpctest.New must be called with one " +
 			"of the supported chain networks")
