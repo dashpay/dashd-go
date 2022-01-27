@@ -1,4 +1,4 @@
-// Copyright (c) 2014 The btcsuite developers
+// Copyright (c) 2014 The dashevo developers
 // Copyright (c) 2021 Dash Core Group
 // Use of this source code is governed by an ISC
 // license that can be found in the LICENSE file.
@@ -13,7 +13,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/btcsuite/btcd/wire"
+	"github.com/dashevo/dashd-go/wire"
 	"github.com/dashevo/dashd-go/btcjson"
 )
 

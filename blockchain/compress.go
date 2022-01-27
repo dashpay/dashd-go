@@ -1,12 +1,12 @@
-// Copyright (c) 2015-2016 The btcsuite developers
+// Copyright (c) 2015-2016 The dashevo developers
 // Use of this source code is governed by an ISC
 // license that can be found in the LICENSE file.
 
 package blockchain
 
 import (
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/txscript"
+	"github.com/dashevo/dashd-go/btcec"
+	"github.com/dashevo/dashd-go/txscript"
 )
 
 // -----------------------------------------------------------------------------

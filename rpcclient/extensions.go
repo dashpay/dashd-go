@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2017 The btcsuite developers
+// Copyright (c) 2014-2017 The dashevo developers
 // Copyright (c) 2015-2017 The Decred developers
 // Use of this source code is governed by an ISC
 // license that can be found in the LICENSE file.
@@ -12,9 +12,9 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
+	"github.com/dashevo/dashd-go/chaincfg/chainhash"
+	"github.com/dashevo/dashd-go/wire"
+	"github.com/dashevo/dashd-go/dashutil"
 	"github.com/dashevo/dashd-go/btcjson"
 )
 
@@ -128,7 +128,7 @@ func (r FutureListAddressTransactionsResult) Receive() ([]btcjson.ListTransactio
 // See ListAddressTransactions for the blocking version and more details.
 //
 // NOTE: This is a btcd extension.
-func (c *Client) ListAddressTransactionsAsync(addresses []btcutil.Address, account string) FutureListAddressTransactionsResult {
+func (c *Client) ListAddressTransactionsAsync(addresses []dashutil.Address, account string) FutureListAddressTransactionsResult {
 	// Convert addresses to strings.
 	addrs := make([]string, 0, len(addresses))
 	for _, addr := range addresses {
@@ -142,7 +142,7 @@ func (c *Client) ListAddressTransactionsAsync(addresses []btcutil.Address, accou
 // with the provided addresses.
 //
 // NOTE: This is a btcwallet extension.
-func (c *Client) ListAddressTransactions(addresses []btcutil.Address, account string) ([]btcjson.ListTransactionsResult, error) {
+func (c *Client) ListAddressTransactions(addresses []dashutil.Address, account string) ([]btcjson.ListTransactionsResult, error) {
 	return c.ListAddressTransactionsAsync(addresses, account).Receive()
 }
 
@@ -238,14 +238,14 @@ func (c *Client) GetCurrentNet() (wire.BitcoinNet, error) {
 // FutureGetHeadersResult is a future promise to deliver the result of a
 // getheaders RPC invocation (or an applicable error).
 //
-// NOTE: This is a btcsuite extension ported from
+// NOTE: This is a dashevo extension ported from
 // github.com/decred/dcrrpcclient.
 type FutureGetHeadersResult chan *response
 
 // Receive waits for the response promised by the future and returns the
 // getheaders result.
 //
-// NOTE: This is a btcsuite extension ported from
+// NOTE: This is a dashevo extension ported from
 // github.com/decred/dcrrpcclient.
 func (r FutureGetHeadersResult) Receive() ([]wire.BlockHeader, error) {
 	res, err := receiveFuture(r)
@@ -280,7 +280,7 @@ func (r FutureGetHeadersResult) Receive() ([]wire.BlockHeader, error) {
 //
 // See GetHeaders for the blocking version and more details.
 //
-// NOTE: This is a btcsuite extension ported from
+// NOTE: This is a dashevo extension ported from
 // github.com/decred/dcrrpcclient.
 func (c *Client) GetHeadersAsync(blockLocators []chainhash.Hash, hashStop *chainhash.Hash) FutureGetHeadersResult {
 	locators := make([]string, len(blockLocators))
@@ -299,7 +299,7 @@ func (c *Client) GetHeadersAsync(blockLocators []chainhash.Hash, hashStop *chain
 // returning all headers on the main chain after the first known block in the
 // locators, up until a block hash matches hashStop.
 //
-// NOTE: This is a btcsuite extension ported from
+// NOTE: This is a dashevo extension ported from
 // github.com/decred/dcrrpcclient.
 func (c *Client) GetHeaders(blockLocators []chainhash.Hash, hashStop *chainhash.Hash) ([]wire.BlockHeader, error) {
 	return c.GetHeadersAsync(blockLocators, hashStop).Receive()
@@ -402,7 +402,7 @@ func (r FutureSessionResult) Receive() (*btcjson.SessionResult, error) {
 //
 // See Session for the blocking version and more details.
 //
-// NOTE: This is a btcsuite extension.
+// NOTE: This is a dashevo extension.
 func (c *Client) SessionAsync() FutureSessionResult {
 	// Not supported in HTTP POST mode.
 	if c.config.HTTPPostMode {
@@ -417,7 +417,7 @@ func (c *Client) SessionAsync() FutureSessionResult {
 //
 // This RPC requires the client to be running in websocket mode.
 //
-// NOTE: This is a btcsuite extension.
+// NOTE: This is a dashevo extension.
 func (c *Client) Session() (*btcjson.SessionResult, error) {
 	return c.SessionAsync().Receive()
 }
@@ -425,14 +425,14 @@ func (c *Client) Session() (*btcjson.SessionResult, error) {
 // FutureVersionResult is a future promise to deliver the result of a version
 // RPC invocation (or an applicable error).
 //
-// NOTE: This is a btcsuite extension ported from
+// NOTE: This is a dashevo extension ported from
 // github.com/decred/dcrrpcclient.
 type FutureVersionResult chan *response
 
 // Receive waits for the response promised by the future and returns the version
 // result.
 //
-// NOTE: This is a btcsuite extension ported from
+// NOTE: This is a dashevo extension ported from
 // github.com/decred/dcrrpcclient.
 func (r FutureVersionResult) Receive() (map[string]btcjson.VersionResult,
 	error) {
@@ -457,7 +457,7 @@ func (r FutureVersionResult) Receive() (map[string]btcjson.VersionResult,
 //
 // See Version for the blocking version and more details.
 //
-// NOTE: This is a btcsuite extension ported from
+// NOTE: This is a dashevo extension ported from
 // github.com/decred/dcrrpcclient.
 func (c *Client) VersionAsync() FutureVersionResult {
 	cmd := btcjson.NewVersionCmd()
@@ -466,7 +466,7 @@ func (c *Client) VersionAsync() FutureVersionResult {
 
 // Version returns information about the server's JSON-RPC API versions.
 //
-// NOTE: This is a btcsuite extension ported from
+// NOTE: This is a dashevo extension ported from
 // github.com/decred/dcrrpcclient.
 func (c *Client) Version() (map[string]btcjson.VersionResult, error) {
 	return c.VersionAsync().Receive()

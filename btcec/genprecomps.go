@@ -1,4 +1,4 @@
-// Copyright 2015 The btcsuite developers
+// Copyright 2015 The dashevo developers
 // Use of this source code is governed by an ISC
 // license that can be found in the LICENSE file.
 
@@ -17,7 +17,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/btcsuite/btcd/btcec"
+	"github.com/dashevo/dashd-go/btcec"
 )
 
 func main() {
@@ -41,7 +41,7 @@ func main() {
 	encoded := make([]byte, base64.StdEncoding.EncodedLen(compressed.Len()))
 	base64.StdEncoding.Encode(encoded, compressed.Bytes())
 
-	fmt.Fprintln(fi, "// Copyright (c) 2015 The btcsuite developers")
+	fmt.Fprintln(fi, "// Copyright (c) 2015 The dashevo developers")
 	fmt.Fprintln(fi, "// Use of this source code is governed by an ISC")
 	fmt.Fprintln(fi, "// license that can be found in the LICENSE file.")
 	fmt.Fprintln(fi)

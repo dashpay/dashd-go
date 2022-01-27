@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/dashevo/dashd-go.png?branch=master)](https://travis-ci.org/dashevo/dashd-go)
 [![ISC License](http://img.shields.io/badge/license-ISC-blue.svg)](http://copyfree.org)
-[![GoDoc](https://img.shields.io/badge/godoc-reference-blue.svg)](http://godoc.org/github.com/btcsuite/btcd)
+[![GoDoc](https://img.shields.io/badge/godoc-reference-blue.svg)](http://godoc.org/github.com/dashevo/dashd-go)
 
 btcd is an alternative full node bitcoin implementation written in Go (golang).
 
@@ -29,7 +29,7 @@ blog entry [here](https://web.archive.org/web/20171125143919/https://blog.confor
 for more details.  This means you can't actually make or receive payments
 directly with btcd.  That functionality is provided by the
 [btcwallet](https://github.com/btcsuite/btcwallet) and
-[Paymetheus](https://github.com/btcsuite/Paymetheus) (Windows-only) projects
+[Paymetheus](https://github.com/dashevo/Paymetheus) (Windows-only) projects
 which are both under active development.
 
 ## Documentation

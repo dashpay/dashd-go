@@ -1,4 +1,4 @@
-// Copyright (c) 2017 The btcsuite developers
+// Copyright (c) 2017 The dashevo developers
 // Use of this source code is governed by an ISC
 // license that can be found in the LICENSE file.
 
@@ -7,14 +7,14 @@ package indexers
 import (
 	"errors"
 
-	"github.com/btcsuite/btcd/blockchain"
-	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/database"
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcutil"
-	"github.com/btcsuite/btcutil/gcs"
-	"github.com/btcsuite/btcutil/gcs/builder"
+	"github.com/dashevo/dashd-go/blockchain"
+	"github.com/dashevo/dashd-go/chaincfg"
+	"github.com/dashevo/dashd-go/chaincfg/chainhash"
+	"github.com/dashevo/dashd-go/database"
+	"github.com/dashevo/dashd-go/wire"
+	"github.com/dashevo/dashd-go/dashutil"
+	"github.com/dashevo/dashd-go/dashutil/gcs"
+	"github.com/dashevo/dashd-go/dashutil/gcs/builder"
 )
 
 const (
@@ -149,7 +149,7 @@ func (idx *CfIndex) Create(dbTx database.Tx) error {
 
 // storeFilter stores a given filter, and performs the steps needed to
 // generate the filter's header.
-func storeFilter(dbTx database.Tx, block *btcutil.Block, f *gcs.Filter,
+func storeFilter(dbTx database.Tx, block *dashutil.Block, f *gcs.Filter,
 	filterType wire.FilterType) error {
 	if uint8(filterType) > maxFilterType {
 		return errors.New("unsupported filter type")
@@ -209,7 +209,7 @@ func storeFilter(dbTx database.Tx, block *btcutil.Block, f *gcs.Filter,
 // ConnectBlock is invoked by the index manager when a new block has been
 // connected to the main chain. This indexer adds a hash-to-cf mapping for
 // every passed block. This is part of the Indexer interface.
-func (idx *CfIndex) ConnectBlock(dbTx database.Tx, block *btcutil.Block,
+func (idx *CfIndex) ConnectBlock(dbTx database.Tx, block *dashutil.Block,
 	stxos []blockchain.SpentTxOut) error {
 
 	prevScripts := make([][]byte, len(stxos))
@@ -228,7 +228,7 @@ func (idx *CfIndex) ConnectBlock(dbTx database.Tx, block *btcutil.Block,
 // DisconnectBlock is invoked by the index manager when a block has been
 // disconnected from the main chain.  This indexer removes the hash-to-cf
 // mapping for every passed block. This is part of the Indexer interface.
-func (idx *CfIndex) DisconnectBlock(dbTx database.Tx, block *btcutil.Block,
+func (idx *CfIndex) DisconnectBlock(dbTx database.Tx, block *dashutil.Block,
 	_ []blockchain.SpentTxOut) error {
 
 	for _, key := range cfIndexKeys {

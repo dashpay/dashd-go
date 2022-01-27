@@ -1,4 +1,4 @@
-// Copyright (c) 2013-2018 The btcsuite developers
+// Copyright (c) 2013-2018 The dashevo developers
 // Copyright (c) 2015-2018 The Decred developers
 // Use of this source code is governed by an ISC
 // license that can be found in the LICENSE file.
@@ -11,8 +11,8 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/btcsuite/btcd/btcec"
-	"github.com/btcsuite/btcd/wire"
+	"github.com/dashevo/dashd-go/btcec"
+	"github.com/dashevo/dashd-go/wire"
 )
 
 // ScriptFlags is a bitmask defining additional operations or tests that will be

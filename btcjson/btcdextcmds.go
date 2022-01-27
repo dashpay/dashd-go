@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2016 The btcsuite developers
+// Copyright (c) 2014-2016 The dashevo developers
 // Copyright (c) 2015-2016 The Decred developers
 // Use of this source code is governed by an ISC
 // license that can be found in the LICENSE file.
@@ -109,7 +109,7 @@ func NewGetCurrentNetCmd() *GetCurrentNetCmd {
 
 // GetHeadersCmd defines the getheaders JSON-RPC command.
 //
-// NOTE: This is a btcsuite extension ported from
+// NOTE: This is a dashevo extension ported from
 // github.com/decred/dcrd/dcrjson.
 type GetHeadersCmd struct {
 	BlockLocators []string `json:"blocklocators"`
@@ -119,7 +119,7 @@ type GetHeadersCmd struct {
 // NewGetHeadersCmd returns a new instance which can be used to issue a
 // getheaders JSON-RPC command.
 //
-// NOTE: This is a btcsuite extension ported from
+// NOTE: This is a dashevo extension ported from
 // github.com/decred/dcrd/dcrjson.
 func NewGetHeadersCmd(blockLocators []string, hashStop string) *GetHeadersCmd {
 	return &GetHeadersCmd{
@@ -130,14 +130,14 @@ func NewGetHeadersCmd(blockLocators []string, hashStop string) *GetHeadersCmd {
 
 // VersionCmd defines the version JSON-RPC command.
 //
-// NOTE: This is a btcsuite extension ported from
+// NOTE: This is a dashevo extension ported from
 // github.com/decred/dcrd/dcrjson.
 type VersionCmd struct{}
 
 // NewVersionCmd returns a new instance which can be used to issue a JSON-RPC
 // version command.
 //
-// NOTE: This is a btcsuite extension ported from
+// NOTE: This is a dashevo extension ported from
 // github.com/decred/dcrd/dcrjson.
 func NewVersionCmd() *VersionCmd { return new(VersionCmd) }
 

@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2017 The btcsuite developers
+// Copyright (c) 2014-2017 The dashevo developers
 // Copyright (c) 2015-2017 The Decred developers
 // Use of this source code is governed by an ISC
 // license that can be found in the LICENSE file.
@@ -10,8 +10,8 @@ import (
 	"encoding/hex"
 	"encoding/json"
 
-	"github.com/btcsuite/btcd/chaincfg/chainhash"
-	"github.com/btcsuite/btcd/wire"
+	"github.com/dashevo/dashd-go/chaincfg/chainhash"
+	"github.com/dashevo/dashd-go/wire"
 	"github.com/dashevo/dashd-go/btcjson"
 )
 
@@ -1067,14 +1067,14 @@ func (c *Client) GetTxOutSetInfo() (*btcjson.GetTxOutSetInfoResult, error) {
 // FutureRescanBlocksResult is a future promise to deliver the result of a
 // RescanBlocksAsync RPC invocation (or an applicable error).
 //
-// NOTE: This is a btcsuite extension ported from
+// NOTE: This is a dashevo extension ported from
 // github.com/decred/dcrrpcclient.
 type FutureRescanBlocksResult chan *response
 
 // Receive waits for the response promised by the future and returns the
 // discovered rescanblocks data.
 //
-// NOTE: This is a btcsuite extension ported from
+// NOTE: This is a dashevo extension ported from
 // github.com/decred/dcrrpcclient.
 func (r FutureRescanBlocksResult) Receive() ([]btcjson.RescannedBlock, error) {
 	res, err := receiveFuture(r)
@@ -1097,7 +1097,7 @@ func (r FutureRescanBlocksResult) Receive() ([]btcjson.RescannedBlock, error) {
 //
 // See RescanBlocks for the blocking version and more details.
 //
-// NOTE: This is a btcsuite extension ported from
+// NOTE: This is a dashevo extension ported from
 // github.com/decred/dcrrpcclient.
 func (c *Client) RescanBlocksAsync(blockHashes []chainhash.Hash) FutureRescanBlocksResult {
 	strBlockHashes := make([]string, len(blockHashes))
@@ -1113,7 +1113,7 @@ func (c *Client) RescanBlocksAsync(blockHashes []chainhash.Hash) FutureRescanBlo
 // the client's loaded transaction filter.  The blocks do not need to be on the
 // main chain, but they do need to be adjacent to each other.
 //
-// NOTE: This is a btcsuite extension ported from
+// NOTE: This is a dashevo extension ported from
 // github.com/decred/dcrrpcclient.
 func (c *Client) RescanBlocks(blockHashes []chainhash.Hash) ([]btcjson.RescannedBlock, error) {
 	return c.RescanBlocksAsync(blockHashes).Receive()

@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2017 The btcsuite developers
+// Copyright (c) 2014-2017 The dashevo developers
 // Use of this source code is governed by an ISC
 // license that can be found in the LICENSE file.
 
@@ -9,7 +9,7 @@ Overview
 
 This client provides a robust and easy to use client for interfacing with a
 Bitcoin RPC server that uses a btcd/bitcoin core compatible Bitcoin JSON-RPC
-API.  This client has been tested with btcd (https://github.com/btcsuite/btcd),
+API.  This client has been tested with btcd (https://github.com/dashevo/dashd-go),
 btcwallet (https://github.com/btcsuite/btcwallet), and
 bitcoin core (https://github.com/bitcoin).
 

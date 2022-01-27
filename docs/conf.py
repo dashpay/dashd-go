@@ -20,7 +20,7 @@ from recommonmark.transform import AutoStructify
 
 project = 'btcd'
 copyright = '2020, btcd'
-author = 'btcsuite developers'
+author = 'dashevo developers'
 
 # The full version, including alpha/beta/rc tags
 release = 'beta'

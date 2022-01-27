@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2020 The btcsuite developers
+// Copyright (c) 2014-2020 The dashevo developers
 // Use of this source code is governed by an ISC
 // license that can be found in the LICENSE file.
 
@@ -12,7 +12,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/btcsuite/btcutil"
+	"github.com/dashevo/dashd-go/dashutil"
 )
 
 // AddMultisigAddressCmd defines the addmutisigaddress JSON-RPC command.
@@ -1011,7 +1011,7 @@ type PsbtOutput map[string]interface{}
 
 // NewPsbtOutput returns a new instance of a PSBT output to use with the
 // WalletCreateFundedPsbtCmd command.
-func NewPsbtOutput(address string, amount btcutil.Amount) PsbtOutput {
+func NewPsbtOutput(address string, amount dashutil.Amount) PsbtOutput {
 	return PsbtOutput{address: amount.ToBTC()}
 }
 
