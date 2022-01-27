@@ -31,6 +31,7 @@ type GetBlockHeaderVerboseResult struct {
 	Difficulty    float64 `json:"difficulty"`
 	PreviousHash  string  `json:"previousblockhash,omitempty"`
 	NextHash      string  `json:"nextblockhash,omitempty"`
+	Chainlock     bool    `json:"chainlock"`
 }
 
 // GetBlockStatsResult models the data from the getblockstats command.
@@ -89,6 +90,7 @@ type GetBlockVerboseResult struct {
 	Difficulty    float64       `json:"difficulty"`
 	PreviousHash  string        `json:"previousblockhash"`
 	NextHash      string        `json:"nextblockhash,omitempty"`
+	Chainlock     bool          `json:"chainlock"`
 }
 
 // GetBlockVerboseTxResult models the data from the getblock command when the
@@ -115,6 +117,7 @@ type GetBlockVerboseTxResult struct {
 	Difficulty    float64       `json:"difficulty"`
 	PreviousHash  string        `json:"previousblockhash"`
 	NextHash      string        `json:"nextblockhash,omitempty"`
+	Chainlock     bool          `json:"chainlock"`
 }
 
 // GetChainTxStatsResult models the data from the getchaintxstats command.
@@ -442,13 +445,13 @@ type GetTxOutResult struct {
 
 // GetTxOutSetInfoResult models the data from the gettxoutsetinfo command.
 type GetTxOutSetInfoResult struct {
-	Height         int64          `json:"height"`
-	BestBlock      chainhash.Hash `json:"bestblock"`
-	Transactions   int64          `json:"transactions"`
-	TxOuts         int64          `json:"txouts"`
-	BogoSize       int64          `json:"bogosize"`
-	HashSerialized chainhash.Hash `json:"hash_serialized_2"`
-	DiskSize       int64          `json:"disk_size"`
+	Height         int64           `json:"height"`
+	BestBlock      chainhash.Hash  `json:"bestblock"`
+	Transactions   int64           `json:"transactions"`
+	TxOuts         int64           `json:"txouts"`
+	BogoSize       int64           `json:"bogosize"`
+	HashSerialized chainhash.Hash  `json:"hash_serialized_2"`
+	DiskSize       int64           `json:"disk_size"`
 	TotalAmount    dashutil.Amount `json:"total_amount"`
 }
 
@@ -706,20 +709,23 @@ type InfoChainResult struct {
 
 // TxRawResult models the data from the getrawtransaction command.
 type TxRawResult struct {
-	Hex           string `json:"hex"`
-	Txid          string `json:"txid"`
-	Hash          string `json:"hash,omitempty"`
-	Size          int32  `json:"size,omitempty"`
-	Vsize         int32  `json:"vsize,omitempty"`
-	Weight        int32  `json:"weight,omitempty"`
-	Version       int32  `json:"version"`
-	LockTime      uint32 `json:"locktime"`
-	Vin           []Vin  `json:"vin"`
-	Vout          []Vout `json:"vout"`
-	BlockHash     string `json:"blockhash,omitempty"`
-	Confirmations uint64 `json:"confirmations,omitempty"`
-	Time          int64  `json:"time,omitempty"`
-	Blocktime     int64  `json:"blocktime,omitempty"`
+	Hex                 string `json:"hex"`
+	Txid                string `json:"txid"`
+	Hash                string `json:"hash,omitempty"`
+	Size                int32  `json:"size,omitempty"`
+	Vsize               int32  `json:"vsize,omitempty"`
+	Weight              int32  `json:"weight,omitempty"`
+	Version             int32  `json:"version"`
+	LockTime            uint32 `json:"locktime"`
+	Vin                 []Vin  `json:"vin"`
+	Vout                []Vout `json:"vout"`
+	BlockHash           string `json:"blockhash,omitempty"`
+	Confirmations       uint64 `json:"confirmations,omitempty"`
+	Time                int64  `json:"time,omitempty"`
+	Blocktime           int64  `json:"blocktime,omitempty"`
+	InstantLock         bool   `json:"instantlock,omitempty"`
+	InstantLockInternal bool   `json:"instantlockinternal,omitempty"`
+	ChainLock           bool   `json:"chainlock,omitempty"`
 }
 
 // SearchRawTransactionsResult models the data from the searchrawtransaction
