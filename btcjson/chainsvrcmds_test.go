@@ -13,7 +13,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/btcsuite/btcd/wire"
+	"github.com/dashevo/dashd-go/wire"
 	"github.com/dashevo/dashd-go/btcjson"
 )
 
