@@ -25,10 +25,10 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/dashevo/dashd-go/chaincfg"
 	"github.com/btcsuite/go-socks/socks"
 	"github.com/btcsuite/websocket"
 	"github.com/dashevo/dashd-go/btcjson"
+	"github.com/dashevo/dashd-go/chaincfg"
 )
 
 var (
@@ -1494,41 +1494,16 @@ func (c *Client) BackendVersion() (BackendVersion, error) {
 		return *c.backendVersion, nil
 	}
 
-	// We'll start by calling GetInfo. This method doesn't exist for
-	// bitcoind nodes as of v0.16.0, so we'll assume the client is connected
-	// to a btcd backend if it does exist.
-	info, err := c.GetInfo()
-
-	switch err := err.(type) {
-	// Parse the btcd version and cache it.
-	case nil:
-		log.Debugf("Detected btcd version: %v", info.Version)
-		version := Btcd
-		c.backendVersion = &version
-		return *c.backendVersion, nil
-
-	// Inspect the RPC error to ensure the method was not found, otherwise
-	// we actually ran into an error.
-	case *btcjson.RPCError:
-		if err.Code != btcjson.ErrRPCMethodNotFound.Code {
-			return 0, fmt.Errorf("unable to detect btcd version: "+
-				"%v", err)
-		}
-
-	default:
-		return 0, fmt.Errorf("unable to detect btcd version: %v", err)
-	}
-
 	// Since the GetInfo method was not found, we assume the client is
-	// connected to a bitcoind backend, which exposes its version through
+	// connected to a dashd backend, which exposes its version through
 	// GetNetworkInfo.
 	networkInfo, err := c.GetNetworkInfo()
 	if err != nil {
-		return 0, fmt.Errorf("unable to detect bitcoind version: %v", err)
+		return 0, fmt.Errorf("unable to detect dashd version: %v", err)
 	}
 
-	// Parse the bitcoind version and cache it.
-	log.Debugf("Detected bitcoind version: %v", networkInfo.SubVersion)
+	// Parse the dashd version and cache it.
+	log.Debugf("Detected dashd version: %v", networkInfo.SubVersion)
 	version := parseBitcoindVersion(networkInfo.SubVersion)
 	c.backendVersion = &version
 
