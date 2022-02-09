@@ -31,6 +31,7 @@ type GetBlockHeaderVerboseResult struct {
 	Difficulty    float64 `json:"difficulty"`
 	PreviousHash  string  `json:"previousblockhash,omitempty"`
 	NextHash      string  `json:"nextblockhash,omitempty"`
+	Chainlock     bool    `json:"chainlock"`
 }
 
 // GetBlockStatsResult models the data from the getblockstats command.
@@ -89,6 +90,7 @@ type GetBlockVerboseResult struct {
 	Difficulty    float64       `json:"difficulty"`
 	PreviousHash  string        `json:"previousblockhash"`
 	NextHash      string        `json:"nextblockhash,omitempty"`
+	Chainlock     bool          `json:"chainlock"`
 }
 
 // GetBlockVerboseTxResult models the data from the getblock command when the
@@ -115,6 +117,7 @@ type GetBlockVerboseTxResult struct {
 	Difficulty    float64       `json:"difficulty"`
 	PreviousHash  string        `json:"previousblockhash"`
 	NextHash      string        `json:"nextblockhash,omitempty"`
+	Chainlock     bool          `json:"chainlock"`
 }
 
 // GetChainTxStatsResult models the data from the getchaintxstats command.
@@ -706,20 +709,23 @@ type InfoChainResult struct {
 
 // TxRawResult models the data from the getrawtransaction command.
 type TxRawResult struct {
-	Hex           string `json:"hex"`
-	Txid          string `json:"txid"`
-	Hash          string `json:"hash,omitempty"`
-	Size          int32  `json:"size,omitempty"`
-	Vsize         int32  `json:"vsize,omitempty"`
-	Weight        int32  `json:"weight,omitempty"`
-	Version       int32  `json:"version"`
-	LockTime      uint32 `json:"locktime"`
-	Vin           []Vin  `json:"vin"`
-	Vout          []Vout `json:"vout"`
-	BlockHash     string `json:"blockhash,omitempty"`
-	Confirmations uint64 `json:"confirmations,omitempty"`
-	Time          int64  `json:"time,omitempty"`
-	Blocktime     int64  `json:"blocktime,omitempty"`
+	Hex                 string `json:"hex"`
+	Txid                string `json:"txid"`
+	Hash                string `json:"hash,omitempty"`
+	Size                int32  `json:"size,omitempty"`
+	Vsize               int32  `json:"vsize,omitempty"`
+	Weight              int32  `json:"weight,omitempty"`
+	Version             int32  `json:"version"`
+	LockTime            uint32 `json:"locktime"`
+	Vin                 []Vin  `json:"vin"`
+	Vout                []Vout `json:"vout"`
+	BlockHash           string `json:"blockhash,omitempty"`
+	Confirmations       uint64 `json:"confirmations,omitempty"`
+	Time                int64  `json:"time,omitempty"`
+	Blocktime           int64  `json:"blocktime,omitempty"`
+	InstantLock         bool   `json:"instantlock,omitempty"`
+	InstantLockInternal bool   `json:"instantlockinternal,omitempty"`
+	ChainLock           bool   `json:"chainlock,omitempty"`
 }
 
 // SearchRawTransactionsResult models the data from the searchrawtransaction
