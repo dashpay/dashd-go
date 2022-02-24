@@ -5,7 +5,7 @@
 package blockchain
 
 import (
-	"github.com/btcsuite/btcd/chaincfg"
+	"github.com/dashevo/dashd-go/chaincfg"
 )
 
 const (
