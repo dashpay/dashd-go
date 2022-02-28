@@ -533,11 +533,16 @@ type FutureGetProTxStringResult struct {
 
 // Receive waits for the response promised by the future
 func (r FutureGetProTxStringResult) Receive() (string, error) {
-	res, err := ReceiveFuture(r.Response)
+	data, err := ReceiveFuture(r.Response)
 	if err != nil {
 		return "", err
 	}
-	return string(res), nil
+	var res string
+	err = json.Unmarshal(data, &res)
+	if err != nil {
+		return "", err
+	}
+	return res, nil
 }
 
 // ProTxRegisterAsync returns an instance of a type that can be used to get
