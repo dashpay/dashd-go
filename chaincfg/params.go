@@ -585,7 +585,8 @@ var TestNet3Params = Params{
 	PubKeyHashAddrID:        0x8C, // starts with m or n
 	ScriptHashAddrID:        0x13, // starts with 2
 	WitnessScriptHashAddrID: 0x28, // starts with T7n
-	PrivateKeyID:            0xEF, // starts with 9 (uncompressed) or c (compressed)	WitnessPubKeyHashAddrID: 0x03, // starts with QW
+	PrivateKeyID:            0xEF, // starts with 9 (uncompressed) or c (compressed)
+	WitnessPubKeyHashAddrID: 0x03, // starts with QW
 
 	// BIP32 hierarchical deterministic extended key magics
 	HDPrivateKeyID: [4]byte{0x04, 0x35, 0x83, 0x94}, // starts with tprv
