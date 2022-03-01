@@ -11,17 +11,17 @@ import (
 	"time"
 
 	"github.com/dashevo/dashd-go/blockchain"
+	"github.com/dashevo/dashd-go/btcutil"
 	"github.com/dashevo/dashd-go/chaincfg"
 	"github.com/dashevo/dashd-go/chaincfg/chainhash"
 	"github.com/dashevo/dashd-go/txscript"
 	"github.com/dashevo/dashd-go/wire"
-	"github.com/dashevo/dashd-go/dashutil"
 )
 
 const (
 	// MinHighPriority is the minimum priority value that allows a
 	// transaction to be considered high priority.
-	MinHighPriority = dashutil.SatoshiPerBitcoin * 144.0 / 250
+	MinHighPriority = btcutil.SatoshiPerBitcoin * 144.0 / 250
 
 	// blockHeaderOverhead is the max number of bytes it takes to serialize
 	// a block header and max possible transaction count.
@@ -37,7 +37,7 @@ const (
 // additional metadata.
 type TxDesc struct {
 	// Tx is the transaction associated with the entry.
-	Tx *dashutil.Tx
+	Tx *btcutil.Tx
 
 	// Added is the time when the entry was added to the source pool.
 	Added time.Time
@@ -76,7 +76,7 @@ type TxSource interface {
 // transaction to be prioritized and track dependencies on other transactions
 // which have not been mined into a block yet.
 type txPrioItem struct {
-	tx       *dashutil.Tx
+	tx       *btcutil.Tx
 	fee      int64
 	priority float64
 	feePerKB int64
@@ -250,7 +250,7 @@ func standardCoinbaseScript(nextBlockHeight int32, extraNonce uint64) ([]byte, e
 //
 // See the comment for NewBlockTemplate for more information about why the nil
 // address handling is useful.
-func createCoinbaseTx(params *chaincfg.Params, coinbaseScript []byte, nextBlockHeight int32, addr dashutil.Address) (*dashutil.Tx, error) {
+func createCoinbaseTx(params *chaincfg.Params, coinbaseScript []byte, nextBlockHeight int32, addr btcutil.Address) (*btcutil.Tx, error) {
 	// Create the script to pay to the provided payment address if one was
 	// specified.  Otherwise create a script that allows the coinbase to be
 	// redeemable by anyone.
@@ -283,13 +283,13 @@ func createCoinbaseTx(params *chaincfg.Params, coinbaseScript []byte, nextBlockH
 		Value:    blockchain.CalcBlockSubsidy(nextBlockHeight, params),
 		PkScript: pkScript,
 	})
-	return dashutil.NewTx(tx), nil
+	return btcutil.NewTx(tx), nil
 }
 
 // spendTransaction updates the passed view by marking the inputs to the passed
 // transaction as spent.  It also adds all outputs in the passed transaction
 // which are not provably unspendable as available unspent transaction outputs.
-func spendTransaction(utxoView *blockchain.UtxoViewpoint, tx *dashutil.Tx, height int32) error {
+func spendTransaction(utxoView *blockchain.UtxoViewpoint, tx *btcutil.Tx, height int32) error {
 	for _, txIn := range tx.MsgTx().TxIn {
 		entry := utxoView.LookupEntry(txIn.PreviousOutPoint)
 		if entry != nil {
@@ -303,7 +303,7 @@ func spendTransaction(utxoView *blockchain.UtxoViewpoint, tx *dashutil.Tx, heigh
 
 // logSkippedDeps logs any dependencies which are also skipped as a result of
 // skipping a transaction while generating a block template at the trace level.
-func logSkippedDeps(tx *dashutil.Tx, deps map[chainhash.Hash]*txPrioItem) {
+func logSkippedDeps(tx *btcutil.Tx, deps map[chainhash.Hash]*txPrioItem) {
 	if deps == nil {
 		return
 	}
@@ -440,7 +440,7 @@ func NewBlkTmplGenerator(policy *Policy, params *chaincfg.Params,
 //  |  transactions (while block size   |   |
 //  |  <= policy.BlockMinSize)          |   |
 //   -----------------------------------  --
-func (g *BlkTmplGenerator) NewBlockTemplate(payToAddress dashutil.Address) (*BlockTemplate, error) {
+func (g *BlkTmplGenerator) NewBlockTemplate(payToAddress btcutil.Address) (*BlockTemplate, error) {
 	// Extend the most recently known best block.
 	best := g.chain.BestSnapshot()
 	nextBlockHeight := best.Height + 1
@@ -479,7 +479,7 @@ func (g *BlkTmplGenerator) NewBlockTemplate(payToAddress dashutil.Address) (*Blo
 	// generated block with reserved space.  Also create a utxo view to
 	// house all of the input transactions so multiple lookups can be
 	// avoided.
-	blockTxns := make([]*dashutil.Tx, 0, len(sourceTxns))
+	blockTxns := make([]*btcutil.Tx, 0, len(sourceTxns))
 	blockTxns = append(blockTxns, coinbaseTx)
 	blockUtxos := blockchain.NewUtxoViewpoint()
 
@@ -638,7 +638,7 @@ mempoolLoop:
 			// Therefore, we account for the additional weight
 			// within the block with a model coinbase tx with a
 			// witness commitment.
-			coinbaseCopy := dashutil.NewTx(coinbaseTx.MsgTx().Copy())
+			coinbaseCopy := btcutil.NewTx(coinbaseTx.MsgTx().Copy())
 			coinbaseCopy.MsgTx().TxIn[0].Witness = [][]byte{
 				bytes.Repeat([]byte("a"),
 					blockchain.CoinbaseWitnessDataLen),
@@ -803,40 +803,7 @@ mempoolLoop:
 	// OP_RETURN output within the coinbase transaction.
 	var witnessCommitment []byte
 	if witnessIncluded {
-		// The witness of the coinbase transaction MUST be exactly 32-bytes
-		// of all zeroes.
-		var witnessNonce [blockchain.CoinbaseWitnessDataLen]byte
-		coinbaseTx.MsgTx().TxIn[0].Witness = wire.TxWitness{witnessNonce[:]}
-
-		// Next, obtain the merkle root of a tree which consists of the
-		// wtxid of all transactions in the block. The coinbase
-		// transaction will have a special wtxid of all zeroes.
-		witnessMerkleTree := blockchain.BuildMerkleTreeStore(blockTxns,
-			true)
-		witnessMerkleRoot := witnessMerkleTree[len(witnessMerkleTree)-1]
-
-		// The preimage to the witness commitment is:
-		// witnessRoot || coinbaseWitness
-		var witnessPreimage [64]byte
-		copy(witnessPreimage[:32], witnessMerkleRoot[:])
-		copy(witnessPreimage[32:], witnessNonce[:])
-
-		// The witness commitment itself is the double-sha256 of the
-		// witness preimage generated above. With the commitment
-		// generated, the witness script for the output is: OP_RETURN
-		// OP_DATA_36 {0xaa21a9ed || witnessCommitment}. The leading
-		// prefix is referred to as the "witness magic bytes".
-		witnessCommitment = chainhash.DoubleHashB(witnessPreimage[:])
-		witnessScript := append(blockchain.WitnessMagicBytes, witnessCommitment...)
-
-		// Finally, create the OP_RETURN carrying witness commitment
-		// output as an additional output within the coinbase.
-		commitmentOutput := &wire.TxOut{
-			Value:    0,
-			PkScript: witnessScript,
-		}
-		coinbaseTx.MsgTx().TxOut = append(coinbaseTx.MsgTx().TxOut,
-			commitmentOutput)
+		witnessCommitment = AddWitnessCommitment(coinbaseTx, blockTxns)
 	}
 
 	// Calculate the required difficulty for the block.  The timestamp
@@ -874,7 +841,7 @@ mempoolLoop:
 	// Finally, perform a full check on the created block against the chain
 	// consensus rules to ensure it properly connects to the current best
 	// chain with no issues.
-	block := dashutil.NewBlock(&msgBlock)
+	block := btcutil.NewBlock(&msgBlock)
 	block.SetHeight(nextBlockHeight)
 	if err := g.chain.CheckConnectBlockTemplate(block); err != nil {
 		return nil, err
@@ -893,6 +860,49 @@ mempoolLoop:
 		ValidPayAddress:   payToAddress != nil,
 		WitnessCommitment: witnessCommitment,
 	}, nil
+}
+
+// AddWitnessCommitment adds the witness commitment as an OP_RETURN outpout
+// within the coinbase tx.  The raw commitment is returned.
+func AddWitnessCommitment(coinbaseTx *btcutil.Tx,
+	blockTxns []*btcutil.Tx) []byte {
+
+	// The witness of the coinbase transaction MUST be exactly 32-bytes
+	// of all zeroes.
+	var witnessNonce [blockchain.CoinbaseWitnessDataLen]byte
+	coinbaseTx.MsgTx().TxIn[0].Witness = wire.TxWitness{witnessNonce[:]}
+
+	// Next, obtain the merkle root of a tree which consists of the
+	// wtxid of all transactions in the block. The coinbase
+	// transaction will have a special wtxid of all zeroes.
+	witnessMerkleTree := blockchain.BuildMerkleTreeStore(blockTxns,
+		true)
+	witnessMerkleRoot := witnessMerkleTree[len(witnessMerkleTree)-1]
+
+	// The preimage to the witness commitment is:
+	// witnessRoot || coinbaseWitness
+	var witnessPreimage [64]byte
+	copy(witnessPreimage[:32], witnessMerkleRoot[:])
+	copy(witnessPreimage[32:], witnessNonce[:])
+
+	// The witness commitment itself is the double-sha256 of the
+	// witness preimage generated above. With the commitment
+	// generated, the witness script for the output is: OP_RETURN
+	// OP_DATA_36 {0xaa21a9ed || witnessCommitment}. The leading
+	// prefix is referred to as the "witness magic bytes".
+	witnessCommitment := chainhash.DoubleHashB(witnessPreimage[:])
+	witnessScript := append(blockchain.WitnessMagicBytes, witnessCommitment...)
+
+	// Finally, create the OP_RETURN carrying witness commitment
+	// output as an additional output within the coinbase.
+	commitmentOutput := &wire.TxOut{
+		Value:    0,
+		PkScript: witnessScript,
+	}
+	coinbaseTx.MsgTx().TxOut = append(coinbaseTx.MsgTx().TxOut,
+		commitmentOutput)
+
+	return witnessCommitment
 }
 
 // UpdateBlockTime updates the timestamp in the header of the passed block to
@@ -937,12 +947,12 @@ func (g *BlkTmplGenerator) UpdateExtraNonce(msgBlock *wire.MsgBlock, blockHeight
 	}
 	msgBlock.Transactions[0].TxIn[0].SignatureScript = coinbaseScript
 
-	// TODO(davec): A dashutil.Block should use saved in the state to avoid
+	// TODO(davec): A btcutil.Block should use saved in the state to avoid
 	// recalculating all of the other transaction hashes.
 	// block.Transactions[0].InvalidateCache()
 
 	// Recalculate the merkle root with the updated extra nonce.
-	block := dashutil.NewBlock(msgBlock)
+	block := btcutil.NewBlock(msgBlock)
 	merkles := blockchain.BuildMerkleTreeStore(block.Transactions(), false)
 	msgBlock.Header.MerkleRoot = *merkles[len(merkles)-1]
 	return nil

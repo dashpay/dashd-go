@@ -8,12 +8,12 @@ import (
 	"sync/atomic"
 
 	"github.com/dashevo/dashd-go/blockchain"
+	"github.com/dashevo/dashd-go/btcutil"
 	"github.com/dashevo/dashd-go/chaincfg/chainhash"
 	"github.com/dashevo/dashd-go/mempool"
 	"github.com/dashevo/dashd-go/netsync"
 	"github.com/dashevo/dashd-go/peer"
 	"github.com/dashevo/dashd-go/wire"
-	"github.com/dashevo/dashd-go/dashutil"
 )
 
 // rpcPeer provides a peer for use with the RPC server and implements the
@@ -256,7 +256,7 @@ func (b *rpcSyncMgr) IsCurrent() bool {
 //
 // This function is safe for concurrent access and is part of the
 // rpcserverSyncManager interface implementation.
-func (b *rpcSyncMgr) SubmitBlock(block *dashutil.Block, flags blockchain.BehaviorFlags) (bool, error) {
+func (b *rpcSyncMgr) SubmitBlock(block *btcutil.Block, flags blockchain.BehaviorFlags) (bool, error) {
 	return b.syncMgr.ProcessBlock(block, flags)
 }
 

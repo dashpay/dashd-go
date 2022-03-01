@@ -3,6 +3,7 @@
 // license that can be found in the LICENSE file.
 
 // This file is ignored during the regular tests due to the following build tag.
+//go:build rpctest
 // +build rpctest
 
 package rpctest
@@ -13,15 +14,15 @@ import (
 	"testing"
 	"time"
 
+	"github.com/dashevo/dashd-go/btcutil"
 	"github.com/dashevo/dashd-go/chaincfg"
 	"github.com/dashevo/dashd-go/chaincfg/chainhash"
 	"github.com/dashevo/dashd-go/txscript"
 	"github.com/dashevo/dashd-go/wire"
-	"github.com/dashevo/dashd-go/dashutil"
 )
 
 func testSendOutputs(r *Harness, t *testing.T) {
-	genSpend := func(amt dashutil.Amount) *chainhash.Hash {
+	genSpend := func(amt btcutil.Amount) *chainhash.Hash {
 		// Grab a fresh address from the wallet.
 		addr, err := r.NewAddress()
 		if err != nil {
@@ -43,7 +44,7 @@ func testSendOutputs(r *Harness, t *testing.T) {
 	}
 
 	assertTxMined := func(txid *chainhash.Hash, blockHash *chainhash.Hash) {
-		block, err := r.Node.GetBlock(blockHash)
+		block, err := r.Client.GetBlock(blockHash)
 		if err != nil {
 			t.Fatalf("unable to get block: %v", err)
 		}
@@ -63,11 +64,11 @@ func testSendOutputs(r *Harness, t *testing.T) {
 
 	// First, generate a small spend which will require only a single
 	// input.
-	txid := genSpend(dashutil.Amount(5 * dashutil.SatoshiPerBitcoin))
+	txid := genSpend(btcutil.Amount(5 * btcutil.SatoshiPerBitcoin))
 
 	// Generate a single block, the transaction the wallet created should
 	// be found in this block.
-	blockHashes, err := r.Node.Generate(1)
+	blockHashes, err := r.Client.Generate(1)
 	if err != nil {
 		t.Fatalf("unable to generate single block: %v", err)
 	}
@@ -75,8 +76,8 @@ func testSendOutputs(r *Harness, t *testing.T) {
 
 	// Next, generate a spend much greater than the block reward. This
 	// transaction should also have been mined properly.
-	txid = genSpend(dashutil.Amount(500 * dashutil.SatoshiPerBitcoin))
-	blockHashes, err = r.Node.Generate(1)
+	txid = genSpend(btcutil.Amount(500 * btcutil.SatoshiPerBitcoin))
+	blockHashes, err = r.Client.Generate(1)
 	if err != nil {
 		t.Fatalf("unable to generate single block: %v", err)
 	}
@@ -84,7 +85,7 @@ func testSendOutputs(r *Harness, t *testing.T) {
 }
 
 func assertConnectedTo(t *testing.T, nodeA *Harness, nodeB *Harness) {
-	nodeAPeers, err := nodeA.Node.GetPeerInfo()
+	nodeAPeers, err := nodeA.Client.GetPeerInfo()
 	if err != nil {
 		t.Fatalf("unable to get nodeA's peer info")
 	}
@@ -170,7 +171,7 @@ func testActiveHarnesses(r *Harness, t *testing.T) {
 
 func testJoinMempools(r *Harness, t *testing.T) {
 	// Assert main test harness has no transactions in its mempool.
-	pooledHashes, err := r.Node.GetRawMempool()
+	pooledHashes, err := r.Client.GetRawMempool()
 	if err != nil {
 		t.Fatalf("unable to get mempool for main test harness: %v", err)
 	}
@@ -210,7 +211,7 @@ func testJoinMempools(r *Harness, t *testing.T) {
 	if err != nil {
 		t.Fatalf("coinbase spend failed: %v", err)
 	}
-	if _, err := r.Node.SendRawTransaction(testTx, true); err != nil {
+	if _, err := r.Client.SendRawTransaction(testTx, true); err != nil {
 		t.Fatalf("send transaction failed: %v", err)
 	}
 
@@ -219,7 +220,7 @@ func testJoinMempools(r *Harness, t *testing.T) {
 	harnessSynced := make(chan struct{})
 	go func() {
 		for {
-			poolHashes, err := r.Node.GetRawMempool()
+			poolHashes, err := r.Client.GetRawMempool()
 			if err != nil {
 				t.Fatalf("failed to retrieve harness mempool: %v", err)
 			}
@@ -262,7 +263,7 @@ func testJoinMempools(r *Harness, t *testing.T) {
 
 	// Send the transaction to the local harness which will result in synced
 	// mempools.
-	if _, err := harness.Node.SendRawTransaction(testTx, true); err != nil {
+	if _, err := harness.Client.SendRawTransaction(testTx, true); err != nil {
 		t.Fatalf("send transaction failed: %v", err)
 	}
 
@@ -335,17 +336,17 @@ func testGenerateAndSubmitBlock(r *Harness, t *testing.T) {
 	if err != nil {
 		t.Fatalf("unable to create script: %v", err)
 	}
-	output := wire.NewTxOut(dashutil.SatoshiPerBitcoin, pkScript)
+	output := wire.NewTxOut(btcutil.SatoshiPerBitcoin, pkScript)
 
 	const numTxns = 5
-	txns := make([]*dashutil.Tx, 0, numTxns)
+	txns := make([]*btcutil.Tx, 0, numTxns)
 	for i := 0; i < numTxns; i++ {
 		tx, err := r.CreateTransaction([]*wire.TxOut{output}, 10, true)
 		if err != nil {
 			t.Fatalf("unable to create tx: %v", err)
 		}
 
-		txns = append(txns, dashutil.NewTx(tx))
+		txns = append(txns, btcutil.NewTx(tx))
 	}
 
 	// Now generate a block with the default block version, and a zero'd
@@ -402,17 +403,17 @@ func testGenerateAndSubmitBlockWithCustomCoinbaseOutputs(r *Harness,
 	if err != nil {
 		t.Fatalf("unable to create script: %v", err)
 	}
-	output := wire.NewTxOut(dashutil.SatoshiPerBitcoin, pkScript)
+	output := wire.NewTxOut(btcutil.SatoshiPerBitcoin, pkScript)
 
 	const numTxns = 5
-	txns := make([]*dashutil.Tx, 0, numTxns)
+	txns := make([]*btcutil.Tx, 0, numTxns)
 	for i := 0; i < numTxns; i++ {
 		tx, err := r.CreateTransaction([]*wire.TxOut{output}, 10, true)
 		if err != nil {
 			t.Fatalf("unable to create tx: %v", err)
 		}
 
-		txns = append(txns, dashutil.NewTx(tx))
+		txns = append(txns, btcutil.NewTx(tx))
 	}
 
 	// Now generate a block with the default block version, a zero'd out
@@ -479,7 +480,7 @@ func testMemWalletReorg(r *Harness, t *testing.T) {
 	defer harness.TearDown()
 
 	// The internal wallet of this harness should now have 250 BTC.
-	expectedBalance := dashutil.Amount(250 * dashutil.SatoshiPerBitcoin)
+	expectedBalance := btcutil.Amount(250 * btcutil.SatoshiPerBitcoin)
 	walletBalance := harness.ConfirmedBalance()
 	if expectedBalance != walletBalance {
 		t.Fatalf("wallet balance incorrect: expected %v, got %v",
@@ -499,7 +500,7 @@ func testMemWalletReorg(r *Harness, t *testing.T) {
 	// The original wallet should now have a balance of 0 BTC as its entire
 	// chain should have been decimated in favor of the main harness'
 	// chain.
-	expectedBalance = dashutil.Amount(0)
+	expectedBalance = btcutil.Amount(0)
 	walletBalance = harness.ConfirmedBalance()
 	if expectedBalance != walletBalance {
 		t.Fatalf("wallet balance incorrect: expected %v, got %v",
@@ -520,7 +521,7 @@ func testMemWalletLockedOutputs(r *Harness, t *testing.T) {
 	if err != nil {
 		t.Fatalf("unable to create script: %v", err)
 	}
-	outputAmt := dashutil.Amount(50 * dashutil.SatoshiPerBitcoin)
+	outputAmt := btcutil.Amount(50 * btcutil.SatoshiPerBitcoin)
 	output := wire.NewTxOut(int64(outputAmt), pkScript)
 	tx, err := r.CreateTransaction([]*wire.TxOut{output}, 10, true)
 	if err != nil {
@@ -603,7 +604,7 @@ func TestMain(m *testing.M) {
 func TestHarness(t *testing.T) {
 	// We should have (numMatureOutputs * 50 BTC) of mature unspendable
 	// outputs.
-	expectedBalance := dashutil.Amount(numMatureOutputs * 50 * dashutil.SatoshiPerBitcoin)
+	expectedBalance := btcutil.Amount(numMatureOutputs * 50 * btcutil.SatoshiPerBitcoin)
 	harnessBalance := mainHarness.ConfirmedBalance()
 	if harnessBalance != expectedBalance {
 		t.Fatalf("expected wallet balance of %v instead have %v",
@@ -612,7 +613,7 @@ func TestHarness(t *testing.T) {
 
 	// Current tip should be at a height of numMatureOutputs plus the
 	// required number of blocks for coinbase maturity.
-	nodeInfo, err := mainHarness.Node.GetInfo()
+	nodeInfo, err := mainHarness.Client.GetInfo()
 	if err != nil {
 		t.Fatalf("unable to execute getinfo on node: %v", err)
 	}

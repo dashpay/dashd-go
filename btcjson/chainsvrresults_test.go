@@ -10,9 +10,9 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/dashevo/dashd-go/chaincfg/chainhash"
-	"github.com/dashevo/dashd-go/dashutil"
 	"github.com/dashevo/dashd-go/btcjson"
+	"github.com/dashevo/dashd-go/btcutil"
+	"github.com/dashevo/dashd-go/chaincfg/chainhash"
 	"github.com/davecgh/go-spew/spew"
 )
 
@@ -127,8 +127,8 @@ func TestGetTxOutSetInfoResult(t *testing.T) {
 					return *h
 				}(),
 				DiskSize: 1,
-				TotalAmount: func() dashutil.Amount {
-					a, err := dashutil.NewAmount(0.2)
+				TotalAmount: func() btcutil.Amount {
+					a, err := btcutil.NewAmount(0.2)
 					if err != nil {
 						panic(err)
 					}

@@ -10,16 +10,16 @@ import (
 	"runtime"
 	"time"
 
+	"github.com/dashevo/dashd-go/btcutil"
 	"github.com/dashevo/dashd-go/txscript"
 	"github.com/dashevo/dashd-go/wire"
-	"github.com/dashevo/dashd-go/dashutil"
 )
 
 // txValidateItem holds a transaction along with which input to validate.
 type txValidateItem struct {
 	txInIndex int
 	txIn      *wire.TxIn
-	tx        *dashutil.Tx
+	tx        *btcutil.Tx
 	sigHashes *txscript.TxSigHashes
 }
 
@@ -188,7 +188,7 @@ func newTxValidator(utxoView *UtxoViewpoint, flags txscript.ScriptFlags,
 
 // ValidateTransactionScripts validates the scripts for the passed transaction
 // using multiple goroutines.
-func ValidateTransactionScripts(tx *dashutil.Tx, utxoView *UtxoViewpoint,
+func ValidateTransactionScripts(tx *btcutil.Tx, utxoView *UtxoViewpoint,
 	flags txscript.ScriptFlags, sigCache *txscript.SigCache,
 	hashCache *txscript.HashCache) error {
 
@@ -240,7 +240,7 @@ func ValidateTransactionScripts(tx *dashutil.Tx, utxoView *UtxoViewpoint,
 
 // checkBlockScripts executes and validates the scripts for all transactions in
 // the passed block using multiple goroutines.
-func checkBlockScripts(block *dashutil.Block, utxoView *UtxoViewpoint,
+func checkBlockScripts(block *btcutil.Block, utxoView *UtxoViewpoint,
 	scriptFlags txscript.ScriptFlags, sigCache *txscript.SigCache,
 	hashCache *txscript.HashCache) error {
 

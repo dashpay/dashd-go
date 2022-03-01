@@ -14,13 +14,13 @@ import (
 	"strings"
 	"time"
 
+	"github.com/dashevo/dashd-go/btcutil"
 	"github.com/dashevo/dashd-go/chaincfg"
 	"github.com/dashevo/dashd-go/chaincfg/chainhash"
 	"github.com/dashevo/dashd-go/database"
 	_ "github.com/dashevo/dashd-go/database/ffldb"
 	"github.com/dashevo/dashd-go/txscript"
 	"github.com/dashevo/dashd-go/wire"
-	"github.com/dashevo/dashd-go/dashutil"
 )
 
 const (
@@ -59,8 +59,8 @@ func isSupportedDbType(dbType string) bool {
 
 // loadBlocks reads files containing bitcoin block data (gzipped but otherwise
 // in the format bitcoind writes) from disk and returns them as an array of
-// dashutil.Block.  This is largely borrowed from the test code in btcdb.
-func loadBlocks(filename string) (blocks []*dashutil.Block, err error) {
+// btcutil.Block.  This is largely borrowed from the test code in btcdb.
+func loadBlocks(filename string) (blocks []*btcutil.Block, err error) {
 	filename = filepath.Join("testdata/", filename)
 
 	var network = wire.MainNet
@@ -79,7 +79,7 @@ func loadBlocks(filename string) (blocks []*dashutil.Block, err error) {
 	}
 	defer fi.Close()
 
-	var block *dashutil.Block
+	var block *btcutil.Block
 
 	err = nil
 	for height := int64(1); err == nil; height++ {
@@ -105,7 +105,7 @@ func loadBlocks(filename string) (blocks []*dashutil.Block, err error) {
 		// read block
 		dr.Read(rbytes)
 
-		block, err = dashutil.NewBlockFromBytes(rbytes)
+		block, err = btcutil.NewBlockFromBytes(rbytes)
 		if err != nil {
 			return
 		}
@@ -357,7 +357,7 @@ func newFakeChain(params *chaincfg.Params) *BlockChain {
 	targetTimespan := int64(params.TargetTimespan / time.Second)
 	targetTimePerBlock := int64(params.TargetTimePerBlock / time.Second)
 	adjustmentFactor := params.RetargetAdjustmentFactor
-	return &BlockChain{
+	b := &BlockChain{
 		chainParams:         params,
 		timeSource:          NewMedianTime(),
 		minRetargetTimespan: targetTimespan / adjustmentFactor,
@@ -368,6 +368,20 @@ func newFakeChain(params *chaincfg.Params) *BlockChain {
 		warningCaches:       newThresholdCaches(vbNumBits),
 		deploymentCaches:    newThresholdCaches(chaincfg.DefinedDeployments),
 	}
+
+	for _, deployment := range params.Deployments {
+		deploymentStarter := deployment.DeploymentStarter
+		if clockStarter, ok := deploymentStarter.(chaincfg.ClockConsensusDeploymentStarter); ok {
+			clockStarter.SynchronizeClock(b)
+		}
+
+		deploymentEnder := deployment.DeploymentEnder
+		if clockEnder, ok := deploymentEnder.(chaincfg.ClockConsensusDeploymentEnder); ok {
+			clockEnder.SynchronizeClock(b)
+		}
+	}
+
+	return b
 }
 
 // newFakeNode creates a block node connected to the passed parent with the

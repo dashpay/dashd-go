@@ -11,8 +11,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/dashevo/dashd-go/dashutil"
 	"github.com/dashevo/dashd-go/btcjson"
+	"github.com/dashevo/dashd-go/btcutil"
 )
 
 // TestWalletSvrCmds tests all of the wallet server commands marshal and
@@ -1732,7 +1732,7 @@ func TestWalletSvrCmds(t *testing.T) {
 						},
 					},
 					[]btcjson.PsbtOutput{
-						btcjson.NewPsbtOutput("1234", dashutil.Amount(1234)),
+						btcjson.NewPsbtOutput("1234", btcutil.Amount(1234)),
 						btcjson.NewPsbtDataOutput([]byte{1, 2, 3, 4}),
 					},
 					btcjson.Uint32(1),
@@ -1750,7 +1750,7 @@ func TestWalletSvrCmds(t *testing.T) {
 						},
 					},
 					[]btcjson.PsbtOutput{
-						btcjson.NewPsbtOutput("1234", dashutil.Amount(1234)),
+						btcjson.NewPsbtOutput("1234", btcutil.Amount(1234)),
 						btcjson.NewPsbtDataOutput([]byte{1, 2, 3, 4}),
 					},
 					btcjson.Uint32(1),
@@ -1768,7 +1768,7 @@ func TestWalletSvrCmds(t *testing.T) {
 					},
 				},
 				Outputs: []btcjson.PsbtOutput{
-					btcjson.NewPsbtOutput("1234", dashutil.Amount(1234)),
+					btcjson.NewPsbtOutput("1234", btcutil.Amount(1234)),
 					btcjson.NewPsbtDataOutput([]byte{1, 2, 3, 4}),
 				},
 				Locktime:    btcjson.Uint32(1),
@@ -1800,7 +1800,7 @@ func TestWalletSvrCmds(t *testing.T) {
 	for i, test := range tests {
 		// Marshal the command as created by the new static command
 		// creation function.
-		marshalled, err := btcjson.MarshalCmd(testID, test.staticCmd())
+		marshalled, err := btcjson.MarshalCmd(btcjson.RpcVersion1, testID, test.staticCmd())
 		if err != nil {
 			t.Errorf("MarshalCmd #%d (%s) unexpected error: %v", i,
 				test.name, err)
@@ -1824,7 +1824,7 @@ func TestWalletSvrCmds(t *testing.T) {
 
 		// Marshal the command as created by the generic new command
 		// creation function.
-		marshalled, err = btcjson.MarshalCmd(testID, cmd)
+		marshalled, err = btcjson.MarshalCmd(btcjson.RpcVersion1, testID, cmd)
 		if err != nil {
 			t.Errorf("MarshalCmd #%d (%s) unexpected error: %v", i,
 				test.name, err)

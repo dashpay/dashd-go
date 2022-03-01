@@ -11,10 +11,10 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/dashevo/dashd-go/btcutil"
 	"github.com/dashevo/dashd-go/chaincfg"
 	"github.com/dashevo/dashd-go/database"
 	"github.com/dashevo/dashd-go/database/ffldb"
-	"github.com/dashevo/dashd-go/dashutil"
 )
 
 // dbType is the database type name for this driver.
@@ -170,7 +170,7 @@ func TestPersistence(t *testing.T) {
 		"b1key2": "foo2",
 		"b1key3": "foo3",
 	}
-	genesisBlock := dashutil.NewBlock(chaincfg.MainNetParams.GenesisBlock)
+	genesisBlock := btcutil.NewBlock(chaincfg.MainNetParams.GenesisBlock)
 	genesisHash := chaincfg.MainNetParams.GenesisHash
 	err = db.Update(func(tx database.Tx) error {
 		metadataBucket := tx.Metadata()

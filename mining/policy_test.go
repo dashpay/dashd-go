@@ -9,9 +9,9 @@ import (
 	"testing"
 
 	"github.com/dashevo/dashd-go/blockchain"
+	"github.com/dashevo/dashd-go/btcutil"
 	"github.com/dashevo/dashd-go/chaincfg/chainhash"
 	"github.com/dashevo/dashd-go/wire"
-	"github.com/dashevo/dashd-go/dashutil"
 )
 
 // newHashFromStr converts the passed big-endian hex string into a
@@ -49,7 +49,7 @@ func newUtxoViewpoint(sourceTxns []*wire.MsgTx, sourceTxHeights []int32) *blockc
 
 	view := blockchain.NewUtxoViewpoint()
 	for i, tx := range sourceTxns {
-		view.AddTxOuts(dashutil.NewTx(tx), sourceTxHeights[i])
+		view.AddTxOuts(btcutil.NewTx(tx), sourceTxHeights[i])
 	}
 	return view
 }

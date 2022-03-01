@@ -12,7 +12,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/dashevo/dashd-go/dashutil"
+	"github.com/dashevo/dashd-go/btcutil"
 )
 
 // AddMultisigAddressCmd defines the addmutisigaddress JSON-RPC command.
@@ -1011,7 +1011,7 @@ type PsbtOutput map[string]interface{}
 
 // NewPsbtOutput returns a new instance of a PSBT output to use with the
 // WalletCreateFundedPsbtCmd command.
-func NewPsbtOutput(address string, amount dashutil.Amount) PsbtOutput {
+func NewPsbtOutput(address string, amount btcutil.Amount) PsbtOutput {
 	return PsbtOutput{address: amount.ToBTC()}
 }
 
@@ -1029,7 +1029,7 @@ type WalletCreateFundedPsbtOpts struct {
 	ChangeType             *ChangeType `json:"change_type,omitempty"`
 	IncludeWatching        *bool       `json:"includeWatching,omitempty"`
 	LockUnspents           *bool       `json:"lockUnspents,omitempty"`
-	FeeRate                *int64      `json:"feeRate,omitempty"`
+	FeeRate                *float64    `json:"feeRate,omitempty"`
 	SubtractFeeFromOutputs *[]int64    `json:"subtractFeeFromOutputs,omitempty"`
 	Replaceable            *bool       `json:"replaceable,omitempty"`
 	ConfTarget             *int64      `json:"conf_target,omitempty"`

@@ -25,7 +25,7 @@
 //          "fmt"
 //          "log"
 //
-//          "github.com/dashevo/dashd-go/dashutil"
+//          "github.com/dashevo/dashd-go/btcutil"
 //          "github.com/dashevo/dashd-go/chaincfg"
 //  )
 //
@@ -46,7 +46,7 @@
 //
 //          // Create and print new payment address, specific to the active network.
 //          pubKeyHash := make([]byte, 20)
-//          addr, err := dashutil.NewAddressPubKeyHash(pubKeyHash, chainParams)
+//          addr, err := btcutil.NewAddressPubKeyHash(pubKeyHash, chainParams)
 //          if err != nil {
 //                  log.Fatal(err)
 //          }

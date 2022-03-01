@@ -1,4 +1,5 @@
 // Copyright (c) 2014-2016 The btcsuite developers
+// Copyright (c) 2015-2019 The Decred developers
 // Use of this source code is governed by an ISC
 // license that can be found in the LICENSE file.
 
@@ -8,24 +9,24 @@ import (
 	"encoding/hex"
 	"fmt"
 
-	"github.com/dashevo/dashd-go/btcec"
+	"github.com/dashevo/dashd-go/btcec/v2"
+	"github.com/dashevo/dashd-go/btcutil"
 	"github.com/dashevo/dashd-go/chaincfg"
 	"github.com/dashevo/dashd-go/chaincfg/chainhash"
 	"github.com/dashevo/dashd-go/txscript"
 	"github.com/dashevo/dashd-go/wire"
-	"github.com/dashevo/dashd-go/dashutil"
 )
 
 // This example demonstrates creating a script which pays to a bitcoin address.
 // It also prints the created script hex and uses the DisasmString function to
 // display the disassembled script.
 func ExamplePayToAddrScript() {
-	// Parse the address to send the coins to into a dashutil.Address
+	// Parse the address to send the coins to into a btcutil.Address
 	// which is useful to ensure the accuracy of the address and determine
 	// the address type.  It is also required for the upcoming call to
 	// PayToAddrScript.
 	addressStr := "12gpXQVcCL2qhTNQgyLVdCFG2Qs2px98nV"
-	address, err := dashutil.DecodeAddress(addressStr, &chaincfg.MainNetParams)
+	address, err := btcutil.DecodeAddress(addressStr, &chaincfg.MainNetParams)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -89,9 +90,9 @@ func ExampleSignTxOutput() {
 		fmt.Println(err)
 		return
 	}
-	privKey, pubKey := btcec.PrivKeyFromBytes(btcec.S256(), privKeyBytes)
-	pubKeyHash := dashutil.Hash160(pubKey.SerializeCompressed())
-	addr, err := dashutil.NewAddressPubKeyHash(pubKeyHash,
+	privKey, pubKey := btcec.PrivKeyFromBytes(privKeyBytes)
+	pubKeyHash := btcutil.Hash160(pubKey.SerializeCompressed())
+	addr, err := btcutil.NewAddressPubKeyHash(pubKeyHash,
 		&chaincfg.MainNetParams)
 	if err != nil {
 		fmt.Println(err)
@@ -130,7 +131,7 @@ func ExampleSignTxOutput() {
 	redeemTx.AddTxOut(txOut)
 
 	// Sign the redeeming transaction.
-	lookupKey := func(a dashutil.Address) (*btcec.PrivateKey, bool, error) {
+	lookupKey := func(a btcutil.Address) (*btcec.PrivateKey, bool, error) {
 		// Ordinarily this function would involve looking up the private
 		// key for the provided address, but since the only thing being
 		// signed in this example uses the address associated with the
@@ -179,4 +180,35 @@ func ExampleSignTxOutput() {
 
 	// Output:
 	// Transaction successfully signed
+}
+
+// This example demonstrates creating a script tokenizer instance and using it
+// to count the number of opcodes a script contains.
+func ExampleScriptTokenizer() {
+	// Create a script to use in the example.  Ordinarily this would come from
+	// some other source.
+	hash160 := btcutil.Hash160([]byte("example"))
+	script, err := txscript.NewScriptBuilder().AddOp(txscript.OP_DUP).
+		AddOp(txscript.OP_HASH160).AddData(hash160).
+		AddOp(txscript.OP_EQUALVERIFY).AddOp(txscript.OP_CHECKSIG).Script()
+	if err != nil {
+		fmt.Printf("failed to build script: %v\n", err)
+		return
+	}
+
+	// Create a tokenizer to iterate the script and count the number of opcodes.
+	const scriptVersion = 0
+	var numOpcodes int
+	tokenizer := txscript.MakeScriptTokenizer(scriptVersion, script)
+	for tokenizer.Next() {
+		numOpcodes++
+	}
+	if tokenizer.Err() != nil {
+		fmt.Printf("script failed to parse: %v\n", err)
+	} else {
+		fmt.Printf("script contains %d opcode(s)\n", numOpcodes)
+	}
+
+	// Output:
+	// script contains 5 opcode(s)
 }

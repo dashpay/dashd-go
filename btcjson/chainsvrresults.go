@@ -11,8 +11,8 @@ import (
 
 	"github.com/dashevo/dashd-go/chaincfg/chainhash"
 
+	"github.com/dashevo/dashd-go/btcutil"
 	"github.com/dashevo/dashd-go/wire"
-	"github.com/dashevo/dashd-go/dashutil"
 )
 
 // GetBlockHeaderVerboseResult models the data from the getblockheader command when
@@ -175,12 +175,13 @@ type SoftForkDescription struct {
 // Bip9SoftForkDescription describes the current state of a defined BIP0009
 // version bits soft-fork.
 type Bip9SoftForkDescription struct {
-	Status     string `json:"status"`
-	Bit        uint8  `json:"bit"`
-	StartTime1 int64  `json:"startTime"`
-	StartTime2 int64  `json:"start_time"`
-	Timeout    int64  `json:"timeout"`
-	Since      int32  `json:"since"`
+	Status              string `json:"status"`
+	Bit                 uint8  `json:"bit"`
+	StartTime1          int64  `json:"startTime"`
+	StartTime2          int64  `json:"start_time"`
+	Timeout             int64  `json:"timeout"`
+	Since               int32  `json:"since"`
+	MinActivationHeight int32  `json:"min_activation_height"`
 }
 
 // StartTime returns the starting time of the softfork as a Unix epoch.
@@ -445,14 +446,14 @@ type GetTxOutResult struct {
 
 // GetTxOutSetInfoResult models the data from the gettxoutsetinfo command.
 type GetTxOutSetInfoResult struct {
-	Height         int64           `json:"height"`
-	BestBlock      chainhash.Hash  `json:"bestblock"`
-	Transactions   int64           `json:"transactions"`
-	TxOuts         int64           `json:"txouts"`
-	BogoSize       int64           `json:"bogosize"`
-	HashSerialized chainhash.Hash  `json:"hash_serialized_2"`
-	DiskSize       int64           `json:"disk_size"`
-	TotalAmount    dashutil.Amount `json:"total_amount"`
+	Height         int64          `json:"height"`
+	BestBlock      chainhash.Hash `json:"bestblock"`
+	Transactions   int64          `json:"transactions"`
+	TxOuts         int64          `json:"txouts"`
+	BogoSize       int64          `json:"bogosize"`
+	HashSerialized chainhash.Hash `json:"hash_serialized_2"`
+	DiskSize       int64          `json:"disk_size"`
+	TotalAmount    btcutil.Amount `json:"total_amount"`
 }
 
 // UnmarshalJSON unmarshals the result of the gettxoutsetinfo JSON-RPC call
@@ -491,7 +492,7 @@ func (g *GetTxOutSetInfoResult) UnmarshalJSON(data []byte) error {
 
 	g.HashSerialized = *serializedHash
 
-	amount, err := dashutil.NewAmount(aux.TotalAmount)
+	amount, err := btcutil.NewAmount(aux.TotalAmount)
 	if err != nil {
 		return err
 	}
@@ -715,7 +716,7 @@ type TxRawResult struct {
 	Size                int32  `json:"size,omitempty"`
 	Vsize               int32  `json:"vsize,omitempty"`
 	Weight              int32  `json:"weight,omitempty"`
-	Version             int32  `json:"version"`
+	Version             uint32  `json:"version"`
 	LockTime            uint32 `json:"locktime"`
 	Vin                 []Vin  `json:"vin"`
 	Vout                []Vout `json:"vout"`
@@ -790,7 +791,7 @@ type rawFundRawTransactionResult struct {
 // FundRawTransactionResult is the result of the fundrawtransaction JSON-RPC call
 type FundRawTransactionResult struct {
 	Transaction    *wire.MsgTx
-	Fee            dashutil.Amount
+	Fee            btcutil.Amount
 	ChangePosition int // the position of the added change output, or -1
 }
 
@@ -815,7 +816,7 @@ func (f *FundRawTransactionResult) UnmarshalJSON(data []byte) error {
 		}
 	}
 
-	fee, err := dashutil.NewAmount(rawRes.Fee)
+	fee, err := btcutil.NewAmount(rawRes.Fee)
 	if err != nil {
 		return err
 	}

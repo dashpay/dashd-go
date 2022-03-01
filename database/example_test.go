@@ -7,14 +7,15 @@ package database_test
 import (
 	"bytes"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 
+	"github.com/dashevo/dashd-go/btcutil"
 	"github.com/dashevo/dashd-go/chaincfg"
 	"github.com/dashevo/dashd-go/database"
 	_ "github.com/dashevo/dashd-go/database/ffldb"
 	"github.com/dashevo/dashd-go/wire"
-	"github.com/dashevo/dashd-go/dashutil"
 )
 
 // This example demonstrates creating a new database.
@@ -122,9 +123,14 @@ func Example_blockStorageAndRetrieval() {
 	// Typically you wouldn't want to remove the database right away like
 	// this, nor put it in the temp directory, but it's done here to ensure
 	// the example cleans up after itself.
-	dbPath := filepath.Join(os.TempDir(), "exampleblkstorage")
+	dbPath, err := ioutil.TempDir("", "exampleblkstorage")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	db, err := database.Create("ffldb", dbPath, wire.MainNet)
 	if err != nil {
+		fmt.Println("fail here")
 		fmt.Println(err)
 		return
 	}
@@ -136,7 +142,7 @@ func Example_blockStorageAndRetrieval() {
 	// and example.
 	err = db.Update(func(tx database.Tx) error {
 		genesisBlock := chaincfg.MainNetParams.GenesisBlock
-		return tx.StoreBlock(dashutil.NewBlock(genesisBlock))
+		return tx.StoreBlock(btcutil.NewBlock(genesisBlock))
 	})
 	if err != nil {
 		fmt.Println(err)

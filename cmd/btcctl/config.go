@@ -14,9 +14,9 @@ import (
 	"strings"
 
 	"github.com/dashevo/dashd-go/btcjson"
+	"github.com/dashevo/dashd-go/btcutil"
 	"github.com/dashevo/dashd-go/chaincfg"
-	"github.com/dashevo/dashd-go/dashutil"
-	"github.com/jessevdk/go-flags"
+	flags "github.com/jessevdk/go-flags"
 )
 
 const (
@@ -27,9 +27,9 @@ const (
 )
 
 var (
-	btcdHomeDir           = dashutil.AppDataDir("btcd", false)
-	btcctlHomeDir         = dashutil.AppDataDir("btcctl", false)
-	btcwalletHomeDir      = dashutil.AppDataDir("btcwallet", false)
+	btcdHomeDir           = btcutil.AppDataDir("btcd", false)
+	btcctlHomeDir         = btcutil.AppDataDir("btcctl", false)
+	btcwalletHomeDir      = btcutil.AppDataDir("btcwallet", false)
 	defaultConfigFile     = filepath.Join(btcctlHomeDir, "btcctl.conf")
 	defaultRPCServer      = "localhost"
 	defaultRPCCertFile    = filepath.Join(btcdHomeDir, "rpc.cert")
@@ -107,6 +107,7 @@ type config struct {
 	SimNet         bool   `long:"simnet" description:"Connect to the simulation test network"`
 	TLSSkipVerify  bool   `long:"skipverify" description:"Do not verify tls certificates (not recommended!)"`
 	TestNet3       bool   `long:"testnet" description:"Connect to testnet"`
+	SigNet         bool   `long:"signet" description:"Connect to signet"`
 	ShowVersion    bool   `short:"V" long:"version" description:"Display version information and exit"`
 	Wallet         bool   `long:"wallet" description:"Connect to wallet"`
 }
@@ -119,11 +120,37 @@ func normalizeAddress(addr string, chain *chaincfg.Params, useWallet bool) (stri
 		var defaultPort string
 		switch chain {
 		case &chaincfg.TestNet3Params:
-			defaultPort = "19999"
+			if useWallet {
+				defaultPort = "18332"
+			} else {
+				defaultPort = "18334"
+			}
+		case &chaincfg.SimNetParams:
+			if useWallet {
+				defaultPort = "18554"
+			} else {
+				defaultPort = "18556"
+			}
 		case &chaincfg.RegressionNetParams:
-			defaultPort = "19899"
+			if useWallet {
+				// TODO: add port once regtest is supported in btcwallet
+				paramErr := fmt.Errorf("cannot use -wallet with -regtest, btcwallet not yet compatible with regtest")
+				return "", paramErr
+			} else {
+				defaultPort = "18334"
+			}
+		case &chaincfg.SigNetParams:
+			if useWallet {
+				defaultPort = "38332"
+			} else {
+				defaultPort = "38332"
+			}
 		default:
-			defaultPort = "9999"
+			if useWallet {
+				defaultPort = "8332"
+			} else {
+				defaultPort = "8334"
+			}
 		}
 
 		return net.JoinHostPort(addr, defaultPort), nil
@@ -252,6 +279,10 @@ func loadConfig() (*config, []string, error) {
 	if cfg.RegressionTest {
 		numNets++
 		network = &chaincfg.RegressionNetParams
+	}
+	if cfg.SigNet {
+		numNets++
+		network = &chaincfg.SigNetParams
 	}
 
 	if numNets > 1 {

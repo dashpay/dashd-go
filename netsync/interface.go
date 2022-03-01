@@ -6,12 +6,12 @@ package netsync
 
 import (
 	"github.com/dashevo/dashd-go/blockchain"
+	"github.com/dashevo/dashd-go/btcutil"
 	"github.com/dashevo/dashd-go/chaincfg"
 	"github.com/dashevo/dashd-go/chaincfg/chainhash"
 	"github.com/dashevo/dashd-go/mempool"
 	"github.com/dashevo/dashd-go/peer"
 	"github.com/dashevo/dashd-go/wire"
-	"github.com/dashevo/dashd-go/dashutil"
 )
 
 // PeerNotifier exposes methods to notify peers of status changes to
@@ -24,7 +24,7 @@ type PeerNotifier interface {
 
 	RelayInventory(invVect *wire.InvVect, data interface{})
 
-	TransactionConfirmed(tx *dashutil.Tx)
+	TransactionConfirmed(tx *btcutil.Tx)
 }
 
 // Config is a configuration struct used to initialize a new SyncManager.

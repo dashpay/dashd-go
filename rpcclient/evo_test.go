@@ -1,7 +1,11 @@
 package rpcclient
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"net/http"
 	"strconv"
 	"testing"
 
@@ -15,6 +19,7 @@ func TestBLS(t *testing.T) {
 	}
 	defer client.Shutdown()
 
+	client.httpClient.Transport = mockRoundTripperFunc(btcjson.BLSResult{Secret: "secret", Public: "public"})
 	gen, err := client.BLSGenerate()
 	if err != nil {
 		t.Fatal(err)
@@ -43,6 +48,7 @@ func TestQuorumList(t *testing.T) {
 	}
 	defer client.Shutdown()
 
+	client.httpClient.Transport = mockRoundTripperFunc(btcjson.QuorumListResult{})
 	result, err := client.QuorumList()
 	if err != nil {
 		t.Fatal(err)
@@ -61,6 +67,10 @@ func TestQuorumInfo(t *testing.T) {
 	}
 	defer client.Shutdown()
 
+	client.httpClient.Transport = mockRoundTripperFunc(btcjson.QuorumListResult{
+		Llmq400_60: []string{"000004bfc56646880bfeb80a0b89ad955e557ead7b0f09bcc61e56c8473eaea9"},
+	})
+
 	list, err := client.QuorumList()
 	if err != nil {
 		t.Fatal(err)
@@ -71,6 +81,14 @@ func TestQuorumInfo(t *testing.T) {
 	}
 	quorumHash := list.Llmq400_60[0]
 
+	client.httpClient.Transport = mockRoundTripperFunc(btcjson.QuorumInfoResult{
+		Height:          264072,
+		Type:            "llmq400_60",
+		QuorumHash:      "000004bfc56646880bfeb80a0b89ad955e557ead7b0f09bcc61e56c8473eaea9",
+		MinedBlock:      "000006113a77b35a0ed606b08ecb8e37f1ac7e2d773c365bd07064a72ae9a61d",
+		QuorumPublicKey: "0644ff153b9b92c6a59e2adf4ef0b9836f7f6af05fe432ffdcb69bc9e300a2a70af4a8d9fc61323f6b81074d740033d2",
+		SecretKeyShare:  "3da0d8f532309660f7f44aa0ed42c1569773b39c70f5771ce5604be77e50759e",
+	})
 	result, err := client.QuorumInfo(quorumType, quorumHash, false)
 	if err != nil {
 		t.Fatal(err)
@@ -90,6 +108,9 @@ func TestQuorumSelectQuorum(t *testing.T) {
 	}
 	defer client.Shutdown()
 
+	client.httpClient.Transport = mockRoundTripperFunc(btcjson.QuorumSelectQuorumResult{
+		QuorumHash: "000004bfc56646880bfeb80a0b89ad955e557ead7b0f09bcc61e56c8473eaea9",
+	})
 	result, err := client.QuorumSelectQuorum(quorumType, requestID)
 	if err != nil {
 		t.Fatal(err)
@@ -106,12 +127,28 @@ func TestQuorumDKGStatus(t *testing.T) {
 	}
 	defer client.Shutdown()
 
-	for _, dl := range []btcjson.DetailLevel{
-		btcjson.DetailLevelCounts,
-		btcjson.DetailLevelIndexes,
-		btcjson.DetailLevelMembersProTxHashes,
-	} {
+	testCases := []struct {
+		detailLevel btcjson.DetailLevel
+		response    interface{}
+	}{
+		{
+			detailLevel: btcjson.DetailLevelCounts,
+			response:    btcjson.QuorumDKGStatusCountsResult{},
+		},
+		{
+			detailLevel: btcjson.DetailLevelIndexes,
+			response:    btcjson.QuorumDKGStatusIndexesResult{},
+		},
+		{
+			detailLevel: btcjson.DetailLevelMembersProTxHashes,
+			response:    btcjson.QuorumDKGStatusMembersProTxHashesResult{},
+		},
+	}
+	for _, tc := range testCases {
+		dl := tc.detailLevel
 		t.Run(fmt.Sprint(dl), func(t *testing.T) {
+			client.httpClient.Transport = mockRoundTripperFunc(&tc.response)
+
 			result, err := client.QuorumDKGStatus(dl)
 			if err != nil {
 				t.Fatal(err)
@@ -143,12 +180,13 @@ func TestQuorumMemberOf(t *testing.T) {
 	}
 	defer client.Shutdown()
 
+	client.httpClient.Transport = mockRoundTripperFunc([]btcjson.QuorumMemberOfResult{})
 	result, err := client.QuorumMemberOf(proTxHash, 0)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	cli := []btcjson.QuorumMemberOfResult{}
+	var cli []btcjson.QuorumMemberOfResult
 	compareWithCliCommand(t, &result, &cli, "quorum", "memberof", proTxHash)
 }
 
@@ -163,6 +201,7 @@ var llmqTypes = map[string]btcjson.LLMQType{
 func TestQuorumSign(t *testing.T) {
 	requestID := "abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234"
 	messageHash := "51c11d287dfa85aef3eebb5420834c8e443e01d15c0b0a8e397d67e2e51aa239"
+	proTxHash := "ec21749595a34d868cc366c0feefbd1cfaeb659c6acbc1e2e96fd1e714affa56"
 	submit := false
 
 	client, err := New(connCfg, nil)
@@ -171,7 +210,17 @@ func TestQuorumSign(t *testing.T) {
 	}
 	defer client.Shutdown()
 
-	proTxHash := "ec21749595a34d868cc366c0feefbd1cfaeb659c6acbc1e2e96fd1e714affa56"
+	client.httpClient.Transport = mockRoundTripperFunc([]btcjson.QuorumMemberOfResult{
+		{
+			Height:          264072,
+			Type:            "llmq_400_60",
+			QuorumHash:      "000004bfc56646880bfeb80a0b89ad955e557ead7b0f09bcc61e56c8473eaea9",
+			MinedBlock:      "000006113a77b35a0ed606b08ecb8e37f1ac7e2d773c365bd07064a72ae9a61d",
+			QuorumPublicKey: "0644ff153b9b92c6a59e2adf4ef0b9836f7f6af05fe432ffdcb69bc9e300a2a70af4a8d9fc61323f6b81074d740033d2",
+			IsValidMember:   false,
+			MemberIndex:     10,
+		},
+	})
 	mo, err := client.QuorumMemberOf(proTxHash, 0)
 	if err != nil {
 		t.Fatal(err)
@@ -186,6 +235,7 @@ func TestQuorumSign(t *testing.T) {
 		t.Fatal("unknown quorum type", mo[0].Type)
 	}
 
+	client.httpClient.Transport = mockRoundTripperFunc(btcjson.QuorumSignResultWithBool{Result: true})
 	result, err := client.QuorumSign(quorumType, requestID, messageHash, quorumHash, submit)
 	if err != nil {
 		t.Fatal(err)
@@ -199,7 +249,6 @@ func TestQuorumSign(t *testing.T) {
 		t.Fatal(err)
 	}
 	t.Log("bool response:", bl)
-
 }
 
 func TestQuorumGetRecSig(t *testing.T) {
@@ -213,12 +262,13 @@ func TestQuorumGetRecSig(t *testing.T) {
 	requestID := "abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234"
 	messageHash := "51c11d287dfa85aef3eebb5420834c8e443e01d15c0b0a8e397d67e2e51aa239"
 
+	client.httpClient.Transport = mockRoundTripperFunc([]btcjson.QuorumSignResult{})
 	result, err := client.QuorumGetRecSig(quorumType, requestID, messageHash)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	cli := []btcjson.QuorumSignResult{}
+	var cli []btcjson.QuorumSignResult
 	compareWithCliCommand(t, result, cli, "quorum", "getrecsig", fmt.Sprint(quorumType), requestID, messageHash)
 }
 
@@ -233,6 +283,8 @@ func TestQuorumHasRecSig(t *testing.T) {
 	requestID := "abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234"
 	messageHash := "51c11d287dfa85aef3eebb5420834c8e443e01d15c0b0a8e397d67e2e51aa239"
 
+	resp := true
+	client.httpClient.Transport = mockRoundTripperFunc(&resp)
 	result, err := client.QuorumHasRecSig(quorumType, requestID, messageHash)
 	if err != nil {
 		t.Fatal(err)
@@ -257,6 +309,8 @@ func TestQuorumsConflicting(t *testing.T) {
 	requestID := "abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234"
 	messageHash := "51c11d287dfa85aef3eebb5420834c8e443e01d15c0b0a8e397d67e2e51aa239"
 
+	resp := true
+	client.httpClient.Transport = mockRoundTripperFunc(&resp)
 	result, err := client.QuorumIsConflicting(quorumType, requestID, messageHash)
 	if err != nil {
 		t.Fatal(err)
@@ -279,6 +333,7 @@ func TestProTxInfo(t *testing.T) {
 
 	proTxHash := "ec21749595a34d868cc366c0feefbd1cfaeb659c6acbc1e2e96fd1e714affa56"
 
+	client.httpClient.Transport = mockRoundTripperFunc(&btcjson.ProTxInfoResult{ProTxHash: proTxHash})
 	result, err := client.ProTxInfo(proTxHash)
 	if err != nil {
 		t.Fatal(err)
@@ -303,6 +358,7 @@ func TestProTxList(t *testing.T) {
 	}
 	defer client.Shutdown()
 
+	client.httpClient.Transport = mockRoundTripperFunc([]btcjson.ProTxInfoResult{})
 	result, err := client.ProTxList("", false, 0)
 	if err != nil {
 		t.Fatal(err)
@@ -352,6 +408,7 @@ func TestProTxDiff(t *testing.T) {
 	baseBlock := 75000
 	block := 76000
 
+	client.httpClient.Transport = mockRoundTripperFunc(btcjson.ProTxDiffResult{})
 	result, err := client.ProTxDiff(baseBlock, block)
 	if err != nil {
 		t.Fatal(err)
@@ -373,6 +430,8 @@ func TestProTxUpdateService(t *testing.T) {
 	ipAndPort := "144.202.120.18:19999"
 	operatorKey := "084ceaabfe23865823aa696258245d8f94144fc33fb558528cd1742ef8f033d7b8c701d19cd6a561522c9e8d82bf7283"
 
+	resp := "1234567890123456789012345678901234567890123456789012345678901234"
+	client.httpClient.Transport = mockRoundTripperFunc(&resp)
 	result, err := client.ProTxUpdateService(proTxHash, ipAndPort, operatorKey, "", "")
 	if err != nil {
 		t.Fatal(err)
@@ -396,6 +455,8 @@ func TestProTxUpdateRegistrar(t *testing.T) {
 	votingAddress := "yP9kcJKUXt8BSfL8Pcj83fsMjBGhDAmBb6"
 	payoutAddress := "yPo4tSsQ2Y9RXK4io6mBke1RMr256VcLRQ"
 
+	resp := "1234567890123456789012345678901234567890123456789012345678901234"
+	client.httpClient.Transport = mockRoundTripperFunc(&resp)
 	result, err := client.ProTxUpdateRegistrar(proTxHash, operatorKey, votingAddress, payoutAddress, "")
 	if err != nil {
 		t.Fatal(err)
@@ -425,6 +486,8 @@ func TestProTxRegister(t *testing.T) {
 	feeSourceAddress := "yPo4tSsQ2Y9RXK4io6mBke1RMr256VcLRQ"
 	submit := false
 
+	resp := "1234567890123456789012345678901234567890123456789012345678901234"
+	client.httpClient.Transport = mockRoundTripperFunc(&resp)
 	result, err := client.ProTxRegister(collateralHash, collateralIndex, ipAndPort, ownerAddress, operatorPubKey, votingAddress, operatorReward, payoutAddress, feeSourceAddress, submit)
 	if err != nil {
 		t.Fatal(err)
@@ -453,6 +516,8 @@ func TestProTxRegisterFund(t *testing.T) {
 	fundAddress := "ydvWAgi23gDEfufbWjGDQbtDqTNrL4vpYH"
 	submit := false
 
+	resp := "1234567890123456789012345678901234567890123456789012345678901234"
+	client.httpClient.Transport = mockRoundTripperFunc(&resp)
 	result, err := client.ProTxRegisterFund(collateralAddress, ipAndPort, ownerAddress, operatorPubKey, votingAddress, operatorReward, payoutAddress, fundAddress, submit)
 	if err != nil {
 		t.Fatal(err)
@@ -481,6 +546,7 @@ func TestProTxRegisterPrepare(t *testing.T) {
 	payoutAddress := "yPo4tSsQ2Y9RXK4io6mBke1RMr256VcLRQ"
 	feeSourceAddress := "yPo4tSsQ2Y9RXK4io6mBke1RMr256VcLRQ"
 
+	client.httpClient.Transport = mockRoundTripperFunc(&btcjson.ProTxRegisterPrepareResult{})
 	result, err := client.ProTxRegisterPrepare(collateralHash, collateralIndex, ipAndPort, ownerAddress, operatorPubKey, votingAddress, operatorReward, payoutAddress, feeSourceAddress)
 	if err != nil {
 		t.Fatal(err)
@@ -510,6 +576,8 @@ func TestProTxRegisterSubmit(t *testing.T) {
 	tx := "0300010001a6970dbf500321a694fb5afb6c2f5269d4dfafe0b0bf70ed4639853de49fe87c0100000000feffffff01f109a503030000001976a9142621b120541dab04072b293f275d7213c4ffb9df88ac00000000d10100000000007ac4fbe1ac562007aa297a40f7e686b29acf9d58c8c06cdd37f26d3d30ad18550100000000000000000000000000ffff62ca58af4e200c1f2a18885154b6abd1b0736428e47ccddfa743084ceaabfe23865823aa696258245d8f94144fc33fb558528cd1742ef8f033d7b8c701d19cd6a561522c9e8d82bf72831f130b13c2258dd4b2ae2eb77b62a036be7be2a600001976a9142621b120541dab04072b293f275d7213c4ffb9df88ac90f10f99e0a72b561d3f83f0c1294cc0b88931444988eb7e7893fcb92f043f1c00"
 	sig := "IFhavtOIwYRlqNw3AC8ODH7fVtZYMnH7VSPHcI7ZOu+YIWN/H430/TAvh7Es6hGFdwYBytkh9oQWuuYhPjTBXxE="
 
+	resp := "1234567890123456789012345678901234567890123456789012345678901234"
+	client.httpClient.Transport = mockRoundTripperFunc(&resp)
 	result, err := client.ProTxRegisterSubmit(tx, sig)
 	if err != nil {
 		t.Fatal(err)
@@ -531,6 +599,8 @@ func TestProTxRevoke(t *testing.T) {
 	proTxHash := "ec21749595a34d868cc366c0feefbd1cfaeb659c6acbc1e2e96fd1e714affa56"
 	operatorPrivateKey := "-1dce6ba29cc4c44acb188e030d86ded7ede3dbd828b32e12e21f30d62670ac52"
 
+	resp := "1234567890123456789012345678901234567890123456789012345678901234"
+	client.httpClient.Transport = mockRoundTripperFunc(&resp)
 	result, err := client.ProTxRevoke(proTxHash, operatorPrivateKey, 0, "")
 	if err != nil {
 		t.Fatal(err)
@@ -538,5 +608,32 @@ func TestProTxRevoke(t *testing.T) {
 
 	if len(result) != 64 {
 		t.Fatal("returned key was not 64 characters: ", result)
+	}
+}
+
+type roundTripperFunc func(*http.Request) (*http.Response, error)
+
+// RoundTrip ...
+func (fn roundTripperFunc) RoundTrip(r *http.Request) (*http.Response, error) {
+	return fn(r)
+}
+
+func mockRoundTripperFunc(resp interface{}) roundTripperFunc {
+	return func(r *http.Request) (*http.Response, error) {
+		raw, err := json.Marshal(&resp)
+		if err != nil {
+			return nil, err
+		}
+		resp := rawResponse{
+			Result: raw,
+		}
+		raw, err = json.Marshal(&resp)
+		if err != nil {
+			return nil, err
+		}
+		return &http.Response{
+			StatusCode: 200,
+			Body:       ioutil.NopCloser(bytes.NewBuffer(raw)),
+		}, nil
 	}
 }

@@ -10,8 +10,8 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/dashevo/dashd-go/btcutil"
 	"github.com/dashevo/dashd-go/rpcclient"
-	"github.com/dashevo/dashd-go/dashutil"
 	"github.com/davecgh/go-spew/spew"
 )
 
@@ -21,14 +21,14 @@ func main() {
 	// for notifications.  See the documentation of the rpcclient
 	// NotificationHandlers type for more details about each handler.
 	ntfnHandlers := rpcclient.NotificationHandlers{
-		OnAccountBalance: func(account string, balance dashutil.Amount, confirmed bool) {
+		OnAccountBalance: func(account string, balance btcutil.Amount, confirmed bool) {
 			log.Printf("New balance for account %s: %v", account,
 				balance)
 		},
 	}
 
 	// Connect to local btcwallet RPC server using websockets.
-	certHomeDir := dashutil.AppDataDir("btcwallet", false)
+	certHomeDir := btcutil.AppDataDir("btcwallet", false)
 	certs, err := ioutil.ReadFile(filepath.Join(certHomeDir, "rpc.cert"))
 	if err != nil {
 		log.Fatal(err)

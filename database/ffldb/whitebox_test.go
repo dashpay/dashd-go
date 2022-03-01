@@ -17,12 +17,12 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/btcsuite/goleveldb/leveldb"
+	ldberrors "github.com/btcsuite/goleveldb/leveldb/errors"
+	"github.com/dashevo/dashd-go/btcutil"
 	"github.com/dashevo/dashd-go/chaincfg"
 	"github.com/dashevo/dashd-go/database"
 	"github.com/dashevo/dashd-go/wire"
-	"github.com/dashevo/dashd-go/dashutil"
-	"github.com/btcsuite/goleveldb/leveldb"
-	ldberrors "github.com/btcsuite/goleveldb/leveldb/errors"
 )
 
 var (
@@ -39,7 +39,7 @@ var (
 
 // loadBlocks loads the blocks contained in the testdata directory and returns
 // a slice of them.
-func loadBlocks(t *testing.T, dataFile string, network wire.BitcoinNet) ([]*dashutil.Block, error) {
+func loadBlocks(t *testing.T, dataFile string, network wire.BitcoinNet) ([]*btcutil.Block, error) {
 	// Open the file that contains the blocks for reading.
 	fi, err := os.Open(dataFile)
 	if err != nil {
@@ -55,8 +55,8 @@ func loadBlocks(t *testing.T, dataFile string, network wire.BitcoinNet) ([]*dash
 	dr := bzip2.NewReader(fi)
 
 	// Set the first block as the genesis block.
-	blocks := make([]*dashutil.Block, 0, 256)
-	genesis := dashutil.NewBlock(chaincfg.MainNetParams.GenesisBlock)
+	blocks := make([]*btcutil.Block, 0, 256)
+	genesis := btcutil.NewBlock(chaincfg.MainNetParams.GenesisBlock)
 	blocks = append(blocks, genesis)
 
 	// Load the remaining blocks.
@@ -95,7 +95,7 @@ func loadBlocks(t *testing.T, dataFile string, network wire.BitcoinNet) ([]*dash
 		}
 
 		// Deserialize and store the block.
-		block, err := dashutil.NewBlockFromBytes(blockBytes)
+		block, err := btcutil.NewBlockFromBytes(blockBytes)
 		if err != nil {
 			t.Errorf("Failed to parse block %v: %v", height, err)
 			return nil, err
@@ -132,7 +132,7 @@ type testContext struct {
 	db           database.DB
 	files        map[uint32]*lockableFile
 	maxFileSizes map[uint32]int64
-	blocks       []*dashutil.Block
+	blocks       []*btcutil.Block
 }
 
 // TestConvertErr ensures the leveldb error to database error conversion works

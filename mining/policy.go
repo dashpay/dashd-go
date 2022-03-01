@@ -6,8 +6,8 @@ package mining
 
 import (
 	"github.com/dashevo/dashd-go/blockchain"
+	"github.com/dashevo/dashd-go/btcutil"
 	"github.com/dashevo/dashd-go/wire"
-	"github.com/dashevo/dashd-go/dashutil"
 )
 
 const (
@@ -44,7 +44,7 @@ type Policy struct {
 	// TxMinFreeFee is the minimum fee in Satoshi/1000 bytes that is
 	// required for a transaction to be treated as free for mining purposes
 	// (block template generation).
-	TxMinFreeFee dashutil.Amount
+	TxMinFreeFee btcutil.Amount
 }
 
 // minInt is a helper function to return the minimum of two ints.  This avoids

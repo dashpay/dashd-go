@@ -52,7 +52,7 @@ func makeParams(rt reflect.Type, rv reflect.Value) []interface{} {
 // is suitable for transmission to an RPC server.  The provided command type
 // must be a registered type.  All commands provided by this package are
 // registered by default.
-func MarshalCmd(id interface{}, cmd interface{}) ([]byte, error) {
+func MarshalCmd(rpcVersion RPCVersion, id interface{}, cmd interface{}) ([]byte, error) {
 	// Look up the cmd type and error out if not registered.
 	rt := reflect.TypeOf(cmd)
 	registerLock.RLock()
@@ -76,7 +76,7 @@ func MarshalCmd(id interface{}, cmd interface{}) ([]byte, error) {
 	params := makeParams(rt.Elem(), rv.Elem())
 
 	// Generate and marshal the final JSON-RPC request.
-	rawCmd, err := NewRequest(id, method, params)
+	rawCmd, err := NewRequest(rpcVersion, id, method, params)
 	if err != nil {
 		return nil, err
 	}
@@ -141,6 +141,17 @@ func UnmarshalCmd(r *Request) (interface{}, error) {
 	numParams := len(r.Params)
 	if err := checkNumParams(numParams, &info); err != nil {
 		return nil, err
+	}
+
+	cmd := rvp.Interface()
+	unmarshaler, ok := cmd.(Unmarshaler)
+	if ok {
+		args, err := unmarshalArgs(r.Params)
+		if err != nil {
+			return nil, err
+		}
+		err = unmarshaler.UnmarshalArgs(args)
+		return unmarshaler, err
 	}
 
 	// Loop through each of the struct fields and unmarshal the associated
@@ -555,6 +566,13 @@ func NewCmd(method string, args ...interface{}) (interface{}, error) {
 	rv := rvp.Elem()
 	rt := rtp.Elem()
 
+	cmd := rvp.Interface()
+	unmarshaler, ok := cmd.(Unmarshaler)
+	if ok {
+		err := unmarshaler.UnmarshalArgs(args)
+		return unmarshaler, err
+	}
+
 	// Loop through each of the struct fields and assign the associated
 	// parameter into them after checking its type validity.
 	for i := 0; i < numParams; i++ {
@@ -568,5 +586,21 @@ func NewCmd(method string, args ...interface{}) (interface{}, error) {
 		}
 	}
 
-	return rvp.Interface(), nil
+	return cmd, nil
+}
+
+// Unmarshaler is an interface for a specific unmarshal function of arguments
+type Unmarshaler interface {
+	UnmarshalArgs(args []interface{}) error
+}
+
+func unmarshalArgs(params []json.RawMessage) ([]interface{}, error) {
+	args := make([]interface{}, len(params))
+	for i, val := range params {
+		err := json.Unmarshal(val, &args[i])
+		if err != nil {
+			return nil, err
+		}
+	}
+	return args, nil
 }

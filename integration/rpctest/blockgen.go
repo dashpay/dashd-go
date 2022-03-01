@@ -12,11 +12,12 @@ import (
 	"time"
 
 	"github.com/dashevo/dashd-go/blockchain"
+	"github.com/dashevo/dashd-go/btcutil"
 	"github.com/dashevo/dashd-go/chaincfg"
 	"github.com/dashevo/dashd-go/chaincfg/chainhash"
+	"github.com/dashevo/dashd-go/mining"
 	"github.com/dashevo/dashd-go/txscript"
 	"github.com/dashevo/dashd-go/wire"
-	"github.com/dashevo/dashd-go/dashutil"
 )
 
 // solveBlock attempts to find a nonce which makes the passed block header hash
@@ -96,8 +97,8 @@ func standardCoinbaseScript(nextBlockHeight int32, extraNonce uint64) ([]byte, e
 // createCoinbaseTx returns a coinbase transaction paying an appropriate
 // subsidy based on the passed block height to the provided address.
 func createCoinbaseTx(coinbaseScript []byte, nextBlockHeight int32,
-	addr dashutil.Address, mineTo []wire.TxOut,
-	net *chaincfg.Params) (*dashutil.Tx, error) {
+	addr btcutil.Address, mineTo []wire.TxOut,
+	net *chaincfg.Params) (*btcutil.Tx, error) {
 
 	// Create the script to pay to the provided payment address.
 	pkScript, err := txscript.PayToAddrScript(addr)
@@ -124,7 +125,7 @@ func createCoinbaseTx(coinbaseScript []byte, nextBlockHeight int32,
 			tx.AddTxOut(&mineTo[i])
 		}
 	}
-	return dashutil.NewTx(tx), nil
+	return btcutil.NewTx(tx), nil
 }
 
 // CreateBlock creates a new block building from the previous block with a
@@ -132,9 +133,9 @@ func createCoinbaseTx(coinbaseScript []byte, nextBlockHeight int32,
 // initialized), then the timestamp of the previous block will be used plus 1
 // second is used. Passing nil for the previous block results in a block that
 // builds off of the genesis block for the specified chain.
-func CreateBlock(prevBlock *dashutil.Block, inclusionTxs []*dashutil.Tx,
-	blockVersion int32, blockTime time.Time, miningAddr dashutil.Address,
-	mineTo []wire.TxOut, net *chaincfg.Params) (*dashutil.Block, error) {
+func CreateBlock(prevBlock *btcutil.Block, inclusionTxs []*btcutil.Tx,
+	blockVersion int32, blockTime time.Time, miningAddr btcutil.Address,
+	mineTo []wire.TxOut, net *chaincfg.Params) (*btcutil.Block, error) {
 
 	var (
 		prevHash      *chainhash.Hash
@@ -177,10 +178,25 @@ func CreateBlock(prevBlock *dashutil.Block, inclusionTxs []*dashutil.Tx,
 	}
 
 	// Create a new block ready to be solved.
-	blockTxns := []*dashutil.Tx{coinbaseTx}
+	blockTxns := []*btcutil.Tx{coinbaseTx}
 	if inclusionTxs != nil {
 		blockTxns = append(blockTxns, inclusionTxs...)
 	}
+
+	// We must add the witness commitment to the coinbase if any
+	// transactions are segwit.
+	witnessIncluded := false
+	for i := 1; i < len(blockTxns); i++ {
+		if blockTxns[i].MsgTx().HasWitness() {
+			witnessIncluded = true
+			break
+		}
+	}
+
+	if witnessIncluded {
+		_ = mining.AddWitnessCommitment(coinbaseTx, blockTxns)
+	}
+
 	merkles := blockchain.BuildMerkleTreeStore(blockTxns, false)
 	var block wire.MsgBlock
 	block.Header = wire.BlockHeader{
@@ -201,7 +217,7 @@ func CreateBlock(prevBlock *dashutil.Block, inclusionTxs []*dashutil.Tx,
 		return nil, errors.New("Unable to solve block")
 	}
 
-	utilBlock := dashutil.NewBlock(&block)
+	utilBlock := btcutil.NewBlock(&block)
 	utilBlock.SetHeight(blockHeight)
 	return utilBlock, nil
 }

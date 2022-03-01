@@ -10,10 +10,10 @@ import (
 	"testing"
 	"time"
 
+	"github.com/dashevo/dashd-go/btcutil"
 	"github.com/dashevo/dashd-go/chaincfg"
 	"github.com/dashevo/dashd-go/chaincfg/chainhash"
 	"github.com/dashevo/dashd-go/wire"
-	"github.com/dashevo/dashd-go/dashutil"
 )
 
 // TestSequenceLocksActive tests the SequenceLockActive function to ensure it
@@ -87,7 +87,7 @@ func TestCheckConnectBlockTemplate(t *testing.T) {
 		"blk_3A.dat.bz2",
 	}
 
-	var blocks []*dashutil.Block
+	var blocks []*btcutil.Block
 	for _, file := range testFiles {
 		blockTmp, err := loadBlocks(file)
 		if err != nil {
@@ -132,7 +132,7 @@ func TestCheckConnectBlockTemplate(t *testing.T) {
 	// Block 4 should connect even if proof of work is invalid.
 	invalidPowBlock := *blocks[4].MsgBlock()
 	invalidPowBlock.Header.Nonce++
-	err = chain.CheckConnectBlockTemplate(dashutil.NewBlock(&invalidPowBlock))
+	err = chain.CheckConnectBlockTemplate(btcutil.NewBlock(&invalidPowBlock))
 	if err != nil {
 		t.Fatalf("CheckConnectBlockTemplate: Received unexpected error on "+
 			"block 4 with bad nonce: %v", err)
@@ -141,7 +141,7 @@ func TestCheckConnectBlockTemplate(t *testing.T) {
 	// Invalid block building on chain tip should fail to connect.
 	invalidBlock := *blocks[4].MsgBlock()
 	invalidBlock.Header.Bits--
-	err = chain.CheckConnectBlockTemplate(dashutil.NewBlock(&invalidBlock))
+	err = chain.CheckConnectBlockTemplate(btcutil.NewBlock(&invalidBlock))
 	if err == nil {
 		t.Fatal("CheckConnectBlockTemplate: Did not received expected error " +
 			"on block 4 with invalid difficulty bits")
@@ -152,7 +152,7 @@ func TestCheckConnectBlockTemplate(t *testing.T) {
 // as expected.
 func TestCheckBlockSanity(t *testing.T) {
 	powLimit := chaincfg.MainNetParams.PowLimit
-	block := dashutil.NewBlock(&Block100000)
+	block := btcutil.NewBlock(&Block100000)
 	timeSource := NewMedianTime()
 	err := CheckBlockSanity(block, powLimit, timeSource)
 	if err != nil {
@@ -213,7 +213,7 @@ func TestCheckSerializedHeight(t *testing.T) {
 	for i, test := range tests {
 		msgTx := coinbaseTx.Copy()
 		msgTx.TxIn[0].SignatureScript = test.sigScript
-		tx := dashutil.NewTx(msgTx)
+		tx := btcutil.NewTx(msgTx)
 
 		err := checkSerializedHeight(tx, test.wantHeight)
 		if reflect.TypeOf(err) != reflect.TypeOf(test.err) {

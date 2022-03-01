@@ -8,11 +8,11 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/btcsuite/btclog"
 	"github.com/dashevo/dashd-go/blockchain"
 	"github.com/dashevo/dashd-go/blockchain/indexers"
 	"github.com/dashevo/dashd-go/database"
 	"github.com/dashevo/dashd-go/limits"
-	"github.com/btcsuite/btclog"
 )
 
 const (

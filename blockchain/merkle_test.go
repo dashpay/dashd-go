@@ -7,12 +7,12 @@ package blockchain
 import (
 	"testing"
 
-	"github.com/dashevo/dashd-go/dashutil"
+	"github.com/dashevo/dashd-go/btcutil"
 )
 
 // TestMerkle tests the BuildMerkleTreeStore API.
 func TestMerkle(t *testing.T) {
-	block := dashutil.NewBlock(&Block100000)
+	block := btcutil.NewBlock(&Block100000)
 	merkles := BuildMerkleTreeStore(block.Transactions(), false)
 	calculatedMerkleRoot := merkles[len(merkles)-1]
 	wantMerkle := &Block100000.Header.MerkleRoot
