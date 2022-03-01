@@ -10,6 +10,8 @@ import (
 	"github.com/dashevo/dashd-go/btcjson"
 )
 
+const dashCliBinEnv = "DASH_CLI_BIN"
+
 func TestGetBlockCount(t *testing.T) {
 	client, err := New(connCfg, nil)
 	if err != nil {
@@ -217,19 +219,13 @@ func TestMasternodeList(t *testing.T) {
 	compareWithCliCommand(t, &resultJSON, cliJSON, "masternodelist", "json")
 }
 
-func isDashCliAvailable() bool {
-	return false
-}
-
 func compareWithCliCommand(t *testing.T, rpc, cli interface{}, cmds ...string) {
-	if !isDashCliAvailable() {
-		return
-	}
 	modifyThenCompareWithCliCommand(t, nil, rpc, cli, cmds...)
 }
 
 func modifyThenCompareWithCliCommand(t *testing.T, modify func(interface{}), rpc, cli interface{}, cmds ...string) {
-	if !isDashCliAvailable() {
+	dashCliBin, ok := lookUpDashCliBin()
+	if !ok {
 		return
 	}
 	cmd := append([]string{"-testnet"}, cmds...)
@@ -254,4 +250,15 @@ func modifyThenCompareWithCliCommand(t *testing.T, modify func(interface{}), rpc
 		t.Logf("cli result: %#v", cli)
 		t.Logf("cli string: %s", string(out))
 	}
+}
+
+func lookUpDashCliBin() (string, bool) {
+	dashCliBin, ok := os.LookupEnv(dashCliBinEnv)
+	if !ok {
+		return "", false
+	}
+	if dashCliBin == "" {
+		return "dash-cli", true
+	}
+	return dashCliBin, true
 }
