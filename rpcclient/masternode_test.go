@@ -2,6 +2,7 @@ package rpcclient
 
 import (
 	"encoding/json"
+	"os"
 	"os/exec"
 	"reflect"
 	"testing"
@@ -17,7 +18,10 @@ func TestGetBlockCount(t *testing.T) {
 	defer client.Shutdown()
 
 	n := int64(1700)
-	client.httpClient.Transport = mockRoundTripperFunc(&n)
+	client.httpClient.Transport = mockRoundTripperFunc(
+		&n,
+		expectBody(`{"jsonrpc":"1.0","method":"getblockcount","params":[],"id":1}`),
+	)
 	blockCount, err := client.GetBlockCount()
 	if err != nil {
 		t.Fatal(err)
@@ -35,7 +39,10 @@ func TestMasternodeStatus(t *testing.T) {
 	}
 	defer client.Shutdown()
 
-	client.httpClient.Transport = mockRoundTripperFunc(&btcjson.MasternodeStatusResult{})
+	client.httpClient.Transport = mockRoundTripperFunc(
+		&btcjson.MasternodeStatusResult{},
+		expectBody(`{"jsonrpc":"1.0","method":"masternode","params":["status"],"id":1}`),
+	)
 	result, err := client.MasternodeStatus()
 	if err != nil {
 		t.Fatal(err)
@@ -52,7 +59,10 @@ func TestMasternodeCount(t *testing.T) {
 	}
 	defer client.Shutdown()
 
-	client.httpClient.Transport = mockRoundTripperFunc(&btcjson.MasternodeCountResult{})
+	client.httpClient.Transport = mockRoundTripperFunc(
+		&btcjson.MasternodeCountResult{},
+		expectBody(`{"jsonrpc":"1.0","method":"masternode","params":["count"],"id":1}`),
+	)
 	result, err := client.MasternodeCount()
 	if err != nil {
 		t.Fatal(err)
@@ -69,7 +79,10 @@ func TestMasternodeCurrent(t *testing.T) {
 	}
 	defer client.Shutdown()
 
-	client.httpClient.Transport = mockRoundTripperFunc(&btcjson.MasternodeResult{})
+	client.httpClient.Transport = mockRoundTripperFunc(
+		&btcjson.MasternodeResult{},
+		expectBody(`{"jsonrpc":"1.0","method":"masternode","params":["current"],"id":1}`),
+	)
 	result, err := client.MasternodeCurrent()
 	if err != nil {
 		t.Fatal(err)
@@ -89,7 +102,10 @@ func TestMasternodeOutputs(t *testing.T) {
 	defer client.Shutdown()
 
 	var resp map[string]string
-	client.httpClient.Transport = mockRoundTripperFunc(&resp)
+	client.httpClient.Transport = mockRoundTripperFunc(
+		&resp,
+		expectBody(`{"jsonrpc":"1.0","method":"masternode","params":["outputs"],"id":1}`),
+	)
 	result, err := client.MasternodeOutputs()
 	if err != nil {
 		t.Fatal(err)
@@ -106,7 +122,10 @@ func TestMasternodeWinner(t *testing.T) {
 	}
 	defer client.Shutdown()
 
-	client.httpClient.Transport = mockRoundTripperFunc(&btcjson.MasternodeResult{})
+	client.httpClient.Transport = mockRoundTripperFunc(
+		&btcjson.MasternodeResult{},
+		expectBody(`{"jsonrpc":"1.0","method":"masternode","params":["winner"],"id":1}`),
+	)
 	result, err := client.MasternodeWinner()
 	if err != nil {
 		t.Fatal(err)
@@ -127,27 +146,34 @@ func TestMasternodeWinners(t *testing.T) {
 		name   string
 		count  int
 		filter string
+		req    string
 	}{
 		{
 			name:   "no params",
 			count:  0,
 			filter: "",
+			req:    `{"jsonrpc":"1.0","method":"masternode","params":["winners"],"id":1}`,
 		},
 		{
 			name:   "just count",
 			count:  20,
 			filter: "",
+			req:    `{"jsonrpc":"1.0","method":"masternode","params":["winners","20"],"id":2}`,
 		},
 		{
 			name:   "count and filter",
 			count:  30,
 			filter: "yP8A3",
+			req:    `{"jsonrpc":"1.0","method":"masternode","params":["winners","30","yP8A3"],"id":3}`,
 		},
 	}
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			var resp map[string]string
-			client.httpClient.Transport = mockRoundTripperFunc(&resp)
+			client.httpClient.Transport = mockRoundTripperFunc(
+				&resp,
+				expectBody(tc.req),
+			)
 			result, err := client.MasternodeWinners(tc.count, tc.filter)
 			if err != nil {
 				t.Fatal(err)
@@ -166,7 +192,10 @@ func TestMasternodeList(t *testing.T) {
 	defer client.Shutdown()
 
 	var resp map[string]string
-	client.httpClient.Transport = mockRoundTripperFunc(&resp)
+	client.httpClient.Transport = mockRoundTripperFunc(
+		&resp,
+		expectBody(`{"jsonrpc":"1.0","method":"masternodelist","params":["addr",""],"id":1}`),
+	)
 	result, err := client.MasternodeList("addr", "")
 	if err != nil {
 		t.Fatal(err)
@@ -175,6 +204,10 @@ func TestMasternodeList(t *testing.T) {
 	cli := &map[string]string{}
 	compareWithCliCommand(t, result, cli, "masternodelist", "addr")
 
+	client.httpClient.Transport = mockRoundTripperFunc(
+		&resp,
+		expectBody(`{"jsonrpc":"1.0","method":"masternodelist","params":["json",""],"id":2}`),
+	)
 	resultJSON, err := client.MasternodeListJSON("")
 	if err != nil {
 		t.Fatal(err)
@@ -200,7 +233,7 @@ func modifyThenCompareWithCliCommand(t *testing.T, modify func(interface{}), rpc
 		return
 	}
 	cmd := append([]string{"-testnet"}, cmds...)
-	out, err := exec.Command("dash-cli", cmd...).Output()
+	out, err := exec.Command(dashCliBin, cmd...).Output()
 	if err != nil {
 		t.Fatal("Could not run dash-cli command", err)
 	}
