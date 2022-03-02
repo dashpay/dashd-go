@@ -11,7 +11,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/dashevo/dashd-go/btcec/v2"
+	"github.com/dashevo/dashd-go/btcec"
 	"github.com/dashevo/dashd-go/btcutil/base58"
 	"github.com/dashevo/dashd-go/btcutil/bech32"
 	"github.com/dashevo/dashd-go/chaincfg"

@@ -7,7 +7,6 @@ require (
 	github.com/btcsuite/goleveldb v1.0.0
 	github.com/btcsuite/websocket v0.0.0-20150119174127-31079b680792
 	github.com/btcsuite/winsvc v1.0.0
-	github.com/dashevo/dashd-go/btcec/v2 v2.0.1
 	github.com/davecgh/go-spew v1.1.1
 	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.0.1
 	github.com/decred/dcrd/lru v1.0.0

@@ -30,7 +30,7 @@ import (
 	"github.com/btcsuite/websocket"
 	"github.com/dashevo/dashd-go/blockchain"
 	"github.com/dashevo/dashd-go/blockchain/indexers"
-	"github.com/dashevo/dashd-go/btcec/v2/ecdsa"
+	"github.com/dashevo/dashd-go/btcec/ecdsa"
 	"github.com/dashevo/dashd-go/btcjson"
 	"github.com/dashevo/dashd-go/btcutil"
 	"github.com/dashevo/dashd-go/chaincfg"

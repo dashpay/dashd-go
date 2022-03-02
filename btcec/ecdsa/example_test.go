@@ -8,8 +8,8 @@ import (
 	"encoding/hex"
 	"fmt"
 
-	"github.com/dashevo/dashd-go/btcec/v2"
-	"github.com/dashevo/dashd-go/btcec/v2/ecdsa"
+	"github.com/dashevo/dashd-go/btcec"
+	"github.com/dashevo/dashd-go/btcec/ecdsa"
 	"github.com/dashevo/dashd-go/chaincfg/chainhash"
 )
 

@@ -3,8 +3,8 @@ package psbt
 import (
 	"bytes"
 
-	"github.com/dashevo/dashd-go/btcec/v2"
-	"github.com/dashevo/dashd-go/btcec/v2/ecdsa"
+	"github.com/dashevo/dashd-go/btcec"
+	"github.com/dashevo/dashd-go/btcec/ecdsa"
 )
 
 // PartialSig encapsulate a (BTC public key, ECDSA signature)

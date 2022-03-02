@@ -11,7 +11,7 @@ import (
 	"sync"
 
 	"github.com/dashevo/dashd-go/blockchain"
-	"github.com/dashevo/dashd-go/btcec/v2"
+	"github.com/dashevo/dashd-go/btcec"
 	"github.com/dashevo/dashd-go/btcutil"
 	"github.com/dashevo/dashd-go/btcutil/hdkeychain"
 	"github.com/dashevo/dashd-go/chaincfg"

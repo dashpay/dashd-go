@@ -14,7 +14,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/dashevo/dashd-go/btcec/v2"
+	"github.com/dashevo/dashd-go/btcec"
 )
 
 type signatureTest struct {
