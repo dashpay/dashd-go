@@ -146,7 +146,9 @@ func UnmarshalCmd(r *Request) (interface{}, error) {
 	cmd := rvp.Interface()
 	unmarshaler, ok := cmd.(Unmarshaler)
 	if ok {
-		args, err := unmarshalArgs(r.Params)
+		// unmarshal every parameter item from json.RawMessage into a go type value
+		// result of this operation will be a slice of the interfaces
+		args, err := unmarshalArgItems(r.Params)
 		if err != nil {
 			return nil, err
 		}
@@ -594,7 +596,7 @@ type Unmarshaler interface {
 	UnmarshalArgs(args []interface{}) error
 }
 
-func unmarshalArgs(params []json.RawMessage) ([]interface{}, error) {
+func unmarshalArgItems(params []json.RawMessage) ([]interface{}, error) {
 	args := make([]interface{}, len(params))
 	for i, val := range params {
 		err := json.Unmarshal(val, &args[i])
