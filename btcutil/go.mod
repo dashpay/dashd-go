@@ -15,3 +15,10 @@ require (
 replace github.com/dashevo/dashd-go/btcec/v2 => ../btcec
 
 replace github.com/dashevo/dashd-go => ../
+
+retract (
+	v1.0.1
+	v1.0.0
+	v0.1.1
+	v0.1.0
+)

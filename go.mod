@@ -29,4 +29,14 @@ replace github.com/dashevo/dashd-go/btcutil => ./btcutil
 
 replace github.com/dashevo/dashd-go/btcec/v2 => ./btcec
 
+retract (
+	v0.22.0-beta
+	v0.2.0
+	v0.1.4
+	v0.1.3
+	v0.1.2
+	v0.1.1
+	v0.1.0
+)
+
 go 1.17

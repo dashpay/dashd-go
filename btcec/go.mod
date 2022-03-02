@@ -13,3 +13,8 @@ require github.com/decred/dcrd/crypto/blake256 v1.0.0 // indirect
 // We depend on chainhash as is, so we need to replace to use the version of
 // chainhash included in the version of btcd we're building in.
 replace github.com/dashevo/dashd-go => ../
+
+retract (
+	v2.0.0
+	v2.0.1
+)
