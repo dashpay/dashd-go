@@ -3,7 +3,7 @@ module github.com/dashevo/dashd-go/btcec/v2
 go 1.17
 
 require (
-	github.com/dashevo/dashd-go v0.0.0-00010101000000-000000000000
+	github.com/dashevo/dashd-go v0.0.0-20220302090825-1a6fb8789eb0
 	github.com/davecgh/go-spew v1.1.1
 	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.0.1
 )

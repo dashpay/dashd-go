@@ -3,9 +3,9 @@ module github.com/dashevo/dashd-go/btcutil/psbt
 go 1.17
 
 require (
-	github.com/dashevo/dashd-go v0.0.0-00010101000000-000000000000
-	github.com/dashevo/dashd-go/btcec/v2 v2.0.0-00010101000000-000000000000
-	github.com/dashevo/dashd-go/btcutil v0.0.0-00010101000000-000000000000
+	github.com/dashevo/dashd-go v0.0.0-20220302090825-1a6fb8789eb0
+	github.com/dashevo/dashd-go/btcec/v2 v2.0.0-20220302090825-1a6fb8789eb0
+	github.com/dashevo/dashd-go/btcutil v0.0.0-20220302090825-1a6fb8789eb0
 	github.com/davecgh/go-spew v1.1.1
 )
 
