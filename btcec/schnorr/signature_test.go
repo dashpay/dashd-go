@@ -11,7 +11,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/dashevo/dashd-go/btcec"
+	"github.com/dashevo/dashd-go/btcec/v2"
 	secp_ecdsa "github.com/decred/dcrd/dcrec/secp256k1/v4"
 	ecdsa_schnorr "github.com/decred/dcrd/dcrec/secp256k1/v4/schnorr"
 )
