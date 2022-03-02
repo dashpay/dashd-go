@@ -424,6 +424,10 @@ func TestProTxList(t *testing.T) {
 
 	cmdType := btcjson.ProTxListTypeValid
 	height := 415243
+	client.httpClient.Transport = mockRoundTripperFunc(
+		[]btcjson.ProTxInfoResult{},
+		expectBody(`{"jsonrpc":"1.0","method":"protx","params":["list","valid",true,415243],"id":2}`),
+	)
 	result, err = client.ProTxList(cmdType, true, height)
 	if err != nil {
 		t.Fatal(err)
