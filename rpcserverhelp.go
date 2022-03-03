@@ -206,20 +206,23 @@ var helpDescsEnUS = map[string]string{
 	"unifiedsoftforks-softforks--desc":  "JSON object describing an active softfork deployment used by bitcoind on or after v0.19.0",
 
 	// TxRawResult help.
-	"txrawresult-hex":           "Hex-encoded transaction",
-	"txrawresult-txid":          "The hash of the transaction",
-	"txrawresult-version":       "The transaction version",
-	"txrawresult-locktime":      "The transaction lock time",
-	"txrawresult-vin":           "The transaction inputs as JSON objects",
-	"txrawresult-vout":          "The transaction outputs as JSON objects",
-	"txrawresult-blockhash":     "Hash of the block the transaction is part of",
-	"txrawresult-confirmations": "Number of confirmations of the block",
-	"txrawresult-time":          "Transaction time in seconds since 1 Jan 1970 GMT",
-	"txrawresult-blocktime":     "Block time in seconds since the 1 Jan 1970 GMT",
-	"txrawresult-size":          "The size of the transaction in bytes",
-	"txrawresult-vsize":         "The virtual size of the transaction in bytes",
-	"txrawresult-weight":        "The transaction's weight (between vsize*4-3 and vsize*4)",
-	"txrawresult-hash":          "The wtxid of the transaction",
+	"txrawresult-hex":                  "Hex-encoded transaction",
+	"txrawresult-txid":                 "The hash of the transaction",
+	"txrawresult-version":              "The transaction version",
+	"txrawresult-locktime":             "The transaction lock time",
+	"txrawresult-vin":                  "The transaction inputs as JSON objects",
+	"txrawresult-vout":                 "The transaction outputs as JSON objects",
+	"txrawresult-blockhash":            "Hash of the block the transaction is part of",
+	"txrawresult-confirmations":        "Number of confirmations of the block",
+	"txrawresult-time":                 "Transaction time in seconds since 1 Jan 1970 GMT",
+	"txrawresult-blocktime":            "Block time in seconds since the 1 Jan 1970 GMT",
+	"txrawresult-size":                 "The size of the transaction in bytes",
+	"txrawresult-vsize":                "The virtual size of the transaction in bytes",
+	"txrawresult-weight":               "The transaction's weight (between vsize*4-3 and vsize*4)",
+	"txrawresult-hash":                 "The wtxid of the transaction",
+	"txrawresult-instantlock":          "A bool to indicate the current transaction lock state",
+	"txrawresult-instantlock_internal": "A bool to indicate the current internal transaction lock state",
+	"txrawresult-chainlock":            "A bool to indicate the state of the corresponding block chainlock",
 
 	// SearchRawTransactionsResult help.
 	"searchrawtransactionsresult-hex":           "Hex-encoded transaction",
@@ -255,6 +258,7 @@ var helpDescsEnUS = map[string]string{
 	"getblockverboseresult-nextblockhash":     "The hash of the next block (only if there is one)",
 	"getblockverboseresult-strippedsize":      "The size of the block without witness data",
 	"getblockverboseresult-weight":            "The weight of the block",
+	"getblockverboseresult-chainlock":         "A bool to indicate the state of the chainlock",
 
 	// GetBlockCountCmd help.
 	"getblockcount--synopsis": "Returns the number of blocks in the longest block chain.",
@@ -286,6 +290,7 @@ var helpDescsEnUS = map[string]string{
 	"getblockheaderverboseresult-difficulty":        "The proof-of-work difficulty as a multiple of the minimum difficulty",
 	"getblockheaderverboseresult-previousblockhash": "The hash of the previous block",
 	"getblockheaderverboseresult-nextblockhash":     "The hash of the next block (only if there is one)",
+	"getblockheaderverboseresult-chainlock":         "A bool to indicate if the block has been chainlocked",
 
 	// TemplateRequest help.
 	"templaterequest-mode":         "This is 'template', 'proposal', or omitted",

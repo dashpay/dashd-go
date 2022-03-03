@@ -725,7 +725,7 @@ type TxRawResult struct {
 	Time                int64  `json:"time,omitempty"`
 	Blocktime           int64  `json:"blocktime,omitempty"`
 	InstantLock         bool   `json:"instantlock,omitempty"`
-	InstantLockInternal bool   `json:"instantlockinternal,omitempty"`
+	InstantLockInternal bool   `json:"instantlock_internal,omitempty"`
 	ChainLock           bool   `json:"chainlock,omitempty"`
 }
 
