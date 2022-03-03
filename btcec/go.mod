@@ -9,3 +9,5 @@ require (
 )
 
 require github.com/decred/dcrd/crypto/blake256 v1.0.0 // indirect
+
+replace github.com/dashevo/dashd-go => ../
