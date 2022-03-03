@@ -22,6 +22,11 @@ require (
 	github.com/kkdai/bstream v1.0.0 // indirect
 )
 
+replace (
+	github.com/dashevo/dashd-go/btcec/v2 => ./btcec
+	github.com/dashevo/dashd-go/btcutil => ./btcutil
+)
+
 retract (
 	v0.22.0-beta
 	v0.2.0
