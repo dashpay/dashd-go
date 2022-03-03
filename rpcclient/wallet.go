@@ -2527,6 +2527,48 @@ func (c *Client) ImportPubKeyRescan(pubKey string, rescan bool) error {
 // Miscellaneous Functions
 // ***********************
 
+// NOTE: While getinfo is implemented here (in wallet.go), a btcd chain server
+// will respond to getinfo requests as well, excluding any wallet information.
+
+// FutureGetInfoResult is a future promise to deliver the result of a
+// GetInfoAsync RPC invocation (or an applicable error).
+type FutureGetInfoResult chan *Response
+
+// Receive waits for the Response promised by the future and returns the info
+// provided by the server.
+func (r FutureGetInfoResult) Receive() (*btcjson.InfoWalletResult, error) {
+	res, err := ReceiveFuture(r)
+	if err != nil {
+		return nil, err
+	}
+
+	// Unmarshal result as a getinfo result object.
+	var infoRes btcjson.InfoWalletResult
+	err = json.Unmarshal(res, &infoRes)
+	if err != nil {
+		return nil, err
+	}
+
+	return &infoRes, nil
+}
+
+// GetInfoAsync returns an instance of a type that can be used to get the result
+// of the RPC at some future time by invoking the Receive function on the
+// returned instance.
+//
+// See GetInfo for the blocking version and more details.
+func (c *Client) GetInfoAsync() FutureGetInfoResult {
+	cmd := btcjson.NewGetInfoCmd()
+	return c.SendCmd(cmd)
+}
+
+// GetInfo returns miscellaneous info regarding the RPC server.  The returned
+// info object may be void of wallet information if the remote server does
+// not include wallet functionality.
+func (c *Client) GetInfo() (*btcjson.InfoWalletResult, error) {
+	return c.GetInfoAsync().Receive()
+}
+
 // FutureWalletCreateFundedPsbtResult is a future promise to deliver the result of an
 // WalletCreateFundedPsbt RPC invocation (or an applicable error).
 type FutureWalletCreateFundedPsbtResult chan *Response

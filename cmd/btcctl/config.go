@@ -16,7 +16,7 @@ import (
 	"github.com/dashevo/dashd-go/btcjson"
 	"github.com/dashevo/dashd-go/btcutil"
 	"github.com/dashevo/dashd-go/chaincfg"
-	"github.com/jessevdk/go-flags"
+	flags "github.com/jessevdk/go-flags"
 )
 
 const (
