@@ -9,7 +9,7 @@ LINT_BIN := $(GO_BIN)/golangci-lint
 GOACC_BIN := $(GO_BIN)/go-acc
 
 LINT_COMMIT := v1.18.0
-GOACC_COMMIT := v0.2.7
+GOACC_VERSION := v0.2.7
 
 DEPGET := cd /tmp && GO111MODULE=on go get -v
 GOBUILD := GO111MODULE=on go build -v
@@ -53,7 +53,7 @@ $(LINT_BIN):
 
 $(GOACC_BIN):
 	@$(call print, "Fetching go-acc")
-	$(GOINSTALL) $(GOACC_PKG)@$(GOACC_COMMIT)
+	$(GOINSTALL) $(GOACC_PKG)@$(GOACC_VERSION)
 
 goimports:
 	@$(call print, "Installing goimports.")
