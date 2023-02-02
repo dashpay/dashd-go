@@ -215,14 +215,6 @@ func TestQuorumMemberOf(t *testing.T) {
 	compareWithCliCommand(t, &result, &cli, "quorum", "memberof", proTxHash)
 }
 
-var llmqTypes = map[string]btcjson.LLMQType{
-	"llmq_50_60":  btcjson.LLMQType_50_60,
-	"llmq_400_60": btcjson.LLMQType_400_60,
-	"llmq_400_85": btcjson.LLMQType_400_85,
-	"llmq_100_67": btcjson.LLMQType_100_67,
-	"llmq_5_60":   btcjson.LLMQType_5_60,
-}
-
 func TestQuorumSign(t *testing.T) {
 	requestID := "abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234"
 	messageHash := "51c11d287dfa85aef3eebb5420834c8e443e01d15c0b0a8e397d67e2e51aa239"
@@ -258,8 +250,8 @@ func TestQuorumSign(t *testing.T) {
 		t.Fatal("not a member of any quorums")
 	}
 	quorumHash := mo[0].QuorumHash
-	quorumType, ok := llmqTypes[mo[0].Type]
-	if !ok {
+	quorumType := btcjson.GetLLMQType(mo[0].Type)
+	if quorumType == 0 {
 		t.Fatal("unknown quorum type", mo[0].Type)
 	}
 

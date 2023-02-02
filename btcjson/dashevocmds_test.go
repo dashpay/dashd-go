@@ -179,19 +179,45 @@ func TestDashEvoCmds(t *testing.T) {
 	}
 }
 
-func TestLMQQTypeValidate(t *testing.T) {
+func TestLLMQTypeValidate(t *testing.T) {
 	testCases := []struct {
-		t         btcjson.LLMQType
+		llmqType  btcjson.LLMQType
 		expectErr bool
 	}{{-1, true}, {0, true}, {1, false}, {2, false}, {5, false}, {6, true}, {99, true}, {100, false}, {105, false}, {106, true}}
 
 	for _, tc := range testCases {
-		t.Run(strconv.Itoa(int(tc.t)), func(t *testing.T) {
-			err := tc.t.Validate()
+		t.Run(strconv.Itoa(int(tc.llmqType)), func(t *testing.T) {
+			err := tc.llmqType.Validate()
 			if (err != nil) != tc.expectErr {
-				t.Errorf("unexpected validation result for LLMQ Type %d, expect error %v: %s", tc.t, tc.expectErr, err)
+				t.Errorf("LLMQ Type %d, expected error %v, got %s", tc.llmqType, tc.expectErr, err)
 			}
 		})
 	}
 
+}
+
+func TestLLMQTypeString(t *testing.T) {
+	testCases := []struct {
+		llmqType btcjson.LLMQType
+		name     string
+	}{
+		{0, ""},
+		{btcjson.LLMQType_400_60, "llmq_400_60"},
+		{btcjson.LLMQType_TEST, "llmq_test"},
+		{btcjson.LLMQType_5_60, "llmq_test"}, // exception
+		{999999, ""},
+	}
+	for _, tc := range testCases {
+		t.Run(strconv.Itoa(int(tc.llmqType)), func(t *testing.T) {
+			gotName := tc.llmqType.Name()
+			if gotName != tc.name {
+				t.Errorf("invalid llmq type name, got: %s, expected: %s", tc.llmqType.Name(), tc.name)
+			}
+
+			gotType := btcjson.GetLLMQType(tc.name)
+			if (gotName != "" && tc.llmqType != gotType) || (gotName == "" && gotType != 0) {
+				t.Errorf("invalid llmq type, got: %d, expected: %d", gotType, tc.llmqType)
+			}
+		})
+	}
 }
