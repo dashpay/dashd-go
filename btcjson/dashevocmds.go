@@ -7,7 +7,10 @@
 
 package btcjson
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+)
 
 func init() {
 	// No special flags for commands in this file.
@@ -121,17 +124,37 @@ type LLMQType int
 // Enum of LLMQTypes
 // https://github.com/dashpay/dips/blob/master/dip-0006.md#current-llmq-types
 const (
-	LLMQType_50_60  LLMQType = 1   //every 24 blocks
-	LLMQType_400_60 LLMQType = 2   //288 blocks
-	LLMQType_400_85 LLMQType = 3   //576 blocks
-	LLMQType_100_67 LLMQType = 4   //every 24 blocks
-	LLMQType_5_60   LLMQType = 100 //24 blocks
+	LLMQType_50_60            LLMQType = 1 //every 24 blocks
+	LLMQType_400_60           LLMQType = 2 //288 blocks
+	LLMQType_400_85           LLMQType = 3 //576 blocks
+	LLMQType_100_67           LLMQType = 4 //every 24 blocks
+	LLMQType_60_75            LLMQType = 5
+	LLMQType_TEST             LLMQType = 100 //24 blocks
+	LLMQType_DEVNET           LLMQType = 101
+	LLMQType_TEST_V17         LLMQType = 102
+	LLMQType_TEST_DIP0024     LLMQType = 103
+	LLMQType_TEST_INSTANTSEND LLMQType = 104
+	LLMQType_DEVNET_DIP0024   LLMQType = 105
+
+	// LLMQType_5_60 is replaced with LLMQType_TEST to adhere to DIP-0006 naming
+	LLMQType_5_60 LLMQType = LLMQType_TEST
 )
 
 var (
 	errWrongSizeOfArgs           = errors.New("wrong size of arguments")
 	errQuorumUnmarshalerNotFound = errors.New("quorum unmarshaler not found")
 )
+
+// Validate checks if provided LLMQ type is valid, eg. if it's one of LLMQ types
+// defined in accordance with DIP-0006.
+// See https://github.com/dashpay/dips/blob/master/dip-0006/llmq-types.md
+func (t LLMQType) Validate() error {
+	if (t >= LLMQType_50_60 && t <= LLMQType_60_75) || (t >= LLMQType_TEST && t <= LLMQType_DEVNET_DIP0024) {
+		return nil
+	}
+
+	return fmt.Errorf("unsupported quorum type %d", t)
+}
 
 // QuorumCmd defines the quorum JSON-RPC command.
 type QuorumCmd struct {

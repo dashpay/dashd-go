@@ -10,6 +10,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"reflect"
+	"strconv"
 	"testing"
 
 	"github.com/dashevo/dashd-go/btcjson"
@@ -176,4 +177,21 @@ func TestDashEvoCmds(t *testing.T) {
 			continue
 		}
 	}
+}
+
+func TestLMQQTypeValidate(t *testing.T) {
+	testCases := []struct {
+		t         btcjson.LLMQType
+		expectErr bool
+	}{{-1, true}, {0, true}, {1, false}, {2, false}, {5, false}, {6, true}, {99, true}, {100, false}, {105, false}, {106, true}}
+
+	for _, tc := range testCases {
+		t.Run(strconv.Itoa(int(tc.t)), func(t *testing.T) {
+			err := tc.t.Validate()
+			if (err != nil) != tc.expectErr {
+				t.Errorf("unexpected validation result for LLMQ Type %d, expect error %v: %s", tc.t, tc.expectErr, err)
+			}
+		})
+	}
+
 }
