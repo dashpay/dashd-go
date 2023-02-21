@@ -136,6 +136,8 @@ const (
 	LLMQType_TEST_DIP0024     LLMQType = 103 // 4 members, 2 (66%) threshold, one per hour
 	LLMQType_TEST_INSTANTSEND LLMQType = 104 // 3 members, 2 (66%) threshold, one per hour
 	LLMQType_DEVNET_DIP0024   LLMQType = 105 // 8 members, 4 (50%) threshold, one per hour
+	LLMQType_TEST_PLATFORM    LLMQType = 106 // 3 members, 2 (66%) threshold, one per hour
+	LLMQType_DEVNET_PLATFORM  LLMQType = 107 // 12 members, 8 (67%) threshold, one per hour
 
 	// LLMQType_5_60 is replaced with LLMQType_TEST to adhere to DIP-0006 naming
 	LLMQType_5_60 LLMQType = LLMQType_TEST
@@ -145,7 +147,7 @@ var (
 	errWrongSizeOfArgs           = errors.New("wrong size of arguments")
 	errQuorumUnmarshalerNotFound = errors.New("quorum unmarshaler not found")
 
-	llmqTypes map[string]LLMQType = map[string]LLMQType{
+	llmqTypes = map[string]LLMQType{
 		"llmq_50_60":            LLMQType_50_60,
 		"llmq_400_60":           LLMQType_400_60,
 		"llmq_400_85":           LLMQType_400_85,
@@ -157,6 +159,8 @@ var (
 		"llmq_test_dip0024":     LLMQType_TEST_DIP0024,
 		"llmq_test_instantsend": LLMQType_TEST_INSTANTSEND,
 		"llmq_devnet_dip0024":   LLMQType_DEVNET_DIP0024,
+		"llmq_test_platform":    LLMQType_TEST_PLATFORM,
+		"llmq_devnet_platform":  LLMQType_DEVNET_PLATFORM,
 	}
 )
 
@@ -182,7 +186,7 @@ func (t LLMQType) Name() string {
 // defined in accordance with DIP-0006.
 // See https://github.com/dashpay/dips/blob/master/dip-0006/llmq-types.md
 func (t LLMQType) Validate() error {
-	if (t >= LLMQType_50_60 && t <= LLMQType_60_75) || (t >= LLMQType_TEST && t <= LLMQType_DEVNET_DIP0024) {
+	if (t >= LLMQType_50_60 && t <= LLMQType_60_75) || (t >= LLMQType_TEST && t <= LLMQType_DEVNET_PLATFORM) {
 		return nil
 	}
 
