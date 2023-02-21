@@ -183,7 +183,20 @@ func TestLLMQTypeValidate(t *testing.T) {
 	testCases := []struct {
 		llmqType  btcjson.LLMQType
 		expectErr bool
-	}{{-1, true}, {0, true}, {1, false}, {2, false}, {5, false}, {6, true}, {99, true}, {100, false}, {105, false}, {106, true}}
+	}{
+		{-1, true},
+		{0, true},
+		{1, false},
+		{2, false},
+		{5, false},
+		{6, true},
+		{99, true},
+		{100, false},
+		{105, false},
+		{106, false},
+		{107, false},
+		{108, true},
+	}
 
 	for _, tc := range testCases {
 		t.Run(strconv.Itoa(int(tc.llmqType)), func(t *testing.T) {
