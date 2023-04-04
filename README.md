@@ -33,7 +33,7 @@ directly with dashd-go.
 
 ## Requirements
 
-[Go](http://golang.org) 1.16 or newer.
+[Go](http://golang.org) 1.18 or newer.
 
 ## Installation
 
