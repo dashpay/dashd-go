@@ -10,7 +10,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/dashevo/dashd-go/txscript"
+	"github.com/dashpay/dashd-go/txscript"
 	"github.com/davecgh/go-spew/spew"
 )
 

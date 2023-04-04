@@ -9,8 +9,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/dashevo/dashd-go/addrmgr"
-	"github.com/dashevo/dashd-go/wire"
+	"github.com/dashpay/dashd-go/addrmgr"
+	"github.com/dashpay/dashd-go/wire"
 )
 
 func TestChance(t *testing.T) {

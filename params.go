@@ -5,8 +5,8 @@
 package main
 
 import (
-	"github.com/dashevo/dashd-go/chaincfg"
-	"github.com/dashevo/dashd-go/wire"
+	"github.com/dashpay/dashd-go/chaincfg"
+	"github.com/dashpay/dashd-go/wire"
 )
 
 // activeNetParams is a pointer to the parameters specific to the

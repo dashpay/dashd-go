@@ -7,7 +7,7 @@ package btcjson_test
 
 import (
 	"encoding/json"
-	"github.com/dashevo/dashd-go/btcjson"
+	"github.com/dashpay/dashd-go/btcjson"
 	"math"
 	"reflect"
 	"testing"

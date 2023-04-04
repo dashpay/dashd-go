@@ -12,9 +12,9 @@ interface. The functions are only exported while the tests are being run.
 package btcutil
 
 import (
-	"github.com/dashevo/dashd-go/btcec/v2"
-	"github.com/dashevo/dashd-go/btcutil/base58"
-	"github.com/dashevo/dashd-go/btcutil/bech32"
+	"github.com/dashpay/dashd-go/btcec/v2"
+	"github.com/dashpay/dashd-go/btcutil/base58"
+	"github.com/dashpay/dashd-go/btcutil/bech32"
 	"golang.org/x/crypto/ripemd160"
 )
 

@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/dashevo/dashd-go/btcutil"
+	"github.com/dashpay/dashd-go/btcutil"
 	flags "github.com/jessevdk/go-flags"
 )
 

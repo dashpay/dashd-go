@@ -10,7 +10,7 @@ import (
 	"strings"
 
 	"github.com/btcsuite/btclog"
-	"github.com/dashevo/dashd-go/database"
+	"github.com/dashpay/dashd-go/database"
 	flags "github.com/jessevdk/go-flags"
 )
 

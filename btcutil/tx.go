@@ -8,8 +8,8 @@ import (
 	"bytes"
 	"io"
 
-	"github.com/dashevo/dashd-go/chaincfg/chainhash"
-	"github.com/dashevo/dashd-go/wire"
+	"github.com/dashpay/dashd-go/chaincfg/chainhash"
+	"github.com/dashpay/dashd-go/wire"
 )
 
 // TxIndexUnknown is the value returned for a transaction index that is unknown.

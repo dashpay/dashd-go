@@ -1,7 +1,7 @@
 chaincfg
 ========
 
-[![Build Status](https://github.com/dashevo/dashd-go/workflows/Build%20and%20Test/badge.svg)](https://github.com/btcsuite/btcd/actions)
+[![Build Status](https://github.com/dashpay/dashd-go/workflows/Build%20and%20Test/badge.svg)](https://github.com/btcsuite/btcd/actions)
 [![ISC License](http://img.shields.io/badge/license-ISC-blue.svg)](http://copyfree.org)
 [![GoDoc](https://img.shields.io/badge/godoc-reference-blue.svg)](https://pkg.go.dev/github.com/btcsuite/btcd/chaincfg)
 
@@ -20,12 +20,12 @@ define their own network.
 package main
 
 import (
-	"flag"
-	"fmt"
-	"log"
+ "flag"
+ "fmt"
+ "log"
 
-	"github.com/btcsuite/btcd/btcutil"
-	"github.com/btcsuite/btcd/chaincfg"
+ "github.com/btcsuite/btcd/btcutil"
+ "github.com/btcsuite/btcd/chaincfg"
 )
 
 var testnet = flag.Bool("testnet", false, "operate on the testnet Bitcoin network")
@@ -34,29 +34,29 @@ var testnet = flag.Bool("testnet", false, "operate on the testnet Bitcoin networ
 var chainParams = &chaincfg.MainNetParams
 
 func main() {
-	flag.Parse()
+ flag.Parse()
 
-	// Modify active network parameters if operating on testnet.
-	if *testnet {
-		chainParams = &chaincfg.TestNet3Params
-	}
+ // Modify active network parameters if operating on testnet.
+ if *testnet {
+  chainParams = &chaincfg.TestNet3Params
+ }
 
-	// later...
+ // later...
 
-	// Create and print new payment address, specific to the active network.
-	pubKeyHash := make([]byte, 20)
-	addr, err := btcutil.NewAddressPubKeyHash(pubKeyHash, chainParams)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(addr)
+ // Create and print new payment address, specific to the active network.
+ pubKeyHash := make([]byte, 20)
+ addr, err := btcutil.NewAddressPubKeyHash(pubKeyHash, chainParams)
+ if err != nil {
+  log.Fatal(err)
+ }
+ fmt.Println(addr)
 }
 ```
 
 ## Installation and Updating
 
 ```bash
-$ go get -u github.com/btcsuite/btcd/chaincfg
+go get -u github.com/btcsuite/btcd/chaincfg
 ```
 
 ## GPG Verification Key
@@ -66,15 +66,17 @@ has not been tampered with and is coming from the btcsuite developers.  To
 verify the signature perform the following:
 
 - Download the public key from the Conformal website at
-  https://opensource.conformal.com/GIT-GPG-KEY-conformal.txt
+  <https://opensource.conformal.com/GIT-GPG-KEY-conformal.txt>
 
 - Import the public key into your GPG keyring:
+
   ```bash
   gpg --import GIT-GPG-KEY-conformal.txt
   ```
 
 - Verify the release tag with the following command where `TAG_NAME` is a
   placeholder for the specific tag:
+
   ```bash
   git tag -v TAG_NAME
   ```

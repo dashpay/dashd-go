@@ -17,7 +17,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/dashevo/dashd-go/chaincfg"
+	"github.com/dashpay/dashd-go/chaincfg"
 	secp_ecdsa "github.com/decred/dcrd/dcrec/secp256k1/v4"
 )
 
@@ -1095,7 +1095,8 @@ func TestMaximumDepth(t *testing.T) {
 // extended keys.
 //
 // The following tool was used for generating the tests:
-//   https://jlopp.github.io/xpub-converter
+//
+//	https://jlopp.github.io/xpub-converter
 func TestCloneWithVersion(t *testing.T) {
 	tests := []struct {
 		name    string

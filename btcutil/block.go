@@ -9,8 +9,8 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/dashevo/dashd-go/chaincfg/chainhash"
-	"github.com/dashevo/dashd-go/wire"
+	"github.com/dashpay/dashd-go/chaincfg/chainhash"
+	"github.com/dashpay/dashd-go/wire"
 )
 
 // OutOfRangeError describes an error due to accessing an element that is out

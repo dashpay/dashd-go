@@ -8,8 +8,8 @@ import (
 	"fmt"
 
 	"github.com/btcsuite/btclog"
-	"github.com/dashevo/dashd-go/database"
-	"github.com/dashevo/dashd-go/wire"
+	"github.com/dashpay/dashd-go/database"
+	"github.com/dashpay/dashd-go/wire"
 )
 
 var log = btclog.Disabled

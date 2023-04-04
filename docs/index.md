@@ -1,6 +1,6 @@
 # btcd
 
-[![Build Status](https://travis-ci.org/dashevo/dashd-go.png?branch=master)](https://github.com/dashevo/dashd-go/actions)
+[![Build Status](https://travis-ci.org/dashpay/dashd-go.png?branch=master)](https://github.com/dashpay/dashd-go/actions)
 [![ISC License](http://img.shields.io/badge/license-ISC-blue.svg)](http://copyfree.org)
 [![GoDoc](https://img.shields.io/badge/godoc-reference-blue.svg)](https://pkg.go.dev/github.com/btcsuite/btcd)
 
@@ -54,4 +54,3 @@ Documentation is a work-in-progress. It is available at [btcd.readthedocs.io](ht
 ## License
 
 btcd is licensed under the [copyfree](http://copyfree.org) ISC License.
-

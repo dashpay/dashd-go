@@ -5,7 +5,7 @@ import (
 	"io"
 	"sort"
 
-	"github.com/dashevo/dashd-go/wire"
+	"github.com/dashpay/dashd-go/wire"
 )
 
 // POutput is a struct encapsulating all the data that can be attached

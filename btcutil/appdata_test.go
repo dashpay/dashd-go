@@ -12,7 +12,7 @@ import (
 	"testing"
 	"unicode"
 
-	"github.com/dashevo/dashd-go/btcutil"
+	"github.com/dashpay/dashd-go/btcutil"
 )
 
 // TestAppDataDir tests the API for AppDataDir to ensure it gives expected

@@ -9,9 +9,9 @@ import (
 	"errors"
 	"sort"
 
-	"github.com/dashevo/dashd-go/btcutil"
-	"github.com/dashevo/dashd-go/chaincfg/chainhash"
-	"github.com/dashevo/dashd-go/wire"
+	"github.com/dashpay/dashd-go/btcutil"
+	"github.com/dashpay/dashd-go/chaincfg/chainhash"
+	"github.com/dashpay/dashd-go/wire"
 )
 
 // Coin represents a spendable transaction outpoint
@@ -75,7 +75,8 @@ func (cs *CoinSet) TotalValue() (value btcutil.Amount) {
 }
 
 // TotalValueAge returns the total value * number of confirmations
-//  of the coins in the set.
+//
+//	of the coins in the set.
 func (cs *CoinSet) TotalValueAge() (valueAge int64) {
 	return cs.totalValueAge
 }
@@ -238,7 +239,6 @@ func (s MaxValueAgeCoinSelector) CoinSelect(targetValue btcutil.Amount, coins []
 // input priority over the threshold, but no guarantees will be made as to
 // minimality of the selection.  The selection below is almost certainly
 // suboptimal.
-//
 type MinPriorityCoinSelector struct {
 	MaxInputs              int
 	MinChangeAmount        btcutil.Amount

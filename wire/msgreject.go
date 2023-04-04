@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/dashevo/dashd-go/chaincfg/chainhash"
+	"github.com/dashpay/dashd-go/chaincfg/chainhash"
 )
 
 // RejectCode represents a numeric value by which a remote peer indicates

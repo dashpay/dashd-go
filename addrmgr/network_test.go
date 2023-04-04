@@ -8,8 +8,8 @@ import (
 	"net"
 	"testing"
 
-	"github.com/dashevo/dashd-go/addrmgr"
-	"github.com/dashevo/dashd-go/wire"
+	"github.com/dashpay/dashd-go/addrmgr"
+	"github.com/dashpay/dashd-go/wire"
 )
 
 // TestIPTypes ensures the various functions which determine the type of an IP

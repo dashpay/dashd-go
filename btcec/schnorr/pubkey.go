@@ -8,7 +8,7 @@ package schnorr
 import (
 	"fmt"
 
-	"github.com/dashevo/dashd-go/btcec/v2"
+	"github.com/dashpay/dashd-go/btcec/v2"
 	secp "github.com/decred/dcrd/dcrec/secp256k1/v4"
 )
 

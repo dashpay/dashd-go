@@ -7,7 +7,7 @@ package base58_test
 import (
 	"testing"
 
-	"github.com/dashevo/dashd-go/btcutil/base58"
+	"github.com/dashpay/dashd-go/btcutil/base58"
 )
 
 var checkEncodingStringTests = []struct {

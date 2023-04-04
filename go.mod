@@ -1,4 +1,4 @@
-module github.com/dashevo/dashd-go
+module github.com/dashpay/dashd-go
 
 require (
 	github.com/btcsuite/btclog v0.0.0-20170628155309-84c8d2346e9f
@@ -6,8 +6,8 @@ require (
 	github.com/btcsuite/goleveldb v1.0.0
 	github.com/btcsuite/websocket v0.0.0-20150119174127-31079b680792
 	github.com/btcsuite/winsvc v1.0.0
-	github.com/dashevo/dashd-go/btcec/v2 v2.0.5
-	github.com/dashevo/dashd-go/btcutil v1.1.1
+	github.com/dashpay/dashd-go/btcec/v2 v2.0.5
+	github.com/dashpay/dashd-go/btcutil v1.1.1
 	github.com/davecgh/go-spew v1.1.1
 	github.com/decred/dcrd/lru v1.0.0
 	github.com/jessevdk/go-flags v1.4.0
@@ -23,8 +23,9 @@ require (
 )
 
 replace (
-	github.com/dashevo/dashd-go/btcec/v2 => ./btcec
-	github.com/dashevo/dashd-go/btcutil => ./btcutil
+	github.com/dashpay/dashd-go => ./
+	github.com/dashpay/dashd-go/btcec/v2 => ./btcec
+	github.com/dashpay/dashd-go/btcutil => ./btcutil
 )
 
 retract (

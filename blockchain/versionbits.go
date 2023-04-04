@@ -5,7 +5,7 @@
 package blockchain
 
 import (
-	"github.com/dashevo/dashd-go/chaincfg"
+	"github.com/dashpay/dashd-go/chaincfg"
 )
 
 const (

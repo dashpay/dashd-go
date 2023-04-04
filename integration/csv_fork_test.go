@@ -15,14 +15,14 @@ import (
 	"testing"
 	"time"
 
-	"github.com/dashevo/dashd-go/blockchain"
-	"github.com/dashevo/dashd-go/btcec/v2"
-	"github.com/dashevo/dashd-go/btcutil"
-	"github.com/dashevo/dashd-go/chaincfg"
-	"github.com/dashevo/dashd-go/chaincfg/chainhash"
-	"github.com/dashevo/dashd-go/integration/rpctest"
-	"github.com/dashevo/dashd-go/txscript"
-	"github.com/dashevo/dashd-go/wire"
+	"github.com/dashpay/dashd-go/blockchain"
+	"github.com/dashpay/dashd-go/btcec/v2"
+	"github.com/dashpay/dashd-go/btcutil"
+	"github.com/dashpay/dashd-go/chaincfg"
+	"github.com/dashpay/dashd-go/chaincfg/chainhash"
+	"github.com/dashpay/dashd-go/integration/rpctest"
+	"github.com/dashpay/dashd-go/txscript"
+	"github.com/dashpay/dashd-go/wire"
 )
 
 const (
@@ -95,17 +95,22 @@ func makeTestOutput(r *rpctest.Harness, t *testing.T,
 // them.
 //
 // Overview:
-//  - Pre soft-fork:
-//    - Transactions with non-final lock-times from the PoV of MTP should be
-//      rejected from the mempool.
-//    - Transactions within non-final MTP based lock-times should be accepted
-//      in valid blocks.
 //
-//  - Post soft-fork:
-//    - Transactions with non-final lock-times from the PoV of MTP should be
-//      rejected from the mempool and when found within otherwise valid blocks.
-//    - Transactions with final lock-times from the PoV of MTP should be
-//      accepted to the mempool and mined in future block.
+//   - Pre soft-fork:
+//
+//   - Transactions with non-final lock-times from the PoV of MTP should be
+//     rejected from the mempool.
+//
+//   - Transactions within non-final MTP based lock-times should be accepted
+//     in valid blocks.
+//
+//   - Post soft-fork:
+//
+//   - Transactions with non-final lock-times from the PoV of MTP should be
+//     rejected from the mempool and when found within otherwise valid blocks.
+//
+//   - Transactions with final lock-times from the PoV of MTP should be
+//     accepted to the mempool and mined in future block.
 func TestBIP0113Activation(t *testing.T) {
 	t.Parallel()
 
@@ -391,13 +396,13 @@ func assertTxInBlock(r *rpctest.Harness, t *testing.T, blockHash *chainhash.Hash
 // 112 and BIP 68 rule-set after the activation of the CSV-package soft-fork.
 //
 // Overview:
-//  - Pre soft-fork:
-//    - A transaction spending a CSV output validly should be rejected from the
-//    mempool, but accepted in a valid generated block including the
-//    transaction.
-//  - Post soft-fork:
-//    - See the cases exercised within the table driven tests towards the end
-//    of this test.
+//   - Pre soft-fork:
+//   - A transaction spending a CSV output validly should be rejected from the
+//     mempool, but accepted in a valid generated block including the
+//     transaction.
+//   - Post soft-fork:
+//   - See the cases exercised within the table driven tests towards the end
+//     of this test.
 func TestBIP0068AndBIP0112Activation(t *testing.T) {
 	t.Parallel()
 

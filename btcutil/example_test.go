@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/dashevo/dashd-go/btcutil"
+	"github.com/dashpay/dashd-go/btcutil"
 )
 
 func ExampleAmount() {

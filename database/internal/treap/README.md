@@ -1,7 +1,7 @@
 treap
 =====
 
-[![Build Status](https://github.com/dashevo/dashd-go/workflows/Build%20and%20Test/badge.svg)](https://github.com/btcsuite/btcd/actions)
+[![Build Status](https://github.com/dashpay/dashd-go/workflows/Build%20and%20Test/badge.svg)](https://github.com/btcsuite/btcd/actions)
 [![ISC License](http://img.shields.io/badge/license-ISC-blue.svg)](http://copyfree.org)
 [![GoDoc](https://pkg.go.dev/github.com/btcsuite/btcd/database/internal/treap?status.png)](https://pkg.go.dev/github.com/btcsuite/btcd/database/internal/treap)
 

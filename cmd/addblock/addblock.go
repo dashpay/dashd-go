@@ -9,10 +9,10 @@ import (
 	"path/filepath"
 
 	"github.com/btcsuite/btclog"
-	"github.com/dashevo/dashd-go/blockchain"
-	"github.com/dashevo/dashd-go/blockchain/indexers"
-	"github.com/dashevo/dashd-go/database"
-	"github.com/dashevo/dashd-go/limits"
+	"github.com/dashpay/dashd-go/blockchain"
+	"github.com/dashpay/dashd-go/blockchain/indexers"
+	"github.com/dashpay/dashd-go/database"
+	"github.com/dashpay/dashd-go/limits"
 )
 
 const (

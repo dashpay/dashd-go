@@ -16,9 +16,9 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/dashevo/dashd-go/btcutil"
-	"github.com/dashevo/dashd-go/chaincfg/chainhash"
-	"github.com/dashevo/dashd-go/mining"
+	"github.com/dashpay/dashd-go/btcutil"
+	"github.com/dashpay/dashd-go/chaincfg/chainhash"
+	"github.com/dashpay/dashd-go/mining"
 )
 
 // TODO incorporate Alex Morcos' modifications to Gavin's initial model

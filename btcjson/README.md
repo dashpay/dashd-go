@@ -1,9 +1,9 @@
 btcjson
 =======
 
-[![Build Status](https://github.com/dashevo/dashd-go/workflows/Build%20and%20Test/badge.svg)](https://github.com/btcsuite/btcd/actions)
+[![Build Status](https://github.com/dashpay/dashd-go/workflows/Build%20and%20Test/badge.svg)](https://github.com/btcsuite/btcd/actions)
 [![ISC License](http://img.shields.io/badge/license-ISC-blue.svg)](http://copyfree.org)
-[![GoDoc](https://img.shields.io/badge/godoc-reference-blue.svg)](http://godoc.org/github.com/dashevo/dashd-go/btcjson)
+[![GoDoc](https://img.shields.io/badge/godoc-reference-blue.svg)](http://godoc.org/github.com/dashpay/dashd-go/btcjson)
 
 Package btcjson implements concrete types for marshalling to and from the
 bitcoin JSON-RPC API.  A comprehensive suite of tests is provided to ensure
@@ -25,22 +25,22 @@ ints, etc) to higher-level types with many nice and useful properties.
 ## Installation and Updating
 
 ```bash
-$ go get -u github.com/dashevo/dashd-go/btcjson
+go get -u github.com/dashpay/dashd-go/btcjson
 ```
 
 ## Examples
 
-* [Marshal Command](http://godoc.org/github.com/dashevo/dashd-go/btcjson#example-MarshalCmd)  
+* [Marshal Command](http://godoc.org/github.com/dashpay/dashd-go/btcjson#example-MarshalCmd)  
   Demonstrates how to create and marshal a command into a JSON-RPC request.
 
-* [Unmarshal Command](http://godoc.org/github.com/dashevo/dashd-go/btcjson#example-UnmarshalCmd)  
+* [Unmarshal Command](http://godoc.org/github.com/dashpay/dashd-go/btcjson#example-UnmarshalCmd)  
   Demonstrates how to unmarshal a JSON-RPC request and then unmarshal the
   concrete request into a concrete command.
 
-* [Marshal Response](http://godoc.org/github.com/dashevo/dashd-go/btcjson#example-MarshalResponse)  
+* [Marshal Response](http://godoc.org/github.com/dashpay/dashd-go/btcjson#example-MarshalResponse)  
   Demonstrates how to marshal a JSON-RPC response.
 
-* [Unmarshal Response](http://godoc.org/github.com/dashevo/dashd-go/btcjson#example-package--UnmarshalResponse)  
+* [Unmarshal Response](http://godoc.org/github.com/dashpay/dashd-go/btcjson#example-package--UnmarshalResponse)  
   Demonstrates how to unmarshal a JSON-RPC response and then unmarshal the
   result field in the response to a concrete type.
 
@@ -50,16 +50,18 @@ All official release tags are signed by Conformal so users can ensure the code
 has not been tampered with and is coming from the btcsuite developers.  To
 verify the signature perform the following:
 
-- Download the public key from the Conformal website at
-  https://opensource.conformal.com/GIT-GPG-KEY-conformal.txt
+* Download the public key from the Conformal website at
+  <https://opensource.conformal.com/GIT-GPG-KEY-conformal.txt>
 
-- Import the public key into your GPG keyring:
+* Import the public key into your GPG keyring:
+
   ```bash
   gpg --import GIT-GPG-KEY-conformal.txt
   ```
 
-- Verify the release tag with the following command where `TAG_NAME` is a
+* Verify the release tag with the following command where `TAG_NAME` is a
   placeholder for the specific tag:
+
   ```bash
   git tag -v TAG_NAME
   ```

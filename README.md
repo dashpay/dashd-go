@@ -2,7 +2,7 @@ dashd-go (in development - not working)
 ====
 
 [![Build Status](https://github.com/btcsuite/btcd/workflows/Build%20and%20Test/badge.svg)](https://github.com/btcsuite/btcd/actions)
-[![Coverage Status](https://coveralls.io/repos/github/dashevo/dashd-go/badge.svg?branch=master)](https://coveralls.io/github/dashevo/dashd-go?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/dashpay/dashd-go/badge.svg?branch=master)](https://coveralls.io/github/dashpay/dashd-go?branch=master)
 [![ISC License](https://img.shields.io/badge/license-ISC-blue.svg)](http://copyfree.org)
 [![GoDoc](https://img.shields.io/badge/godoc-reference-blue.svg)](https://pkg.go.dev/github.com/btcsuite/btcd)
 
@@ -37,18 +37,18 @@ directly with dashd-go.
 
 ## Installation
 
-https://github.com/btcsuite/btcd/releases
+<https://github.com/btcsuite/btcd/releases>
 
 #### Linux/BSD/MacOSX/POSIX - Build from Source
 
 - Install Go according to the installation instructions here:
-  http://golang.org/doc/install
+  <http://golang.org/doc/install>
 
 - Ensure Go was installed properly and is a supported version:
 
 ```bash
-$ go version
-$ go env GOROOT GOPATH
+go version
+go env GOROOT GOPATH
 ```
 
 NOTE: The `GOROOT` and `GOPATH` above must not be the same path.  It is
@@ -59,8 +59,8 @@ recommended that `GOPATH` is set to a directory in your home directory such as
 - Run the following commands to obtain btcd, all dependencies, and install it:
 
 ```bash
-$ cd $GOPATH/src/github.com/btcsuite/btcd
-$ GO111MODULE=on go install -v . ./cmd/...
+cd $GOPATH/src/github.com/btcsuite/btcd
+GO111MODULE=on go install -v . ./cmd/...
 ```
 
 - dashd-go (and utilities) will now be installed in ```$GOPATH/bin```.  If you did
@@ -74,9 +74,9 @@ $ GO111MODULE=on go install -v . ./cmd/...
 - Run the following commands to update btcd, all dependencies, and install it:
 
 ```bash
-$ cd $GOPATH/src/github.com/btcsuite/btcd
-$ git pull
-$ GO111MODULE=on go install -v . ./cmd/...
+cd $GOPATH/src/github.com/btcsuite/btcd
+git pull
+GO111MODULE=on go install -v . ./cmd/...
 ```
 
 ## Getting Started
@@ -88,7 +88,7 @@ configuration.
 #### Linux/BSD/POSIX/Source
 
 ```bash
-$ ./btcd
+./btcd
 ```
 
 ## IRC

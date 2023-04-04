@@ -16,11 +16,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/dashevo/dashd-go/blockchain"
-	"github.com/dashevo/dashd-go/chaincfg"
-	"github.com/dashevo/dashd-go/chaincfg/chainhash"
-	"github.com/dashevo/dashd-go/integration/rpctest"
-	"github.com/dashevo/dashd-go/rpcclient"
+	"github.com/dashpay/dashd-go/blockchain"
+	"github.com/dashpay/dashd-go/chaincfg"
+	"github.com/dashpay/dashd-go/chaincfg/chainhash"
+	"github.com/dashpay/dashd-go/integration/rpctest"
+	"github.com/dashpay/dashd-go/rpcclient"
 )
 
 func testGetBestBlock(r *rpctest.Harness, t *testing.T) {

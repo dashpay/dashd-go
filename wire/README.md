@@ -1,7 +1,7 @@
 wire
 ====
 
-[![Build Status](https://github.com/dashevo/dashd-go/workflows/Build%20and%20Test/badge.svg)](https://github.com/btcsuite/btcd/actions)
+[![Build Status](https://github.com/dashpay/dashd-go/workflows/Build%20and%20Test/badge.svg)](https://github.com/btcsuite/btcd/actions)
 [![ISC License](http://img.shields.io/badge/license-ISC-blue.svg)](http://copyfree.org)
 [![GoDoc](https://img.shields.io/badge/godoc-reference-blue.svg)](https://pkg.go.dev/github.com/btcsuite/btcd/wire)
 =======
@@ -19,7 +19,7 @@ protocol level.
 ## Installation and Updating
 
 ```bash
-$ go get -u github.com/btcsuite/btcd/wire
+go get -u github.com/btcsuite/btcd/wire
 ```
 
 ## Bitcoin Message Overview
@@ -45,19 +45,19 @@ function. It accepts any `io.Reader`, but typically this will be a `net.Conn`
 to a remote node running a bitcoin peer.  Example syntax is:
 
 ```Go
-	// Use the most recent protocol version supported by the package and the
-	// main bitcoin network.
-	pver := wire.ProtocolVersion
-	btcnet := wire.MainNet
+ // Use the most recent protocol version supported by the package and the
+ // main bitcoin network.
+ pver := wire.ProtocolVersion
+ btcnet := wire.MainNet
 
-	// Reads and validates the next bitcoin message from conn using the
-	// protocol version pver and the bitcoin network btcnet.  The returns
-	// are a wire.Message, a []byte which contains the unmarshalled
-	// raw payload, and a possible error.
-	msg, rawPayload, err := wire.ReadMessage(conn, pver, btcnet)
-	if err != nil {
-		// Log and handle the error
-	}
+ // Reads and validates the next bitcoin message from conn using the
+ // protocol version pver and the bitcoin network btcnet.  The returns
+ // are a wire.Message, a []byte which contains the unmarshalled
+ // raw payload, and a possible error.
+ msg, rawPayload, err := wire.ReadMessage(conn, pver, btcnet)
+ if err != nil {
+  // Log and handle the error
+ }
 ```
 
 See the package documentation for details on determining the message type.
@@ -70,21 +70,21 @@ to a remote node running a bitcoin peer. Example syntax to request addresses
 from a remote peer is:
 
 ```Go
-	// Use the most recent protocol version supported by the package and the
-	// main bitcoin network.
-	pver := wire.ProtocolVersion
-	btcnet := wire.MainNet
+ // Use the most recent protocol version supported by the package and the
+ // main bitcoin network.
+ pver := wire.ProtocolVersion
+ btcnet := wire.MainNet
 
-	// Create a new getaddr bitcoin message.
-	msg := wire.NewMsgGetAddr()
+ // Create a new getaddr bitcoin message.
+ msg := wire.NewMsgGetAddr()
 
-	// Writes a bitcoin message msg to conn using the protocol version
-	// pver, and the bitcoin network btcnet.  The return is a possible
-	// error.
-	err := wire.WriteMessage(conn, msg, pver, btcnet)
-	if err != nil {
-		// Log and handle the error
-	}
+ // Writes a bitcoin message msg to conn using the protocol version
+ // pver, and the bitcoin network btcnet.  The return is a possible
+ // error.
+ err := wire.WriteMessage(conn, msg, pver, btcnet)
+ if err != nil {
+  // Log and handle the error
+ }
 ```
 
 ## GPG Verification Key
@@ -94,15 +94,17 @@ has not been tampered with and is coming from the btcsuite developers.  To
 verify the signature perform the following:
 
 - Download the public key from the Conformal website at
-  https://opensource.conformal.com/GIT-GPG-KEY-conformal.txt
+  <https://opensource.conformal.com/GIT-GPG-KEY-conformal.txt>
 
 - Import the public key into your GPG keyring:
+
   ```bash
   gpg --import GIT-GPG-KEY-conformal.txt
   ```
 
 - Verify the release tag with the following command where `TAG_NAME` is a
   placeholder for the specific tag:
+
   ```bash
   git tag -v TAG_NAME
   ```

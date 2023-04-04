@@ -7,13 +7,13 @@ package main
 import (
 	"sync/atomic"
 
-	"github.com/dashevo/dashd-go/blockchain"
-	"github.com/dashevo/dashd-go/btcutil"
-	"github.com/dashevo/dashd-go/chaincfg/chainhash"
-	"github.com/dashevo/dashd-go/mempool"
-	"github.com/dashevo/dashd-go/netsync"
-	"github.com/dashevo/dashd-go/peer"
-	"github.com/dashevo/dashd-go/wire"
+	"github.com/dashpay/dashd-go/blockchain"
+	"github.com/dashpay/dashd-go/btcutil"
+	"github.com/dashpay/dashd-go/chaincfg/chainhash"
+	"github.com/dashpay/dashd-go/mempool"
+	"github.com/dashpay/dashd-go/netsync"
+	"github.com/dashpay/dashd-go/peer"
+	"github.com/dashpay/dashd-go/wire"
 )
 
 // rpcPeer provides a peer for use with the RPC server and implements the

@@ -9,8 +9,8 @@ import (
 	"encoding/json"
 	"log"
 
-	"github.com/dashevo/dashd-go/btcjson"
-	"github.com/dashevo/dashd-go/rpcclient"
+	"github.com/dashpay/dashd-go/btcjson"
+	"github.com/dashpay/dashd-go/rpcclient"
 )
 
 // NameShowCmd defines the name_show JSON-RPC command.

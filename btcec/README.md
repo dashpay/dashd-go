@@ -1,7 +1,7 @@
 btcec
 =====
 
-[![Build Status](https://github.com/dashevo/dashd-go/workflows/Build%20and%20Test/badge.svg)](https://github.com/btcsuite/btcd/actions)
+[![Build Status](https://github.com/dashpay/dashd-go/workflows/Build%20and%20Test/badge.svg)](https://github.com/btcsuite/btcd/actions)
 [![ISC License](http://img.shields.io/badge/license-ISC-blue.svg)](http://copyfree.org)
 [![GoDoc](https://pkg.go.dev/github.com/btcsuite/btcd/btcec/v2?status.png)](https://pkg.go.dev/github.com/btcsuite/btcd/btcec/v2)
 
@@ -20,7 +20,7 @@ use secp256k1 elliptic curve cryptography.
 ## Installation and Updating
 
 ```bash
-$ go install -u -v github.com/btcsuite/btcd/btcec/v2
+go install -u -v github.com/btcsuite/btcd/btcec/v2
 ```
 
 ## Examples
@@ -37,4 +37,3 @@ $ go install -u -v github.com/btcsuite/btcd/btcec/v2
 
 Package btcec is licensed under the [copyfree](http://copyfree.org) ISC License
 except for btcec.go and btcec_test.go which is under the same license as Go.
-

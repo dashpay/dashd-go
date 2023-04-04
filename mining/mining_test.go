@@ -9,7 +9,7 @@ import (
 	"math/rand"
 	"testing"
 
-	"github.com/dashevo/dashd-go/btcutil"
+	"github.com/dashpay/dashd-go/btcutil"
 )
 
 // TestTxFeePrioHeap ensures the priority queue for transaction fees and
