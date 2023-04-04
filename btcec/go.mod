@@ -1,9 +1,9 @@
-module github.com/dashpay/dashd-go/btcec
+module github.com/dashpay/dashd-go/btcec/v2
 
-go 1.17
+go 1.18
 
 require (
-	github.com/dashpay/dashd-go s-dashevo-dashpay
+	github.com/dashpay/dashd-go v0.24.0
 	github.com/davecgh/go-spew v1.1.1
 	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.0.1
 )
