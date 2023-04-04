@@ -10,10 +10,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/dashevo/dashd-go/chaincfg"
-	"github.com/dashevo/dashd-go/chaincfg/chainhash"
-	"github.com/dashevo/dashd-go/database"
-	"github.com/dashevo/dashd-go/wire"
+	"github.com/dashpay/dashd-go/chaincfg"
+	"github.com/dashpay/dashd-go/chaincfg/chainhash"
+	"github.com/dashpay/dashd-go/database"
+	"github.com/dashpay/dashd-go/wire"
 )
 
 // blockStatus is a bit field representing the validation state of the block.

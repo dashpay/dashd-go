@@ -5,10 +5,10 @@
 package bloom
 
 import (
-	"github.com/dashevo/dashd-go/blockchain"
-	"github.com/dashevo/dashd-go/btcutil"
-	"github.com/dashevo/dashd-go/chaincfg/chainhash"
-	"github.com/dashevo/dashd-go/wire"
+	"github.com/dashpay/dashd-go/blockchain"
+	"github.com/dashpay/dashd-go/btcutil"
+	"github.com/dashpay/dashd-go/chaincfg/chainhash"
+	"github.com/dashpay/dashd-go/wire"
 )
 
 // merkleBlock is used to house intermediate information needed to generate a

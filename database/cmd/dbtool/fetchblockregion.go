@@ -10,8 +10,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/dashevo/dashd-go/chaincfg/chainhash"
-	"github.com/dashevo/dashd-go/database"
+	"github.com/dashpay/dashd-go/chaincfg/chainhash"
+	"github.com/dashpay/dashd-go/database"
 )
 
 // blockRegionCmd defines the configuration options for the fetchblockregion

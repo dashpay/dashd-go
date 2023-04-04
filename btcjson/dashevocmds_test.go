@@ -13,18 +13,18 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/dashevo/dashd-go/btcjson"
+	"github.com/dashpay/dashd-go/btcjson"
 )
 
 func pString(s string) *string                       { return &s }
 func pBool(b bool) *bool                             { return &b }
 func pLLMQType(l btcjson.LLMQType) *btcjson.LLMQType { return &l }
 
-// TestDashEvoCmds tests all of the dash evo commands marshal and unmarshal
+// TestdashpayCmds tests all of the dash evo commands marshal and unmarshal
 // into valid results include handling of optional fields being omitted in the
 // marshalled command, while optional fields with defaults have the default
 // assigned on unmarshalled commands.
-func TestDashEvoCmds(t *testing.T) {
+func TestdashpayCmds(t *testing.T) {
 	t.Parallel()
 
 	testID := 1

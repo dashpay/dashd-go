@@ -7,7 +7,7 @@ package blockchain
 import (
 	"testing"
 
-	"github.com/dashevo/dashd-go/btcutil"
+	"github.com/dashpay/dashd-go/btcutil"
 )
 
 // TestMerkle tests the BuildMerkleTreeStore API.

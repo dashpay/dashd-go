@@ -12,9 +12,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/dashevo/dashd-go/btcutil"
-	"github.com/dashevo/dashd-go/chaincfg"
-	"github.com/dashevo/dashd-go/wire"
+	"github.com/dashpay/dashd-go/btcutil"
+	"github.com/dashpay/dashd-go/chaincfg"
+	"github.com/dashpay/dashd-go/wire"
 	"golang.org/x/crypto/ripemd160"
 )
 

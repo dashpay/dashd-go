@@ -14,9 +14,9 @@ import (
 	"bytes"
 	"crypto/sha256"
 
-	"github.com/dashevo/dashd-go/btcutil"
-	"github.com/dashevo/dashd-go/txscript"
-	"github.com/dashevo/dashd-go/wire"
+	"github.com/dashpay/dashd-go/btcutil"
+	"github.com/dashpay/dashd-go/txscript"
+	"github.com/dashpay/dashd-go/wire"
 )
 
 // Updater encapsulates the role 'Updater' as specified in BIP174; it accepts

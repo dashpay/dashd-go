@@ -9,10 +9,10 @@ import (
 	"encoding/hex"
 	"encoding/json"
 
-	"github.com/dashevo/dashd-go/chaincfg/chainhash"
+	"github.com/dashpay/dashd-go/chaincfg/chainhash"
 
-	"github.com/dashevo/dashd-go/btcutil"
-	"github.com/dashevo/dashd-go/wire"
+	"github.com/dashpay/dashd-go/btcutil"
+	"github.com/dashpay/dashd-go/wire"
 )
 
 // GetBlockHeaderVerboseResult models the data from the getblockheader command when
@@ -716,7 +716,7 @@ type TxRawResult struct {
 	Size                int32  `json:"size,omitempty"`
 	Vsize               int32  `json:"vsize,omitempty"`
 	Weight              int32  `json:"weight,omitempty"`
-	Version             uint32  `json:"version"`
+	Version             uint32 `json:"version"`
 	LockTime            uint32 `json:"locktime"`
 	Vin                 []Vin  `json:"vin"`
 	Vout                []Vout `json:"vout"`

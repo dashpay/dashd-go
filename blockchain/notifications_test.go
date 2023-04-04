@@ -7,7 +7,7 @@ package blockchain
 import (
 	"testing"
 
-	"github.com/dashevo/dashd-go/chaincfg"
+	"github.com/dashpay/dashd-go/chaincfg"
 )
 
 // TestNotifications ensures that notification callbacks are fired on events.

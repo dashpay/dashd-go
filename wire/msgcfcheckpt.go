@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/dashevo/dashd-go/chaincfg/chainhash"
+	"github.com/dashpay/dashd-go/chaincfg/chainhash"
 )
 
 const (

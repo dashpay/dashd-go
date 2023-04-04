@@ -8,11 +8,11 @@ import (
 	"encoding/json"
 	"strconv"
 
-	"github.com/dashevo/dashd-go/btcjson"
-	"github.com/dashevo/dashd-go/btcutil"
-	"github.com/dashevo/dashd-go/chaincfg"
-	"github.com/dashevo/dashd-go/chaincfg/chainhash"
-	"github.com/dashevo/dashd-go/wire"
+	"github.com/dashpay/dashd-go/btcjson"
+	"github.com/dashpay/dashd-go/btcutil"
+	"github.com/dashpay/dashd-go/chaincfg"
+	"github.com/dashpay/dashd-go/chaincfg/chainhash"
+	"github.com/dashpay/dashd-go/wire"
 )
 
 // *****************************
@@ -1016,10 +1016,10 @@ func (c *Client) CreateWalletAsync(name string, opts ...CreateWalletOpt) FutureC
 //
 // Optional parameters can be specified using functional-options pattern. The
 // following functions are available:
-//   * WithCreateWalletDisablePrivateKeys
-//   * WithCreateWalletBlank
-//   * WithCreateWalletPassphrase
-//   * WithCreateWalletAvoidReuse
+//   - WithCreateWalletDisablePrivateKeys
+//   - WithCreateWalletBlank
+//   - WithCreateWalletPassphrase
+//   - WithCreateWalletAvoidReuse
 func (c *Client) CreateWallet(name string, opts ...CreateWalletOpt) (*btcjson.CreateWalletResult, error) {
 	return c.CreateWalletAsync(name, opts...).Receive()
 }

@@ -8,7 +8,7 @@ package btcjson_test
 import (
 	"testing"
 
-	"github.com/dashevo/dashd-go/btcjson"
+	"github.com/dashpay/dashd-go/btcjson"
 )
 
 // TestErrorCodeStringer tests the stringized output for the ErrorCode type.

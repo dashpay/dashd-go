@@ -7,8 +7,8 @@ package txscript
 import (
 	"sync"
 
-	"github.com/dashevo/dashd-go/chaincfg/chainhash"
-	"github.com/dashevo/dashd-go/wire"
+	"github.com/dashpay/dashd-go/chaincfg/chainhash"
+	"github.com/dashpay/dashd-go/wire"
 )
 
 // TxSigHashes houses the partial set of sighashes introduced within BIP0143.

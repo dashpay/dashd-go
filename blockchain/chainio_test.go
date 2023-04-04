@@ -11,8 +11,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/dashevo/dashd-go/database"
-	"github.com/dashevo/dashd-go/wire"
+	"github.com/dashpay/dashd-go/database"
+	"github.com/dashpay/dashd-go/wire"
 )
 
 // TestErrNotInMainChain ensures the functions related to errNotInMainChain work

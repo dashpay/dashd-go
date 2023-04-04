@@ -9,10 +9,10 @@ import (
 	"encoding/hex"
 	"testing"
 
-	"github.com/dashevo/dashd-go/btcutil"
-	"github.com/dashevo/dashd-go/btcutil/bloom"
-	"github.com/dashevo/dashd-go/chaincfg/chainhash"
-	"github.com/dashevo/dashd-go/wire"
+	"github.com/dashpay/dashd-go/btcutil"
+	"github.com/dashpay/dashd-go/btcutil/bloom"
+	"github.com/dashpay/dashd-go/chaincfg/chainhash"
+	"github.com/dashpay/dashd-go/wire"
 )
 
 func TestMerkleBlock3(t *testing.T) {

@@ -10,9 +10,9 @@ import (
 	"encoding/hex"
 	"encoding/json"
 
-	"github.com/dashevo/dashd-go/btcjson"
-	"github.com/dashevo/dashd-go/chaincfg/chainhash"
-	"github.com/dashevo/dashd-go/wire"
+	"github.com/dashpay/dashd-go/btcjson"
+	"github.com/dashpay/dashd-go/chaincfg/chainhash"
+	"github.com/dashpay/dashd-go/wire"
 )
 
 // FutureGetBestBlockHashResult is a future promise to deliver the result of a

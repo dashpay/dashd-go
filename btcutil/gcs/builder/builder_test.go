@@ -9,13 +9,13 @@ import (
 	"encoding/hex"
 	"testing"
 
-	"github.com/dashevo/dashd-go/btcutil"
-	"github.com/dashevo/dashd-go/btcutil/gcs"
-	"github.com/dashevo/dashd-go/btcutil/gcs/builder"
-	"github.com/dashevo/dashd-go/chaincfg"
-	"github.com/dashevo/dashd-go/chaincfg/chainhash"
-	"github.com/dashevo/dashd-go/txscript"
-	"github.com/dashevo/dashd-go/wire"
+	"github.com/dashpay/dashd-go/btcutil"
+	"github.com/dashpay/dashd-go/btcutil/gcs"
+	"github.com/dashpay/dashd-go/btcutil/gcs/builder"
+	"github.com/dashpay/dashd-go/chaincfg"
+	"github.com/dashpay/dashd-go/chaincfg/chainhash"
+	"github.com/dashpay/dashd-go/txscript"
+	"github.com/dashpay/dashd-go/wire"
 )
 
 var (

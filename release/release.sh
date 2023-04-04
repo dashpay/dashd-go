@@ -12,7 +12,7 @@ set -e
 
 # If no tag specified, use date + version otherwise use tag.
 if [[ $1x = x ]]; then
-    DATE=`date +%Y%m%d`
+    DATE=$(date +%Y%m%d)
     VERSION="01"
     TAG=$DATE-$VERSION
 else
@@ -32,7 +32,7 @@ rm -r vendor
 
 PACKAGESRC="$MAINDIR/$PACKAGE-source-$TAG.tar"
 git archive -o $PACKAGESRC HEAD
-gzip -f $PACKAGESRC > "$PACKAGESRC.gz"
+gzip -f $PACKAGESRC >"$PACKAGESRC.gz"
 
 cd $MAINDIR
 
@@ -72,7 +72,7 @@ SYS=${BTCDBUILDSYS:-"
 
 # Use the first element of $GOPATH in the case where GOPATH is a list
 # (something that is totally allowed).
-PKG="github.com/dashevo/dashd-go"
+PKG="github.com/dashpay/dashd-go"
 COMMIT=$(git describe --abbrev=40 --dirty)
 
 for i in $SYS; do
@@ -81,28 +81,28 @@ for i in $SYS; do
     ARM=
 
     if [[ $ARCH = "armv6" ]]; then
-      ARCH=arm
-      ARM=6
+        ARCH=arm
+        ARM=6
     elif [[ $ARCH = "armv7" ]]; then
-      ARCH=arm
-      ARM=7
+        ARCH=arm
+        ARM=7
     fi
 
     mkdir $PACKAGE-$i-$TAG
     cd $PACKAGE-$i-$TAG
 
     echo "Building:" $OS $ARCH $ARM
-    env CGO_ENABLED=0 GOOS=$OS GOARCH=$ARCH GOARM=$ARM go build -v -trimpath -ldflags="-s -w -buildid=" github.com/dashevo/dashd-go
-    env CGO_ENABLED=0 GOOS=$OS GOARCH=$ARCH GOARM=$ARM go build -v -trimpath -ldflags="-s -w -buildid=" github.com/dashevo/dashd-go/cmd/btcctl
+    env CGO_ENABLED=0 GOOS=$OS GOARCH=$ARCH GOARM=$ARM go build -v -trimpath -ldflags="-s -w -buildid=" github.com/dashpay/dashd-go
+    env CGO_ENABLED=0 GOOS=$OS GOARCH=$ARCH GOARM=$ARM go build -v -trimpath -ldflags="-s -w -buildid=" github.com/dashpay/dashd-go/cmd/btcctl
     cd ..
 
     if [[ $OS = "windows" ]]; then
-	zip -r $PACKAGE-$i-$TAG.zip $PACKAGE-$i-$TAG
+        zip -r $PACKAGE-$i-$TAG.zip $PACKAGE-$i-$TAG
     else
-	tar -cvzf $PACKAGE-$i-$TAG.tar.gz $PACKAGE-$i-$TAG
+        tar -cvzf $PACKAGE-$i-$TAG.tar.gz $PACKAGE-$i-$TAG
     fi
 
     rm -r $PACKAGE-$i-$TAG
 done
 
-shasum -a 256 * > manifest-$TAG.txt
+shasum -a 256 * >manifest-$TAG.txt

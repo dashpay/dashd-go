@@ -10,7 +10,7 @@ import (
 	"sort"
 	"testing"
 
-	"github.com/dashevo/dashd-go/btcjson"
+	"github.com/dashpay/dashd-go/btcjson"
 )
 
 // TestUsageFlagStringer tests the stringized output for the UsageFlag type.

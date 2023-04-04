@@ -5,8 +5,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/dashevo/dashd-go/chaincfg/chainhash"
-	"github.com/dashevo/dashd-go/wire"
+	"github.com/dashpay/dashd-go/chaincfg/chainhash"
+	"github.com/dashpay/dashd-go/wire"
 )
 
 func TestSumUtxoInputValues(t *testing.T) {

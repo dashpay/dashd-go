@@ -15,10 +15,10 @@ import (
 
 	"golang.org/x/crypto/ripemd160"
 
-	"github.com/dashevo/dashd-go/btcec/v2"
-	"github.com/dashevo/dashd-go/btcec/v2/ecdsa"
-	"github.com/dashevo/dashd-go/chaincfg/chainhash"
-	"github.com/dashevo/dashd-go/wire"
+	"github.com/dashpay/dashd-go/btcec/v2"
+	"github.com/dashpay/dashd-go/btcec/v2/ecdsa"
+	"github.com/dashpay/dashd-go/chaincfg/chainhash"
+	"github.com/dashpay/dashd-go/wire"
 )
 
 // An opcode defines the information related to a txscript opcode.  opfunc, if

@@ -12,7 +12,7 @@ package psbt
 // multisig and no other custom script.
 
 import (
-	"github.com/dashevo/dashd-go/txscript"
+	"github.com/dashpay/dashd-go/txscript"
 )
 
 // isFinalized considers this input finalized if it contains at least one of

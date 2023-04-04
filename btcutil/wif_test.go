@@ -9,9 +9,9 @@ import (
 	"encoding/hex"
 	"testing"
 
-	"github.com/dashevo/dashd-go/btcec/v2"
-	. "github.com/dashevo/dashd-go/btcutil"
-	"github.com/dashevo/dashd-go/chaincfg"
+	"github.com/dashpay/dashd-go/btcec/v2"
+	. "github.com/dashpay/dashd-go/btcutil"
+	"github.com/dashpay/dashd-go/chaincfg"
 )
 
 func TestEncodeDecodeWIF(t *testing.T) {

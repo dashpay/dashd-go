@@ -22,16 +22,16 @@ import (
 	"time"
 
 	"github.com/btcsuite/go-socks/socks"
-	"github.com/dashevo/dashd-go/blockchain"
-	"github.com/dashevo/dashd-go/btcutil"
-	"github.com/dashevo/dashd-go/chaincfg"
-	"github.com/dashevo/dashd-go/chaincfg/chainhash"
-	"github.com/dashevo/dashd-go/connmgr"
-	"github.com/dashevo/dashd-go/database"
-	_ "github.com/dashevo/dashd-go/database/ffldb"
-	"github.com/dashevo/dashd-go/mempool"
-	"github.com/dashevo/dashd-go/peer"
-	"github.com/dashevo/dashd-go/wire"
+	"github.com/dashpay/dashd-go/blockchain"
+	"github.com/dashpay/dashd-go/btcutil"
+	"github.com/dashpay/dashd-go/chaincfg"
+	"github.com/dashpay/dashd-go/chaincfg/chainhash"
+	"github.com/dashpay/dashd-go/connmgr"
+	"github.com/dashpay/dashd-go/database"
+	_ "github.com/dashpay/dashd-go/database/ffldb"
+	"github.com/dashpay/dashd-go/mempool"
+	"github.com/dashpay/dashd-go/peer"
+	"github.com/dashpay/dashd-go/wire"
 	flags "github.com/jessevdk/go-flags"
 )
 
@@ -402,10 +402,10 @@ func newConfigParser(cfg *config, so *serviceOptions, options flags.Options) *fl
 // line options.
 //
 // The configuration proceeds as follows:
-// 	1) Start with a default config with sane settings
-// 	2) Pre-parse the command line to check for an alternative config file
-// 	3) Load configuration file overwriting defaults with any specified options
-// 	4) Parse CLI options and overwrite/add any specified options
+//  1. Start with a default config with sane settings
+//  2. Pre-parse the command line to check for an alternative config file
+//  3. Load configuration file overwriting defaults with any specified options
+//  4. Parse CLI options and overwrite/add any specified options
 //
 // The above results in btcd functioning properly without any config settings
 // while still allowing the user to override settings with config files and

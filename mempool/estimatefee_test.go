@@ -9,10 +9,10 @@ import (
 	"math/rand"
 	"testing"
 
-	"github.com/dashevo/dashd-go/btcutil"
-	"github.com/dashevo/dashd-go/chaincfg/chainhash"
-	"github.com/dashevo/dashd-go/mining"
-	"github.com/dashevo/dashd-go/wire"
+	"github.com/dashpay/dashd-go/btcutil"
+	"github.com/dashpay/dashd-go/chaincfg/chainhash"
+	"github.com/dashpay/dashd-go/mining"
+	"github.com/dashpay/dashd-go/wire"
 )
 
 // newTestFeeEstimator creates a feeEstimator with some different parameters

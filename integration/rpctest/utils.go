@@ -8,8 +8,8 @@ import (
 	"reflect"
 	"time"
 
-	"github.com/dashevo/dashd-go/chaincfg/chainhash"
-	"github.com/dashevo/dashd-go/rpcclient"
+	"github.com/dashpay/dashd-go/chaincfg/chainhash"
+	"github.com/dashpay/dashd-go/rpcclient"
 )
 
 // JoinType is an enum representing a particular type of "node join". A node

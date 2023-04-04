@@ -18,13 +18,13 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/dashevo/dashd-go/blockchain"
-	"github.com/dashevo/dashd-go/btcec/v2"
-	"github.com/dashevo/dashd-go/btcutil"
-	"github.com/dashevo/dashd-go/chaincfg"
-	"github.com/dashevo/dashd-go/chaincfg/chainhash"
-	"github.com/dashevo/dashd-go/txscript"
-	"github.com/dashevo/dashd-go/wire"
+	"github.com/dashpay/dashd-go/blockchain"
+	"github.com/dashpay/dashd-go/btcec/v2"
+	"github.com/dashpay/dashd-go/btcutil"
+	"github.com/dashpay/dashd-go/chaincfg"
+	"github.com/dashpay/dashd-go/chaincfg/chainhash"
+	"github.com/dashpay/dashd-go/txscript"
+	"github.com/dashpay/dashd-go/wire"
 )
 
 const (
@@ -466,9 +466,9 @@ func createSpendTxForTx(tx *wire.MsgTx, fee btcutil.Amount) *wire.MsgTx {
 // - A coinbase that pays the required subsidy to an OP_TRUE script
 // - When a spendable output is provided:
 //   - A transaction that spends from the provided output the following outputs:
-//     - One that pays the inputs amount minus 1 atom to an OP_TRUE script
-//     - One that contains an OP_RETURN output with a random uint64 in order to
-//       ensure the transaction has a unique hash
+//   - One that pays the inputs amount minus 1 atom to an OP_TRUE script
+//   - One that contains an OP_RETURN output with a random uint64 in order to
+//     ensure the transaction has a unique hash
 //
 // Additionally, if one or more munge functions are specified, they will be
 // invoked with the block prior to solving it.  This provides callers with the

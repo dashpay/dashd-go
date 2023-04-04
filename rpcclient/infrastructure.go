@@ -27,8 +27,8 @@ import (
 
 	"github.com/btcsuite/go-socks/socks"
 	"github.com/btcsuite/websocket"
-	"github.com/dashevo/dashd-go/btcjson"
-	"github.com/dashevo/dashd-go/chaincfg"
+	"github.com/dashpay/dashd-go/btcjson"
+	"github.com/dashpay/dashd-go/chaincfg"
 )
 
 var (

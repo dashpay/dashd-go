@@ -10,7 +10,7 @@ import (
 	"math/rand"
 	"testing"
 
-	"github.com/dashevo/dashd-go/btcutil/gcs"
+	"github.com/dashpay/dashd-go/btcutil/gcs"
 )
 
 func genRandFilterElements(numElements uint) ([][]byte, error) {

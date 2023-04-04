@@ -11,8 +11,8 @@ import (
 	"bytes"
 	"sort"
 
-	"github.com/dashevo/dashd-go/chaincfg/chainhash"
-	"github.com/dashevo/dashd-go/wire"
+	"github.com/dashpay/dashd-go/chaincfg/chainhash"
+	"github.com/dashpay/dashd-go/wire"
 )
 
 // InPlaceSort modifies the passed transaction inputs and outputs to be sorted

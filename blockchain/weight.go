@@ -7,9 +7,9 @@ package blockchain
 import (
 	"fmt"
 
-	"github.com/dashevo/dashd-go/btcutil"
-	"github.com/dashevo/dashd-go/txscript"
-	"github.com/dashevo/dashd-go/wire"
+	"github.com/dashpay/dashd-go/btcutil"
+	"github.com/dashpay/dashd-go/txscript"
+	"github.com/dashpay/dashd-go/wire"
 )
 
 const (

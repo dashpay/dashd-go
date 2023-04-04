@@ -8,9 +8,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/dashevo/dashd-go/btcutil"
-	"github.com/dashevo/dashd-go/chaincfg/chainhash"
-	"github.com/dashevo/dashd-go/database"
+	"github.com/dashpay/dashd-go/btcutil"
+	"github.com/dashpay/dashd-go/chaincfg/chainhash"
+	"github.com/dashpay/dashd-go/database"
 )
 
 // BehaviorFlags is a bitmask defining tweaks to the normal behavior when

@@ -10,7 +10,7 @@ package psbt
 // is in the correct state.
 
 import (
-	"github.com/dashevo/dashd-go/txscript"
+	"github.com/dashpay/dashd-go/txscript"
 )
 
 // SignOutcome is a enum-like value that expresses the outcome of a call to the

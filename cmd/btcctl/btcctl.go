@@ -10,7 +10,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/dashevo/dashd-go/btcjson"
+	"github.com/dashpay/dashd-go/btcjson"
 )
 
 const (

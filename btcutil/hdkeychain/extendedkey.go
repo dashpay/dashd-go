@@ -18,11 +18,11 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/dashevo/dashd-go/btcec/v2"
-	"github.com/dashevo/dashd-go/btcutil"
-	"github.com/dashevo/dashd-go/btcutil/base58"
-	"github.com/dashevo/dashd-go/chaincfg"
-	"github.com/dashevo/dashd-go/chaincfg/chainhash"
+	"github.com/dashpay/dashd-go/btcec/v2"
+	"github.com/dashpay/dashd-go/btcutil"
+	"github.com/dashpay/dashd-go/btcutil/base58"
+	"github.com/dashpay/dashd-go/chaincfg"
+	"github.com/dashpay/dashd-go/chaincfg/chainhash"
 )
 
 const (
@@ -517,8 +517,9 @@ func (k *ExtendedKey) Neuter() (*ExtendedKey, error) {
 // on the SLIP132 standard (serializable to yprv/ypub, zprv/zpub, etc.).
 //
 // References:
-//   [SLIP132]: SLIP-0132 - Registered HD version bytes for BIP-0032
-//   https://github.com/satoshilabs/slips/blob/master/slip-0132.md
+//
+//	[SLIP132]: SLIP-0132 - Registered HD version bytes for BIP-0032
+//	https://github.com/satoshilabs/slips/blob/master/slip-0132.md
 func (k *ExtendedKey) CloneWithVersion(version []byte) (*ExtendedKey, error) {
 	if len(version) != 4 {
 		// TODO: The semantically correct error to return here is

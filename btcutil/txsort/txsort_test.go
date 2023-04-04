@@ -11,8 +11,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/dashevo/dashd-go/btcutil/txsort"
-	"github.com/dashevo/dashd-go/wire"
+	"github.com/dashpay/dashd-go/btcutil/txsort"
+	"github.com/dashpay/dashd-go/wire"
 )
 
 // TestSort ensures the transaction sorting works according to the BIP.

@@ -7,8 +7,8 @@ package blockchain
 import (
 	"fmt"
 
-	"github.com/dashevo/dashd-go/btcutil"
-	"github.com/dashevo/dashd-go/database"
+	"github.com/dashpay/dashd-go/btcutil"
+	"github.com/dashpay/dashd-go/database"
 )
 
 // maybeAcceptBlock potentially accepts a block into the block chain and, if

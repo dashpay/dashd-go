@@ -8,7 +8,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/dashevo/dashd-go/btcjson"
+	"github.com/dashpay/dashd-go/btcjson"
 )
 
 // TestCmdMethod tests the CmdMethod function to ensure it returns the expected

@@ -8,8 +8,8 @@ package txscript
 import (
 	"testing"
 
-	"github.com/dashevo/dashd-go/chaincfg/chainhash"
-	"github.com/dashevo/dashd-go/wire"
+	"github.com/dashpay/dashd-go/chaincfg/chainhash"
+	"github.com/dashpay/dashd-go/wire"
 )
 
 // TestBadPC sets the pc to a deliberately bad result then confirms that Step

@@ -9,7 +9,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/dashevo/dashd-go/btcjson"
+	"github.com/dashpay/dashd-go/btcjson"
 )
 
 // TestHelpReflectInternals ensures the various help functions which deal with

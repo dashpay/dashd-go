@@ -5,8 +5,8 @@
 package mempool
 
 import (
-	"github.com/dashevo/dashd-go/blockchain"
-	"github.com/dashevo/dashd-go/wire"
+	"github.com/dashpay/dashd-go/blockchain"
+	"github.com/dashpay/dashd-go/wire"
 )
 
 // RuleError identifies a rule violation.  It is used to indicate that

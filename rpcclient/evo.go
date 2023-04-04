@@ -10,7 +10,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/dashevo/dashd-go/btcjson"
+	"github.com/dashpay/dashd-go/btcjson"
 )
 
 // ----------------------------- bls generate -----------------------------
@@ -41,7 +41,6 @@ func (r FutureGetBLSResult) Receive() (*btcjson.BLSResult, error) {
 // BLSGenerateAsync returns an instance of a type that can be used to get
 // the result of the RPC at some future time by invoking the Receive function on
 // the returned instance.
-//
 func (c *Client) BLSGenerateAsync() FutureGetBLSResult {
 	cmd := btcjson.NewBLSGenerate()
 
@@ -103,7 +102,6 @@ func (r FutureGetQuorumSignResult) Receive() (*btcjson.QuorumSignResultWithBool,
 // QuorumSignAsync returns an instance of a type that can be used to get
 // the result of the RPC at some future time by invoking the Receive function on
 // the returned instance.
-//
 func (c *Client) QuorumSignAsync(quorumType btcjson.LLMQType, requestID, messageHash, quorumHash string, submit bool) FutureGetQuorumSignResult {
 	cmd := btcjson.NewQuorumSignCmd(quorumType, requestID, messageHash, quorumHash, submit)
 
@@ -155,7 +153,6 @@ func (r FutureGetQuorumVerifyResult) Receive() (*btcjson.QuorumVerifyResult, err
 // QuorumVerifyAsync returns an instance of a type that can be used to get
 // the result of the RPC at some future time by invoking the Receive function on
 // the returned instance.
-//
 func (c *Client) QuorumVerifyAsync(quorumType btcjson.LLMQType, requestID string, messageHash string, signature string, quorumHash string) FutureGetQuorumVerifyResult {
 	cmd := btcjson.NewQuorumVerifyCmd(quorumType, requestID, messageHash, signature, quorumHash)
 
@@ -202,7 +199,6 @@ func (r FutureGetQuorumInfoResult) Receive() (*btcjson.QuorumInfoResult, error) 
 // QuorumInfoAsync returns an instance of a type that can be used to get
 // the result of the RPC at some future time by invoking the Receive function on
 // the returned instance.
-//
 func (c *Client) QuorumInfoAsync(quorumType btcjson.LLMQType, quorumHash string, includeSkShare bool) FutureGetQuorumInfoResult {
 
 	cmd := btcjson.NewQuorumInfoCmd(quorumType, quorumHash, includeSkShare)
@@ -401,7 +397,6 @@ func (r FutureGetQuorumMemberOfResult) Receive() ([]btcjson.QuorumMemberOfResult
 // QuorumMemberOfAsync returns an instance of a type that can be used to get
 // the result of the RPC at some future time by invoking the Receive function on
 // the returned instance.
-//
 func (c *Client) QuorumMemberOfAsync(proTxHash string, scanQuorumsCount int) FutureGetQuorumMemberOfResult {
 
 	cmd := btcjson.NewQuorumMemberOfCmd(proTxHash, scanQuorumsCount)
@@ -445,7 +440,6 @@ func (r FutureGetQuorumGetRecSigResult) Receive() ([]btcjson.QuorumSignResult, e
 // QuorumGetRecSigAsync returns an instance of a type that can be used to get
 // the result of the RPC at some future time by invoking the Receive function on
 // the returned instance.
-//
 func (c *Client) QuorumGetRecSigAsync(quorumType btcjson.LLMQType, requestID, messageHash string) FutureGetQuorumGetRecSigResult {
 	cmd := btcjson.NewQuorumGetRecSig(quorumType, requestID, messageHash)
 
@@ -488,7 +482,6 @@ func (r FutureGetQuorumGetBoolResult) Receive() (bool, error) {
 // QuorumHasRecSigAsync returns an instance of a type that can be used to get
 // the result of the RPC at some future time by invoking the Receive function on
 // the returned instance.
-//
 func (c *Client) QuorumHasRecSigAsync(quorumType btcjson.LLMQType, requestID, messageHash string) FutureGetQuorumGetBoolResult {
 	cmd := btcjson.NewQuorumHasRecSig(quorumType, requestID, messageHash)
 

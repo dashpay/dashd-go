@@ -14,7 +14,7 @@ import (
 
 	"io"
 
-	"github.com/dashevo/dashd-go/wire"
+	"github.com/dashpay/dashd-go/wire"
 )
 
 // psbtMagicLength is the length of the magic bytes used to signal the start of
@@ -30,7 +30,7 @@ var (
 
 // MaxPsbtValueLength is the size of the largest transaction serialization
 // that could be passed in a NonWitnessUtxo field. This is definitely
-//less than 4M.
+// less than 4M.
 const MaxPsbtValueLength = 4000000
 
 // MaxPsbtKeyLength is the length of the largest key that we'll successfully

@@ -9,9 +9,9 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/dashevo/dashd-go/btcutil"
-	"github.com/dashevo/dashd-go/chaincfg/chainhash"
-	"github.com/dashevo/dashd-go/txscript"
+	"github.com/dashpay/dashd-go/btcutil"
+	"github.com/dashpay/dashd-go/chaincfg/chainhash"
+	"github.com/dashpay/dashd-go/txscript"
 )
 
 const (
@@ -86,7 +86,7 @@ func HashMerkleBranches(left *chainhash.Hash, right *chainhash.Hash) *chainhash.
 //
 // The above stored as a linear array is as follows:
 //
-// 	[h1 h2 h3 h4 h12 h34 root]
+//	[h1 h2 h3 h4 h12 h34 root]
 //
 // As the above shows, the merkle root is always the last element in the array.
 //

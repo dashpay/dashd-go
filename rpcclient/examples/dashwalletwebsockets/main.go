@@ -10,8 +10,8 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/dashevo/dashd-go/btcutil"
-	"github.com/dashevo/dashd-go/rpcclient"
+	"github.com/dashpay/dashd-go/btcutil"
+	"github.com/dashpay/dashd-go/rpcclient"
 	"github.com/davecgh/go-spew/spew"
 )
 

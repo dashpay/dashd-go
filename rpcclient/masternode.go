@@ -9,7 +9,7 @@ package rpcclient
 import (
 	"encoding/json"
 
-	"github.com/dashevo/dashd-go/btcjson"
+	"github.com/dashpay/dashd-go/btcjson"
 )
 
 // FutureGetMasternodeStatusResult is a future promise to deliver the result of a
@@ -38,7 +38,6 @@ func (r FutureGetMasternodeStatusResult) Receive() (*btcjson.MasternodeStatusRes
 // MasternodeStatusAsync returns an instance of a type that can be used to get
 // the result of the RPC at some future time by invoking the Receive function on
 // the returned instance.
-//
 func (c *Client) MasternodeStatusAsync() FutureGetMasternodeStatusResult {
 	cmd := btcjson.NewMasternodeCmd(btcjson.MasternodeStatus)
 

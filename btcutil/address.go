@@ -11,10 +11,10 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/dashevo/dashd-go/btcec/v2"
-	"github.com/dashevo/dashd-go/btcutil/base58"
-	"github.com/dashevo/dashd-go/btcutil/bech32"
-	"github.com/dashevo/dashd-go/chaincfg"
+	"github.com/dashpay/dashd-go/btcec/v2"
+	"github.com/dashpay/dashd-go/btcutil/base58"
+	"github.com/dashpay/dashd-go/btcutil/bech32"
+	"github.com/dashpay/dashd-go/chaincfg"
 	"golang.org/x/crypto/ripemd160"
 )
 

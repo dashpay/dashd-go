@@ -10,9 +10,9 @@ import (
 	"net"
 	"time"
 
-	"github.com/dashevo/dashd-go/chaincfg"
-	"github.com/dashevo/dashd-go/peer"
-	"github.com/dashevo/dashd-go/wire"
+	"github.com/dashpay/dashd-go/chaincfg"
+	"github.com/dashpay/dashd-go/peer"
+	"github.com/dashpay/dashd-go/wire"
 )
 
 // mockRemotePeer creates a basic inbound peer listening on the simnet port for

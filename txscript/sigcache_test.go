@@ -8,9 +8,9 @@ import (
 	"crypto/rand"
 	"testing"
 
-	"github.com/dashevo/dashd-go/btcec/v2"
-	"github.com/dashevo/dashd-go/btcec/v2/ecdsa"
-	"github.com/dashevo/dashd-go/chaincfg/chainhash"
+	"github.com/dashpay/dashd-go/btcec/v2"
+	"github.com/dashpay/dashd-go/btcec/v2/ecdsa"
+	"github.com/dashpay/dashd-go/chaincfg/chainhash"
 )
 
 // genRandomSig returns a random message, a signature of the message under the
