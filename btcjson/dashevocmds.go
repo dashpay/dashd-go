@@ -130,6 +130,7 @@ const (
 	LLMQType_400_85           LLMQType = 3   // 400 members, 340 (85%) threshold, one every 24 hours
 	LLMQType_100_67           LLMQType = 4   // 100 members, 67 (67%) threshold, one per hour
 	LLMQType_60_75            LLMQType = 5   // 60 members, 45 (75%) threshold, one every 12 hours
+	LLMQType_25_67            LLMQType = 6   // 25 members, 67 (67%) threshold, one per hour
 	LLMQType_TEST             LLMQType = 100 // 3 members, 2 (66%) threshold, one per hour
 	LLMQType_DEVNET           LLMQType = 101 // 12 members, 6 (50%) threshold, one per hour
 	LLMQType_TEST_V17         LLMQType = 102 // 3 members, 2 (66%) threshold, one per hour
@@ -153,6 +154,7 @@ var (
 		"llmq_400_85":           LLMQType_400_85,
 		"llmq_100_67":           LLMQType_100_67,
 		"llmq_60_75":            LLMQType_60_75,
+		"llmq_25_67":            LLMQType_25_67,
 		"llmq_test":             LLMQType_TEST,
 		"llmq_devnet":           LLMQType_DEVNET,
 		"llmq_test_v17":         LLMQType_TEST_V17,
@@ -186,7 +188,7 @@ func (t LLMQType) Name() string {
 // defined in accordance with DIP-0006.
 // See https://github.com/dashpay/dips/blob/master/dip-0006/llmq-types.md
 func (t LLMQType) Validate() error {
-	if (t >= LLMQType_50_60 && t <= LLMQType_60_75) || (t >= LLMQType_TEST && t <= LLMQType_DEVNET_PLATFORM) {
+	if (t >= LLMQType_50_60 && t <= LLMQType_25_67) || (t >= LLMQType_TEST && t <= LLMQType_DEVNET_PLATFORM) {
 		return nil
 	}
 
