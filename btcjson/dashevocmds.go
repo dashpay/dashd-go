@@ -130,7 +130,7 @@ const (
 	LLMQType_400_85           LLMQType = 3   // 400 members, 340 (85%) threshold, one every 24 hours
 	LLMQType_100_67           LLMQType = 4   // 100 members, 67 (67%) threshold, one per hour
 	LLMQType_60_75            LLMQType = 5   // 60 members, 45 (75%) threshold, one every 12 hours
-	LLMQType_25_67            LLMQType = 6   // 25 members, 67 (67%) threshold, one per hour
+	LLMQType_25_67            LLMQType = 6   // 25 members, 17 (67%) threshold, one per hour
 	LLMQType_TEST             LLMQType = 100 // 3 members, 2 (66%) threshold, one per hour
 	LLMQType_DEVNET           LLMQType = 101 // 12 members, 6 (50%) threshold, one per hour
 	LLMQType_TEST_V17         LLMQType = 102 // 3 members, 2 (66%) threshold, one per hour
