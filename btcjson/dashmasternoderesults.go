@@ -1,16 +1,31 @@
 package btcjson
 
+// MNStatusState masternode status state
+type MNStatusState string
+
+// The list of all possible masternode status states
+const (
+	MNStatusStateWaitingForProtx    MNStatusState = "WAITING_FOR_PROTX"
+	MNStatusStatePoseBanned         MNStatusState = "POSE_BANNED"
+	MNStatusStateRemoved            MNStatusState = "REMOVED"
+	MNStatusStateOperatorKeyChanged MNStatusState = "OPERATOR_KEY_CHANGED"
+	MNStatusStateProtxIpChanged     MNStatusState = "PROTX_IP_CHANGED"
+	MNStatusStateReady              MNStatusState = "READY"
+	MNStatusStateError              MNStatusState = "ERROR"
+	MNStatusStateUnknown            MNStatusState = "UNKNOWN"
+)
+
 // MasternodeStatusResult models the data from the quorum sign command.
 // returns a hex-encoded string.
 type MasternodeStatusResult struct {
-	Outpoint        string   `json:"outpoint"`
-	Service         string   `json:"service"`
-	ProTxHash       string   `json:"proTxHash"`
-	CollateralHash  string   `json:"collateralHash"`
-	CollateralIndex int      `json:"collateralIndex"`
-	DMNState        DMNState `json:"dmnState"`
-	State           string   `json:"state"`
-	Status          string   `json:"status"`
+	Outpoint        string        `json:"outpoint"`
+	Service         string        `json:"service"`
+	ProTxHash       string        `json:"proTxHash"`
+	CollateralHash  string        `json:"collateralHash"`
+	CollateralIndex int           `json:"collateralIndex"`
+	DMNState        DMNState      `json:"dmnState"`
+	State           MNStatusState `json:"state"`
+	Status          string        `json:"status"`
 }
 
 // MasternodeCountResult models the data from the masternode count command.
