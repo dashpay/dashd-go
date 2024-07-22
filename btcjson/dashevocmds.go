@@ -230,7 +230,7 @@ func NewQuorumSignCmd(quorumType LLMQType, requestID, messageHash, quorumHash st
 	return cmd
 }
 
-// NewQuorumSignCmd returns a new instance which can be used to issue a quorum
+// NewQuorumPlatformSignCmd returns a new instance which can be used to issue a quorum
 // JSON-RPC command.
 func NewQuorumPlatformSignCmd(requestID, messageHash, quorumHash string, submit bool) *QuorumCmd {
 	cmd := &QuorumCmd{

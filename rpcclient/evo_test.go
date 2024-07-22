@@ -278,6 +278,63 @@ func TestQuorumSign(t *testing.T) {
 	t.Log("bool response:", bl)
 }
 
+func TestQuorumPlatformSign(t *testing.T) {
+	requestID := "abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234"
+	messageHash := "51c11d287dfa85aef3eebb5420834c8e443e01d15c0b0a8e397d67e2e51aa239"
+	proTxHash := "ec21749595a34d868cc366c0feefbd1cfaeb659c6acbc1e2e96fd1e714affa56"
+	submit := false
+
+	client, err := New(connCfg, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer client.Shutdown()
+
+	client.httpClient.Transport = mockRoundTripperFunc(
+		[]btcjson.QuorumMemberOfResult{
+			{
+				Height:          264072,
+				Type:            "llmq_400_60",
+				QuorumHash:      "000004bfc56646880bfeb80a0b89ad955e557ead7b0f09bcc61e56c8473eaea9",
+				MinedBlock:      "000006113a77b35a0ed606b08ecb8e37f1ac7e2d773c365bd07064a72ae9a61d",
+				QuorumPublicKey: "0644ff153b9b92c6a59e2adf4ef0b9836f7f6af05fe432ffdcb69bc9e300a2a70af4a8d9fc61323f6b81074d740033d2",
+				IsValidMember:   false,
+				MemberIndex:     10,
+			},
+		},
+		expectBody(`{"jsonrpc":"1.0","method":"quorum","params":["memberof","ec21749595a34d868cc366c0feefbd1cfaeb659c6acbc1e2e96fd1e714affa56"],"id":1}`),
+	)
+	mo, err := client.QuorumMemberOf(proTxHash, 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if len(mo) == 0 {
+		t.Fatal("not a member of any quorums")
+	}
+	quorumHash := mo[0].QuorumHash
+	quorumType := btcjson.GetLLMQType(mo[0].Type)
+	if quorumType == 0 {
+		t.Fatal("unknown quorum type", mo[0].Type)
+	}
+
+	client.httpClient.Transport = mockRoundTripperFunc(
+		btcjson.QuorumSignResultWithBool{Result: true},
+		expectBody(`{"jsonrpc":"1.0","method":"quorum","params":["platformsign","abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234","51c11d287dfa85aef3eebb5420834c8e443e01d15c0b0a8e397d67e2e51aa239","000004bfc56646880bfeb80a0b89ad955e557ead7b0f09bcc61e56c8473eaea9",false],"id":2}`),
+	)
+	result, err := client.QuorumPlatformSign(requestID, messageHash, quorumHash, submit)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	cli := &btcjson.QuorumSignResultWithBool{}
+	compareWithCliCommand(t, result, cli, "quorum", "platformsign", requestID, messageHash, quorumHash, strconv.FormatBool(submit))
+
+	client.httpClient.Transport = mockRoundTripperFunc(
+		btcjson.QuorumSignResultWithBool{Result: true},
+		expectBody(`{"jsonrpc":"1.0","method":"quorum","params":["platformsign",2,"abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234","51c11d287dfa85aef3eebb5420834c8e443e01d15c0b0a8e397d67e2e51aa239","000004bfc56646880bfeb80a0b89ad955e557ead7b0f09bcc61e56c8473eaea9",true],"id":3}`),
+	)
+}
 func TestQuorumGetRecSig(t *testing.T) {
 	client, err := New(connCfg, nil)
 	if err != nil {

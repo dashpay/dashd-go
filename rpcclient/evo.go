@@ -116,6 +116,28 @@ func (c *Client) QuorumSign(quorumType btcjson.LLMQType, requestID, messageHash,
 	return c.QuorumSignAsync(quorumType, requestID, messageHash, quorumHash, submit).Receive()
 }
 
+// QuorumPlatformSign returns a future that can be used to get the result of the RPC at some future time by invoking the Receive function on the returned instance.
+// It uses `quorum platformsign` RPC command.
+func (c *Client) QuorumPlatformSignAsync(requestID, messageHash, quorumHash string, submit bool) FutureGetQuorumSignResult {
+	cmd := btcjson.NewQuorumPlatformSignCmd(requestID, messageHash, quorumHash, submit)
+
+	return FutureGetQuorumSignResult{
+		client:   c,
+		Response: c.SendCmd(cmd),
+	}
+}
+
+// QuorumPlatformSign a quorum sign result containing a signature signed by the quorum in question.
+// It uses `quorum platformsign` RPC command.
+func (c *Client) QuorumPlatformSign(requestID, messageHash, quorumHash string, submit bool) (*btcjson.QuorumSignResultWithBool, error) {
+	cmd := btcjson.NewQuorumPlatformSignCmd(requestID, messageHash, quorumHash, submit)
+
+	return FutureGetQuorumSignResult{
+		client:   c,
+		Response: c.SendCmd(cmd),
+	}.Receive()
+}
+
 // QuorumSignSubmit calls QuorumSign but only returns a boolean to match dash-cli
 func (c *Client) QuorumSignSubmit(quorumType btcjson.LLMQType, requestID, messageHash, quorumHash string) (bool, error) {
 	r, err := c.QuorumSignAsync(quorumType, requestID, messageHash, quorumHash, true).Receive()
