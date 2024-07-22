@@ -24,7 +24,7 @@ func pLLMQType(l btcjson.LLMQType) *btcjson.LLMQType { return &l }
 // into valid results include handling of optional fields being omitted in the
 // marshalled command, while optional fields with defaults have the default
 // assigned on unmarshalled commands.
-func TestdashpayCmds(t *testing.T) {
+func TestDashpayCmds(t *testing.T) {
 	t.Parallel()
 
 	testID := 1
