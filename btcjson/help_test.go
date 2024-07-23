@@ -173,7 +173,7 @@ func TestHelpReflectInternals(t *testing.T) {
 			name: "array of struct indent level 0",
 			reflectType: func() reflect.Type {
 				type s struct {
-					field int
+					field int //nolint:unused
 				}
 				return reflect.TypeOf([]s{})
 			}(),
@@ -192,7 +192,7 @@ func TestHelpReflectInternals(t *testing.T) {
 			name: "array of struct indent level 1",
 			reflectType: func() reflect.Type {
 				type s struct {
-					field int
+					field int //nolint:unused
 				}
 				return reflect.TypeOf([]s{})
 			}(),
@@ -309,7 +309,7 @@ func TestResultStructHelp(t *testing.T) {
 			name: "struct with primitive field",
 			reflectType: func() reflect.Type {
 				type s struct {
-					field int
+					field int //nolint:unused
 				}
 				return reflect.TypeOf(s{})
 			}(),
@@ -333,7 +333,7 @@ func TestResultStructHelp(t *testing.T) {
 			name: "struct with array of primitive field",
 			reflectType: func() reflect.Type {
 				type s struct {
-					field []int
+					field []int //nolint:unused
 				}
 				return reflect.TypeOf(s{})
 			}(),
@@ -344,9 +344,11 @@ func TestResultStructHelp(t *testing.T) {
 		{
 			name: "struct with sub-struct field",
 			reflectType: func() reflect.Type {
+				//nolint:unused
 				type s2 struct {
 					subField int
 				}
+				//nolint:unused
 				type s struct {
 					field s2
 				}
@@ -362,9 +364,11 @@ func TestResultStructHelp(t *testing.T) {
 		{
 			name: "struct with sub-struct field pointer",
 			reflectType: func() reflect.Type {
+				//nolint:unused
 				type s2 struct {
 					subField int
 				}
+				//nolint:unused
 				type s struct {
 					field *s2
 				}
@@ -380,9 +384,11 @@ func TestResultStructHelp(t *testing.T) {
 		{
 			name: "struct with array of structs field",
 			reflectType: func() reflect.Type {
+				//nolint:unused
 				type s2 struct {
 					subField int
 				}
+				//nolint:unused
 				type s struct {
 					field []s2
 				}

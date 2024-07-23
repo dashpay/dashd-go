@@ -93,9 +93,10 @@ type QuorumCmdSubCmd string
 
 // Quorum commands https://dashcore.readme.io/docs/core-api-ref-remote-procedure-calls-evo#quorum
 const (
-	QuorumSign   QuorumCmdSubCmd = "sign"
-	QuorumVerify QuorumCmdSubCmd = "verify"
-	QuorumInfo   QuorumCmdSubCmd = "info"
+	QuorumSign         QuorumCmdSubCmd = "sign"
+	QuorumSignPlatform QuorumCmdSubCmd = "platformsign"
+	QuorumVerify       QuorumCmdSubCmd = "verify"
+	QuorumInfo         QuorumCmdSubCmd = "info"
 
 	// QuorumList lists all quorums
 	QuorumList QuorumCmdSubCmd = "list"
@@ -197,7 +198,7 @@ func (t LLMQType) Validate() error {
 
 // QuorumCmd defines the quorum JSON-RPC command.
 type QuorumCmd struct {
-	SubCmd QuorumCmdSubCmd `jsonrpcusage:"\"list|info|dkgstatus|sign|getrecsig|hasrecsig|isconflicting|memberof|selectquorum\""`
+	SubCmd QuorumCmdSubCmd `jsonrpcusage:"\"list|info|dkgstatus|sign|platformsign|getrecsig|hasrecsig|isconflicting|memberof|selectquorum\""`
 
 	LLMQType    *LLMQType `json:",omitempty"`
 	RequestID   *string   `json:",omitempty"`
@@ -218,6 +219,22 @@ func NewQuorumSignCmd(quorumType LLMQType, requestID, messageHash, quorumHash st
 	cmd := &QuorumCmd{
 		SubCmd:      QuorumSign,
 		LLMQType:    &quorumType,
+		RequestID:   &requestID,
+		MessageHash: &messageHash,
+	}
+	if quorumHash == "" {
+		return cmd
+	}
+	cmd.QuorumHash = &quorumHash
+	cmd.Submit = &submit
+	return cmd
+}
+
+// NewQuorumPlatformSignCmd returns a new instance which can be used to issue a quorum
+// JSON-RPC command.
+func NewQuorumPlatformSignCmd(requestID, messageHash, quorumHash string, submit bool) *QuorumCmd {
+	cmd := &QuorumCmd{
+		SubCmd:      QuorumSignPlatform,
 		RequestID:   &requestID,
 		MessageHash: &messageHash,
 	}
@@ -517,9 +534,10 @@ func (q *QuorumCmd) UnmarshalArgs(args []interface{}) error {
 type unmarshalQuorumCmdFunc func(*QuorumCmd, []interface{}) error
 
 var quorumCmdUnmarshalers = map[string]unmarshalQuorumCmdFunc{
-	"info":   withQuorumUnmarshaler(quorumInfoUnmarshaler, validateQuorumArgs(3), unmarshalQuorumLLMQType),
-	"sign":   withQuorumUnmarshaler(quorumSignUnmarshaler, validateQuorumArgs(5), unmarshalQuorumLLMQType),
-	"verify": withQuorumUnmarshaler(quorumVerifyUnmarshaler, validateQuorumArgs(5), unmarshalQuorumLLMQType),
+	string(QuorumInfo):         withQuorumUnmarshaler(quorumInfoUnmarshaler, validateQuorumArgs(3), unmarshalQuorumLLMQType),
+	string(QuorumSign):         withQuorumUnmarshaler(quorumSignUnmarshaler, validateQuorumArgs(5), unmarshalQuorumLLMQType),
+	string(QuorumSignPlatform): withQuorumUnmarshaler(quorumPlatformSignUnmarshaler, validateQuorumArgs(4)),
+	string(QuorumVerify):       withQuorumUnmarshaler(quorumVerifyUnmarshaler, validateQuorumArgs(5), unmarshalQuorumLLMQType),
 }
 
 func unmarshalLLMQType(val interface{}) (LLMQType, error) {
@@ -548,6 +566,14 @@ func quorumSignUnmarshaler(q *QuorumCmd, args []interface{}) error {
 	q.MessageHash = strPtr(args[2].(string))
 	q.QuorumHash = strPtr(args[3].(string))
 	q.Submit = boolPtr(args[4].(bool))
+	return nil
+}
+
+func quorumPlatformSignUnmarshaler(q *QuorumCmd, args []interface{}) error {
+	q.RequestID = strPtr(args[0].(string))
+	q.MessageHash = strPtr(args[1].(string))
+	q.QuorumHash = strPtr(args[2].(string))
+	q.Submit = boolPtr(args[3].(bool))
 	return nil
 }
 
