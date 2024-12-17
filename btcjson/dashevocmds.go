@@ -140,6 +140,7 @@ const (
 	LLMQType_DEVNET_DIP0024   LLMQType = 105 // 8 members, 4 (50%) threshold, one per hour
 	LLMQType_TEST_PLATFORM    LLMQType = 106 // 3 members, 2 (66%) threshold, one per hour
 	LLMQType_DEVNET_PLATFORM  LLMQType = 107 // 12 members, 8 (67%) threshold, one per hour
+	LLMQType_SINGLE_NODE      LLMQType = 111 // 1 memeber, 1 threshold, one per hour.
 
 	// LLMQType_5_60 is replaced with LLMQType_TEST to adhere to DIP-0006 naming
 	LLMQType_5_60 LLMQType = LLMQType_TEST
@@ -164,6 +165,7 @@ var (
 		"llmq_devnet_dip0024":   LLMQType_DEVNET_DIP0024,
 		"llmq_test_platform":    LLMQType_TEST_PLATFORM,
 		"llmq_devnet_platform":  LLMQType_DEVNET_PLATFORM,
+		"llmq_single_node":      LLMQType_SINGLE_NODE,
 	}
 )
 
@@ -189,7 +191,7 @@ func (t LLMQType) Name() string {
 // defined in accordance with DIP-0006.
 // See https://github.com/dashpay/dips/blob/master/dip-0006/llmq-types.md
 func (t LLMQType) Validate() error {
-	if (t >= LLMQType_50_60 && t <= LLMQType_25_67) || (t >= LLMQType_TEST && t <= LLMQType_DEVNET_PLATFORM) {
+	if (t >= LLMQType_50_60 && t <= LLMQType_25_67) || (t >= LLMQType_TEST && t <= LLMQType_DEVNET_PLATFORM) || t == LLMQType_SINGLE_NODE {
 		return nil
 	}
 
