@@ -1,7 +1,7 @@
 module github.com/dashpay/dashd-go
 
 require (
-	github.com/btcsuite/btclog v0.0.0-20170628155309-84c8d2346e9f
+	github.com/btcsuite/btclog v1.0.0
 	github.com/btcsuite/go-socks v0.0.0-20170105172521-4720035b7bfd
 	github.com/btcsuite/goleveldb v1.0.0
 	github.com/btcsuite/websocket v0.0.0-20150119174127-31079b680792
@@ -9,20 +9,21 @@ require (
 	github.com/dashpay/dashd-go/btcec/v2 v2.1.0
 	github.com/dashpay/dashd-go/btcutil v1.2.0
 	github.com/davecgh/go-spew v1.1.1
-	github.com/decred/dcrd/lru v1.0.0
-	github.com/jessevdk/go-flags v1.4.0
-	github.com/jrick/logrotate v1.0.0
-	golang.org/x/crypto v0.0.0-20220214200702-86341886e292
+	github.com/decred/dcrd/lru v1.1.3
+	github.com/jessevdk/go-flags v1.6.1
+	github.com/jrick/logrotate v1.1.2
+	golang.org/x/crypto v0.31.0
 )
 
 require (
 	github.com/aead/siphash v1.0.1 // indirect
 	github.com/btcsuite/snappy-go v1.0.0 // indirect
-	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.0.1 // indirect
-	github.com/hpcloud/tail v1.0.0 // indirect
+	github.com/decred/dcrd/dcrec/secp256k1/v4 v4.3.0 // indirect
+	github.com/howeyc/fsnotify v0.9.0 // indirect
+	github.com/hpcloud/tail v2.10.6-bug100770-inotify-leak+incompatible // indirect
 	github.com/kkdai/bstream v1.0.0 // indirect
-	gopkg.in/fsnotify.v1 v1.4.7 // indirect
-	gopkg.in/tomb.v1 v1.0.0-20141024135613-dd632973f1e7 // indirect
+	golang.org/x/sys v0.28.0 // indirect
+	launchpad.net/tomb v0.0.0-20140529072043-000000000018 // indirect
 )
 
 replace (
