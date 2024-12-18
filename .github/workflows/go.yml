@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - master
+  release:
+    types:
+      - created
 
 env:
   # go needs absolute directories, using the $HOME variable doesn't work here.
