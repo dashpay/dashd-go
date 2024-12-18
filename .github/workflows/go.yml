@@ -1,5 +1,9 @@
 name: Build and Test
-on: [push, pull_request]
+on:
+  pull_request:
+  push:
+    branches:
+      - master
 
 env:
   # go needs absolute directories, using the $HOME variable doesn't work here.
@@ -43,7 +47,7 @@ jobs:
         with:
           files: |
             coverage.txt 
-            path-to-profile: btcec/coverage.txt
+            btcec/coverage.txt
             btcutil/coverage.txt
             btcutil/psbt/coverage.txt
           format: golang
