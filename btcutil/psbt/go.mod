@@ -5,9 +5,9 @@ go 1.23
 toolchain go1.23.2
 
 require (
-	github.com/dashpay/dashd-go v0.24.0
-	github.com/dashpay/dashd-go/btcec/v2 v2.1.0
-	github.com/dashpay/dashd-go/btcutil v1.2.0
+	github.com/dashpay/dashd-go v0.26.0
+	github.com/dashpay/dashd-go/btcec/v2 v2.2.0
+	github.com/dashpay/dashd-go/btcutil v1.3.0
 	github.com/davecgh/go-spew v1.1.1
 )
 
