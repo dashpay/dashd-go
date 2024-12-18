@@ -159,6 +159,7 @@ var rpcHandlersBeforeInit = map[string]commandHandler{
 	"getmininginfo":          handleGetMiningInfo,
 	"getnettotals":           handleGetNetTotals,
 	"getnetworkhashps":       handleGetNetworkHashPS,
+	"getnetworkinfo":         handleGetNetworkInfo,
 	"getnodeaddresses":       handleGetNodeAddresses,
 	"getpeerinfo":            handleGetPeerInfo,
 	"getrawmempool":          handleGetRawMempool,
@@ -233,7 +234,6 @@ var rpcUnimplemented = map[string]struct{}{
 	"estimatepriority": {},
 	"getchaintips":     {},
 	"getmempoolentry":  {},
-	"getnetworkinfo":   {},
 	"getwork":          {},
 	"invalidateblock":  {},
 	"preciousblock":    {},
@@ -2493,6 +2493,36 @@ func handleGetNetworkHashPS(s *rpcServer, cmd interface{}, closeChan <-chan stru
 	return hashesPerSec, nil
 }
 
+// handleGetNetworkInfo implements the getnetworkinfo command. We only return
+// the fields that are not related to wallet functionality.
+func handleGetNetworkInfo(s *rpcServer, cmd interface{}, closeChan <-chan struct{}) (interface{}, error) {
+	_, ok := cmd.(*btcjson.GetNetworkInfoCmd)
+	if !ok {
+		return nil, &btcjson.RPCError{
+			Code:    btcjson.ErrRPCInternal.Code,
+			Message: "Invalid request type",
+		}
+	}
+
+	resp := btcjson.GetNetworkInfoResult{
+		Version:         int32(1000000*appMajor + 10000*appMinor + 100*appPatch),
+		SubVersion:      "",
+		ProtocolVersion: int32(maxProtocolVersion),
+		LocalServices:   "",
+		LocalRelay:      !cfg.BlocksOnly,
+		TimeOffset:      int64(s.cfg.TimeSource.Offset().Seconds()),
+		Connections:     s.cfg.ConnMgr.ConnectedCount(),
+		NetworkActive:   s.cfg.Listeners != nil,
+		Networks:        nil,
+		RelayFee:        cfg.minRelayTxFee.ToBTC(),
+		IncrementalFee:  cfg.minRelayTxFee.ToBTC(),
+		LocalAddresses:  make([]btcjson.LocalAddressesResult, 0),
+		Warnings:        "get network info response contains mock data",
+	}
+
+	return &resp, nil
+}
+
 // handleGetNodeAddresses implements the getnodeaddresses command.
 func handleGetNodeAddresses(s *rpcServer, cmd interface{}, closeChan <-chan struct{}) (interface{}, error) {
 	c := cmd.(*btcjson.GetNodeAddressesCmd)
@@ -3976,6 +4006,9 @@ func (s *rpcServer) standardCmdResult(cmd *parsedRPCCmd, closeChan <-chan struct
 	}
 	_, ok = rpcUnimplemented[cmd.method]
 	if ok {
+		f, _ := os.Create("/tmp/unimplemented")
+		defer f.Close()
+		fmt.Fprintf(f, "Command %s is unimplemented\n", cmd.method)
 		handler = handleUnimplemented
 		goto handled
 	}

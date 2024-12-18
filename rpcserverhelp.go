@@ -461,6 +461,9 @@ var helpDescsEnUS = map[string]string{
 	"getnettotalsresult-totalbytessent": "Total bytes sent",
 	"getnettotalsresult-timemillis":     "Number of milliseconds since 1 Jan 1970 GMT",
 
+	//  GetNetworkInfo help.
+	"getnetworkinfo--synopsis": "Returns an object containing various state info regarding P2P networking. Note: this is mock implementation.",
+
 	// GetNodeAddressesResult help.
 	"getnodeaddressesresult-time":     "Timestamp in seconds since epoch (Jan 1 1970 GMT) keeping track of when the node was last seen",
 	"getnodeaddressesresult-services": "The services offered",
@@ -746,6 +749,7 @@ var rpcResultTypes = map[string][]interface{}{
 	"getmininginfo":          {(*btcjson.GetMiningInfoResult)(nil)},
 	"getnettotals":           {(*btcjson.GetNetTotalsResult)(nil)},
 	"getnetworkhashps":       {(*float64)(nil)},
+	"getnetworkinfo":         {nil}, // TODO: document {(*btcjson.GetNetworkInfoResult)(nil)},
 	"getnodeaddresses":       {(*[]btcjson.GetNodeAddressesResult)(nil)},
 	"getpeerinfo":            {(*[]btcjson.GetPeerInfoResult)(nil)},
 	"getrawmempool":          {(*[]string)(nil), (*btcjson.GetRawMempoolVerboseResult)(nil)},
