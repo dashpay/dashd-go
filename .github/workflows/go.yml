@@ -45,11 +45,7 @@ jobs:
       - name: Send coverage
         uses: coverallsapp/github-action@v2
         with:
-          files: |
-            ./coverage.txt 
-            ./btcec/coverage.txt
-            ./btcutil/coverage.txt
-            ./btcutil/psbt/coverage.txt
+          files: ./coverage.txt ./btcec/coverage.txt ./btcutil/coverage.txt ./btcutil/psbt/coverage.txt
           format: golang
 
   test-race:
