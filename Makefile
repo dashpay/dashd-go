@@ -88,7 +88,7 @@ unit-cover:
 	
 	# We need to remove the /v2 pathing from the module to have it work
 	# nicely with the CI tool we use to render live code coverage.
-	cd btcec; $(GOACC_BIN) ./...; sed -i.bak 's/v2\///g' coverage.txt
+	cd btcec; $(GOACC_BIN) ./...
 
 	cd btcutil; $(GOACC_BIN) ./...
 
