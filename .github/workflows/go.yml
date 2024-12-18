@@ -1,5 +1,12 @@
 name: Build and Test
-on: [push, pull_request]
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+  release:
+    types:
+      - created
 
 env:
   # go needs absolute directories, using the $HOME variable doesn't work here.
@@ -38,25 +45,11 @@ jobs:
       - name: Test
         run: make unit-cover
 
-      - name: Send top-level coverage
-        uses: shogo82148/actions-goveralls@v1
+      - name: Send coverage
+        uses: coverallsapp/github-action@v2
         with:
-          path-to-profile: coverage.txt
-
-      - name: Send btcec
-        uses: shogo82148/actions-goveralls@v1
-        with:
-          path-to-profile: btcec/coverage.txt
-
-      - name: Send btcutil coverage
-        uses: shogo82148/actions-goveralls@v1
-        with:
-          path-to-profile: btcutil/coverage.txt
-
-      - name: Send btcutil coverage for psbt package
-        uses: shogo82148/actions-goveralls@v1
-        with:
-          path-to-profile: btcutil/psbt/coverage.txt
+          files: ./coverage.txt ./btcec/coverage.txt ./btcutil/coverage.txt ./btcutil/psbt/coverage.txt
+          format: golang
 
   test-race:
     name: Unit race

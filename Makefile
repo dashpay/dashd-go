@@ -6,7 +6,7 @@ GOIMPORTS_PKG := golang.org/x/tools/cmd/goimports
 
 GO_BIN := ${GOPATH}/bin
 LINT_BIN := $(GO_BIN)/golangci-lint
-GOACC_BIN := $(GO_BIN)/go-acc
+
 
 LINT_COMMIT := v1.18.0
 GOACC_VERSION := v0.2.7
@@ -15,8 +15,10 @@ DEPGET := cd /tmp && GO111MODULE=on go get -v
 GOBUILD := GO111MODULE=on go build -v
 GOINSTALL := GO111MODULE=on go install -v 
 DEV_TAGS := rpctest
-GOTEST_DEV = GO111MODULE=on go test -v -tags=$(DEV_TAGS)
+GOTEST_DEV = GO111MODULE=on go test -tags=$(DEV_TAGS)
 GOTEST := GO111MODULE=on go test -v
+
+GOACC_BIN := $(GOTEST_DEV) -coverprofile=coverage.txt -covermode=atomic
 
 GOFILES_NOVENDOR = $(shell find . -type f -name '*.go' -not -path "./vendor/*")
 
@@ -51,10 +53,6 @@ $(LINT_BIN):
 	@$(call print, "Fetching linter")
 	$(DEPGET) $(LINT_PKG)@$(LINT_COMMIT)
 
-$(GOACC_BIN):
-	@$(call print, "Fetching go-acc")
-	$(GOINSTALL) $(GOACC_PKG)@$(GOACC_VERSION)
-
 goimports:
 	@$(call print, "Installing goimports.")
 	$(DEPGET) $(GOIMPORTS_PKG)
@@ -84,13 +82,13 @@ unit:
 	cd btcutil; $(GOTEST_DEV) ./... -test.timeout=20m
 	cd btcutil/psbt; $(GOTEST_DEV) ./... -test.timeout=20m
 
-unit-cover: $(GOACC_BIN)
+unit-cover:
 	@$(call print, "Running unit coverage tests.")
 	$(GOACC_BIN) ./...
 	
 	# We need to remove the /v2 pathing from the module to have it work
 	# nicely with the CI tool we use to render live code coverage.
-	cd btcec; $(GOACC_BIN) ./...; sed -i.bak 's/v2\///g' coverage.txt
+	cd btcec; $(GOACC_BIN) ./...
 
 	cd btcutil; $(GOACC_BIN) ./...
 
