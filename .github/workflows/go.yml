@@ -39,17 +39,24 @@ jobs:
       - name: Check out source
         uses: actions/checkout@v4
 
-      - name: Test
+      - name: Generate coverage info
         run: make unit-cover
+
+      # Copy coverage files to the root directory to fix "Permission denied" error
+      - name: Copy coverage files
+        run: |
+          cp ./btcec/coverage.txt coverage-btcec.txt
+          cp ./btcutil/coverage.txt coverage-btcutil.txt
+          cp ./btcutil/psbt/coverage.txt coverage-btcutil-psbt.txt
 
       - name: Send coverage
         uses: coverallsapp/github-action@v2
         with:
           files: |
-            ./coverage.txt 
-            ./btcec/coverage.txt
-            ./btcutil/coverage.txt
-            ./btcutil/psbt/coverage.txt
+            coverage.txt
+            coverage-btcec.txt
+            coverage-btcutil.txt
+            coverage-btcutil-psbt.txt
           format: golang
 
   test-race:
