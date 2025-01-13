@@ -205,8 +205,8 @@ type QuorumCmd struct {
 	LLMQType    *LLMQType `json:",omitempty"`
 	RequestID   *string   `json:",omitempty"`
 	MessageHash *string   `json:",omitempty"`
-	QuorumHash  *string   `json:",omitempty"`
 	Signature   *string   `json:",omitempty"`
+	QuorumHash  *string   `json:",omitempty"`
 
 	Submit               *bool        `json:",omitempty"`
 	IncludeSkShare       *bool        `json:",omitempty"`
