@@ -2,8 +2,9 @@ package btcjson_test
 
 import (
 	"encoding/json"
-	"github.com/dashpay/dashd-go/btcjson"
 	"testing"
+
+	"github.com/dashpay/dashd-go/btcjson"
 )
 
 // TestDashQuorumSignResults ensures QuorumSignResults are unmarshalled correctly
@@ -39,9 +40,63 @@ func TestDashQuorumSignResults(t *testing.T) {
 			continue
 		}
 		if string(marshalled) != test.expected {
-			t.Errorf("Test #%d (%s) unexpected marhsalled data - "+
+			t.Errorf("Test #%d (%s) unexpected marshalled data - "+
 				"got %s, want %s", i, test.name, marshalled,
 				test.expected)
+			continue
+		}
+	}
+}
+
+// TestDashQuorumVerifyResults ensures QuorumVerifyResults are unmarshalled correctly
+func TestDashQuorumVerifyResults(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name     string
+		expected string
+		result   btcjson.QuorumVerifyResult
+	}{
+		{
+			name:     "quorum verify",
+			expected: `true`,
+			result: btcjson.QuorumVerifyResult{
+				Result: true,
+			},
+		},
+		{
+			name:     "quorum verify",
+			expected: `false`,
+			result: btcjson.QuorumVerifyResult{
+				Result: false,
+			},
+		},
+	}
+
+	t.Logf("Running %d tests", len(tests))
+	for i, test := range tests {
+		marshalled, err := json.Marshal(test.result)
+		if err != nil {
+			t.Errorf("Test #%d (%s) unexpected error: %v", i,
+				test.name, err)
+			continue
+		}
+		if string(marshalled) != test.expected {
+			t.Errorf("Test #%d (%s) unexpected marshalled data - "+
+				"got %s, want %s", i, test.name, marshalled,
+				test.expected)
+			continue
+		}
+
+		var unmarshalled btcjson.QuorumVerifyResult
+		if err := json.Unmarshal([]byte(test.expected), &unmarshalled); err != nil {
+			t.Errorf("Test #%d (%s) unexpected error: %v", i, test.name, err)
+			continue
+		}
+		if unmarshalled.Result != test.result.Result {
+			t.Errorf("Test #%d (%s) unexpected unmarshalled data - "+
+				"got %v, want %v", i, test.name, unmarshalled.Result,
+				test.result.Result)
 			continue
 		}
 	}
@@ -99,7 +154,7 @@ func TestDashQuorumInfoResults(t *testing.T) {
 			continue
 		}
 		if string(marshalled) != test.expected {
-			t.Errorf("Test #%d (%s) unexpected marhsalled data - "+
+			t.Errorf("Test #%d (%s) unexpected marshalled data - "+
 				"got %s, want %s", i, test.name, marshalled,
 				test.expected)
 			continue

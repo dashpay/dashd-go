@@ -194,7 +194,7 @@ func (c *Client) QuorumVerify(quorumType btcjson.LLMQType, requestID string, mes
 		return false, fmt.Errorf("no result")
 	}
 
-	return bool(*result), nil
+	return bool(result.Result), nil
 }
 
 // ----------------------------- quorum info -----------------------------
