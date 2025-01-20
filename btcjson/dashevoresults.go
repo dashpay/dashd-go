@@ -43,7 +43,7 @@ func (qvr *QuorumVerifyResult) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	// Cast the new type instance to the original type and assign.
-	*qvr = QuorumVerifyResult{Result: result}
+	qvr.Result = result
 	return nil
 }
 
