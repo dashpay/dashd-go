@@ -593,8 +593,8 @@ func unmarshalQuorumLLMQType(next unmarshalQuorumCmdFunc) unmarshalQuorumCmdFunc
 func quorumVerifyUnmarshaler(q *QuorumCmd, args []interface{}) error {
 	q.RequestID = strPtr(args[1].(string))
 	q.MessageHash = strPtr(args[2].(string))
-	q.QuorumHash = strPtr(args[3].(string))
-	q.Signature = strPtr(args[4].(string))
+	q.Signature = strPtr(args[3].(string))
+	q.QuorumHash = strPtr(args[4].(string))
 	return nil
 }
 
