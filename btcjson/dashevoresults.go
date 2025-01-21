@@ -27,7 +27,28 @@ type QuorumSignResultWithBool struct {
 // returns a boolean.
 type QuorumVerifyResult struct {
 	// Result is the output if submit was true
-	Result bool `json:"result,omitempty"`
+	Result bool `json:"result"`
+}
+
+// UnmarshalJSON is a custom unmarshal because the result can be just a boolean
+func (qvr *QuorumVerifyResult) UnmarshalJSON(data []byte) error {
+	if bl, err := strconv.ParseBool(string(data)); err == nil {
+		qvr.Result = bl
+		return nil
+	}
+
+	var result bool
+	err := json.Unmarshal(data, &result)
+	if err != nil {
+		return err
+	}
+	// Cast the new type instance to the original type and assign.
+	qvr.Result = result
+	return nil
+}
+
+func (qvr QuorumVerifyResult) MarshalJSON() ([]byte, error) {
+	return json.Marshal(qvr.Result)
 }
 
 // UnmarshalJSON is a custom unmarshal because the result can be just a boolean

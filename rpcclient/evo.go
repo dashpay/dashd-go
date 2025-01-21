@@ -186,11 +186,15 @@ func (c *Client) QuorumVerifyAsync(quorumType btcjson.LLMQType, requestID string
 
 // QuorumVerify returns a true if the signature is valid and false if not
 func (c *Client) QuorumVerify(quorumType btcjson.LLMQType, requestID string, messageHash string, signature string, quorumHash string) (bool, error) {
-	r, err := c.QuorumVerifyAsync(quorumType, requestID, messageHash, signature, quorumHash).Receive()
+	result, err := c.QuorumVerifyAsync(quorumType, requestID, messageHash, signature, quorumHash).Receive()
 	if err != nil {
 		return false, err
 	}
-	return r.Result, nil
+	if result == nil {
+		return false, fmt.Errorf("no result")
+	}
+
+	return bool(result.Result), nil
 }
 
 // ----------------------------- quorum info -----------------------------
