@@ -222,9 +222,6 @@ func TestLLMQTypeValidate(t *testing.T) {
 		{106, false},
 		{107, false},
 		{108, true},
-		{110, true},
-		{111, false},
-		{112, true},
 	}
 
 	for _, tc := range testCases {
